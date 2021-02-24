@@ -1,0 +1,11 @@
+insert into project (url,name,path) values ('testurl','pdfbox-app-2.0.19.jar','src\\test\\');
+insert into commit (id,version,data,msg,url) values ('1','alpha',null,'msgtest','testurl');
+
+
+
+
+
+cd Documents
+cd Net*
+cd sbac"
+java -jar src\\tools\\toolsfolder\\spotbugs\\lib\\spotbugs.jar -textui -xml -output test\dfsa.xml "C:\Users\mefi\Documents\NetBeansProjects\sbac\test\pdfbox-app-2.0.19.jar"
