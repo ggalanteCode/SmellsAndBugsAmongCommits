@@ -78,10 +78,13 @@ public class SpotBugs implements Tool{
             .forEach(File::delete);
         }catch (IOException ex) {
             Logger.getLogger(SourceMeter.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         } catch (ZipException ex) {
             Logger.getLogger(SourceMeter.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         } catch (URISyntaxException ex) {
             Logger.getLogger(SourceMeter.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
     /**

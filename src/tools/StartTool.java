@@ -29,6 +29,7 @@ public class StartTool extends Thread {
     @Override
     public void run(){
         try{
+            System.out.println("Starting tool...");
             Thread.sleep(50);
             if(System.getProperty("os.name").startsWith("Windows"))
                 t.runWin();

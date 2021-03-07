@@ -1,7 +1,8 @@
 package gui;
 
-import com.jcabi.github.Issue;
 import database.DbHandler;
+
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -14,13 +15,13 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.IssueCollection;
-import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
+
+import javax.swing.*;
+
 import models.Commit;
 import models.Project;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import repository.RepositoryHandler;
-import database.DbHandler;
 
 
 /**
@@ -30,7 +31,7 @@ import database.DbHandler;
 public class CommitPicker extends javax.swing.JFrame {
     private Project p;
     private ArrayList<Commit> commits;
-    private RepositoryHandler gr;
+    private RepositoryHandler rh;
     private ArrayList<IssueCollection> allIssueProject;
     private ArrayList<IssueCollection> bugInDb;
     //private ArrayList<IssueCollection> openBugProject;
@@ -50,13 +51,13 @@ public class CommitPicker extends javax.swing.JFrame {
         goBack.setIcon(new ImageIcon(getClass().getResource("/images/back.png")));
         this.p=p;
         try {
-            gr = new RepositoryHandler(p.getPath());
-            this.gr.reset();
-            gr.findAllCommits();
-            this.fF1.setText(gr.getFirstCommit().getStringDate());
-            this.fF2.setText(gr.getLastCommit().getStringDate());
+            rh = new RepositoryHandler(p.getPath());
+            this.rh.reset();
+            rh.findAllCommits();
+            this.fF1.setText(rh.getFirstCommit().getStringDate());
+            this.fF2.setText(rh.getLastCommit().getStringDate());
             commits = new ArrayList<>();
-            commits.addAll(gr.getBugFixerCommits());
+            commits.addAll(rh.getBugFixerCommits());
             
             populate();
         } catch (IOException ex) {
@@ -212,17 +213,17 @@ public class CommitPicker extends javax.swing.JFrame {
                 new Dialog("insert dates");
             else
                 if(!(fF1.getText().isEmpty()) && fF2.getText().isEmpty()){
-                    TreeSet<Commit> tmp=gr.getCommitForDate(Date.from(LocalDate.parse(fF1.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy")).atStartOfDay().toInstant(ZoneOffset.UTC)));
+                    TreeSet<Commit> tmp= rh.getCommitForDate(Date.from(LocalDate.parse(fF1.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy")).atStartOfDay().toInstant(ZoneOffset.UTC)));
                     Commit[] list=new Commit[tmp.size()];
                     this.commitList.setListData(tmp.toArray(list));
                 }else
                     if(!(fF2.getText().isEmpty()) && fF1.getText().isEmpty()){
-                        TreeSet<Commit> tmp=gr.getCommitForDate(Date.from(LocalDate.parse(fF2.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy")).atStartOfDay().toInstant(ZoneOffset.UTC)));
+                        TreeSet<Commit> tmp= rh.getCommitForDate(Date.from(LocalDate.parse(fF2.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy")).atStartOfDay().toInstant(ZoneOffset.UTC)));
                         Commit[] list=new Commit[tmp.size()];
                         this.commitList.setListData(tmp.toArray(list));
             
                     }else{
-                        TreeSet<Commit> tmp=gr.getCommitsBetweenDates(Date.from(LocalDate.parse(fF1.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy")).atStartOfDay().toInstant(ZoneOffset.UTC)), Date.from(LocalDate.parse(fF2.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy")).atStartOfDay().toInstant(ZoneOffset.UTC)));
+                        TreeSet<Commit> tmp= rh.getCommitsBetweenDates(Date.from(LocalDate.parse(fF1.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy")).atStartOfDay().toInstant(ZoneOffset.UTC)), Date.from(LocalDate.parse(fF2.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy")).atStartOfDay().toInstant(ZoneOffset.UTC)));
                         Commit[] list=new Commit[tmp.size()];
                         this.commitList.setListData(tmp.toArray(list));
                     }
@@ -230,29 +231,54 @@ public class CommitPicker extends javax.swing.JFrame {
     }//GEN-LAST:event_filterBMouseClicked
 
     private void analyzeBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analyzeBActionPerformed
+
+        //Aggiungere verifica esistenza file POM.xml, in caso contrario avvisare.
+
+        String projectPath = rh.getLocalPath().toString() + File.separator;
+        String [] possibleNamesBuildFile = {"POM.xml","pom.xml","Pom.xml"};
+        File buildFile;
+        int nTentativi = possibleNamesBuildFile.length;
+        int test = 0;
+
+        for (String name : possibleNamesBuildFile) {
+            test++;
+            buildFile = new File(projectPath + name);
+
+            if (buildFile.exists()){
+                break;
+            } else if (test == nTentativi) {
+                Adv dialog = new Adv("Build file not found. Coninue anyway?");
+                if (!dialog.getDecision()) {
+                    return;
+                }
+            }
+        }
+
         try {
-            
+
             //openBugProject=DbHandler.getAllBug(p.getUrl(),"open");
             //closedBugProject=DbHandler.getAllBug(p.getUrl(), "closed");
             bugInDb=DbHandler.getAllBug(p.getUrl());
-            allIssueProject=gr.getAllIssue(bugInDb);
+            allIssueProject= rh.getAllIssue(bugInDb);
             if(allIssueProject!=null && !(allIssueProject.isEmpty()))
                 DbHandler.insertBugComm(allIssueProject,p.getUrl());
-            
-            this.gr.checkoutCommit(commitList.getSelectedValue().getVersion());
+
+            this.rh.checkoutCommit(commitList.getSelectedValue().getVersion());
         } catch (GitAPIException ex) {
             Logger.getLogger(CommitPicker.class.getName()).log(Level.SEVERE, null, ex);
         }
         dispose();
-        new Parameters(p,commitList.getSelectedValue().getVersion(),gr);
+        new Parameters(p,commitList.getSelectedValue().getVersion(), rh);
     }//GEN-LAST:event_analyzeBActionPerformed
+
+
 
     private void fF1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fF1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_fF1ActionPerformed
 
     private void releaseBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_releaseBActionPerformed
-        TreeSet<Commit> tmp=gr.getRealeaseCommits();
+        TreeSet<Commit> tmp= rh.getRealeaseCommits();
         Commit[] list=new Commit[tmp.size()];
         this.commitList.setListData(tmp.toArray(list));
     }//GEN-LAST:event_releaseBActionPerformed

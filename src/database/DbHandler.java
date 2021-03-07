@@ -18,6 +18,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import gui.Download;
 import models.BugCollection;
 import models.BugIstance;
 import models.Commit;
@@ -202,10 +204,15 @@ public class DbHandler {
                 stmt.setString(5, p.getUrl());
                 stmt.execute();
             }
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(DbHandler.class.getName()).log(Level.SEVERE, null, ex);
-            printSQLException(ex);
+
+        } catch (SQLException e) {
+            if (e.getSQLState().equals("23505")) {
+                Download.updater(p.getUrl());
+            } else {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         finally{
             if(stmt!=null)
@@ -1217,5 +1224,30 @@ public class DbHandler {
             if(stmt!=null)
                 stmt.close();
         }
+    }
+
+    public static String projectDeleter (String url) {
+        String returnPath = null;
+        try {
+
+            Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            String sqlVerifyAccess = "SELECT path FROM project WHERE url = '" + url + "';";
+            ResultSet rs = stmt.executeQuery(sqlVerifyAccess);
+            rs.next();
+            returnPath = rs.getString("path");
+            rs.close();
+
+            Statement stmt2 = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            stmt.executeUpdate("DELETE FROM project WHERE url = '" + url + "';");
+            stmt2.close();
+
+            System.out.println("Old DB project-data deleted.");
+            System.out.println("PATH: "+returnPath);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return returnPath;
     }
 }

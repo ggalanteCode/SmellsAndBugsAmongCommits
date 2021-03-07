@@ -126,9 +126,9 @@ public class ProjectPicker extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void projectListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_projectListMouseClicked
-        Project selected = projectList.getSelectedValue();
+        Project p = projectList.getSelectedValue();
         dispose();
-        new CommitPicker(selected);
+        new CommitPicker(p);
     }//GEN-LAST:event_projectListMouseClicked
 
     private void goBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goBackActionPerformed

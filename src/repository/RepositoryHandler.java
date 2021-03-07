@@ -5,15 +5,15 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import database.DbHandler;
 import gui.GitTokenRequest;
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.eclipse.jgit.revwalk.RevCommit;
 import models.Commit;
@@ -22,9 +22,7 @@ import org.eclipse.jgit.revwalk.RevWalk;
 import com.jcabi.github.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+
 import models.IssueCollection;
 import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHIssue;
@@ -48,7 +46,7 @@ public class RepositoryHandler {
     public static final String URL_PREFIX=".com/";
     private String remoteURL;
     private Path localPath; 
-    private Git gitRepo;
+    private static Git gitRepo;
     private TreeSet<Commit> commits;
     private GHRepository repository; // utilizzato per il repository
     private Issues issues; //iteratore di tutte le issue
@@ -81,6 +79,41 @@ public class RepositoryHandler {
         }
         this.commits = new TreeSet<>();
         this.findAllCommits();
+    }
+
+    public static void deleter(String url) {
+
+        try {
+
+            File projectDirectory = new File(DbHandler.projectDeleter(url));
+            deleteUtils(projectDirectory);
+            projectDirectory.delete();
+            System.out.println("Old repo deleted.\n");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private static void deleteUtils (File folder) {
+
+        for (File f : Objects.requireNonNull(folder.listFiles())) {
+            if (f.isDirectory()) {
+                deleteUtils(f);
+                f.delete();
+            } else {
+                if (f.getName().contains("pack")){
+                    gitRepo.getRepository().close();
+                }
+               if (f.delete()) {
+                   System.out.println(f.getPath() + ":  deleted");
+               } else {
+                   System.err.println(f.getPath() + ":  NOT deleted");
+               }
+            }
+        }
+        System.out.println();
     }
     
     /**

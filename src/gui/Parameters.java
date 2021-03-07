@@ -243,8 +243,9 @@ public class Parameters extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void confirmBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmBActionPerformed
-        dispose();
+
         tools = new ArrayList<>();
+
          if(smcheck.isSelected()){ 
             if(!smF.getText().equals(sm.getDefaultParam()))
                 sm.setDefaultParam(smF.getText());
@@ -276,11 +277,14 @@ public class Parameters extends javax.swing.JDialog {
                 try {
                     CliUtils.Result execute = cliUtils.execute();
                     run = execute.code;
+
                 } catch (IOException ex) {
                     Logger.getLogger(Parameters.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
                     System.out.println("cannot find build file");
                 } catch (Exception ex) {
                     Logger.getLogger(Parameters.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
                 }
                 finally{
                     if(run==0)
@@ -289,17 +293,19 @@ public class Parameters extends javax.swing.JDialog {
                         System.out.println("build unsuccesfull , local path "+gr.getLocalPath().toString());
                 }
 
+                System.out.println("Invoking Analyzer-Class.");
+                Analyze.getAnalyzer().startAnalyze(tools);
+                String checkEnd = Loading.checkEnd(tools);
+                new Dialog(checkEnd); //exitcode
+                setVisible(true);
+                if(!tools.isEmpty()){
+                    new ParserStarter(tools,commitId,p.getUrl());
+                }
+                dispose();
+                new Download();
 
 
-            Analyze.getAnalyzer().startAnalyze(tools);
-            String checkEnd = Loading.checkEnd(tools);
-            new Dialog(checkEnd); //exitcode
-            setVisible(true);
-            if(!tools.isEmpty()){
-                new ParserStarter(tools,commitId,p.getUrl());
-            }
-            dispose();
-            new Download();
+
         }
         //Analyze.getAnalyzer().startAnalyze(tools,joF.getText().split(" "));
         

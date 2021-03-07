@@ -29,7 +29,8 @@ public class Analyze {
      * @return boolean 
      */
     public boolean startAnalyze(ArrayList<Tool> tools){
-        ArrayList<StartTool> t=new ArrayList<>();
+
+        ArrayList<StartTool> t = new ArrayList<>();
         try{
             if(tools!=null){
                 for(int i=0;i<tools.size();i++){

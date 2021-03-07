@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 import models.Commit;
 import models.Project;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.postgresql.util.PSQLException;
 import repository.RepositoryHandler;
 
 /**
@@ -163,31 +164,70 @@ public class Download extends javax.swing.JFrame {
         else{
             try {
                 Project p = DbHandler.urlExist(url);
-                if(p != null){
-                    url=p.getPath();
+                if (p != null) {
+                    url = p.getPath();
                 }
                 dispose();
-                
-                RepositoryHandler repo=new RepositoryHandler(url);
+
+                RepositoryHandler repo = new RepositoryHandler(url);
                 ArrayList<Commit> commits = new ArrayList<>(repo.getCommits());
-                Project project=new Project(repo.getRemoteURL(),repo.repoNameFromURI(),repo.getLocalPath().toString());
+                Project project = new Project(repo.getRemoteURL(), repo.repoNameFromURI(), repo.getLocalPath().toString());
                 DbHandler.insertProjectCommit(project, commits);
-                
+
                 setVisible(true);
+
             } catch (IOException ex) {
+                System.err.println("git error");
                 new Dialog("git error");
             } catch (GitAPIException ex) {
+                System.err.println("insert a valid url please - Git Exception");
                 new Dialog("insert a valid url please - Git Exception");
             } catch (SQLException ex) {
+                System.err.println("insert a valid url please - Git Exception");
                 new Dialog("db error while checking if url exist");
             }catch (RuntimeException ex) {
+                System.err.println("url error");
                 ex.printStackTrace();
                 new Dialog("url error");
                 setVisible(true);
             }
+
             
         }
     }//GEN-LAST:event_downloadBMouseClicked
+
+    public static void updater(String url) {
+        System.out.println("updater");
+
+        //Warning user...
+        Adv dialogue = new Adv("It seems that this project has been already downloaded. Update the project?");
+        if (!dialogue.getDecision()){
+            return;
+        }
+
+        //Delete folders and project from DB  (RepositoryHandel.delete invokes DbHandles projectDeleter
+        RepositoryHandler.deleter(url);
+
+        //New Download
+
+        try {
+
+            RepositoryHandler repo = new RepositoryHandler(url);
+            ArrayList<Commit> commits = new ArrayList<>(repo.getCommits());
+            Project project = new Project(repo.getRemoteURL(), repo.repoNameFromURI(), repo.getLocalPath().toString());
+            DbHandler.insertProjectCommit(project, commits);
+
+            System.out.println("New download completed.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void downloader(String url) {
+
+
+    }
 
     private void historyBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyBMouseClicked
         try {
