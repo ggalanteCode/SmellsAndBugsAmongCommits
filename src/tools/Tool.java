@@ -1,5 +1,6 @@
 package tools;
 
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import utils.CliUtils;
@@ -33,6 +34,7 @@ public interface Tool  {
      */
     public static int run(String Command, String ... args){
         //System.out.println(Thread.currentThread().getName()+" è entrato nel medoto run di Tool");
+
         CliUtils c = new CliUtils(Command ,args);
         CliUtils.Result result;
         try {

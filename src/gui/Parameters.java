@@ -15,6 +15,7 @@ import tools.JcodeOdor;
 import tools.SourceMeter;
 import tools.SpotBugs;
 import tools.Tool;
+import tools.PhDProjectScripts;
 import utils.CliUtils;
 import java.io.File;
 import java.util.logging.Level;
@@ -32,6 +33,7 @@ public class Parameters extends javax.swing.JDialog {
     private SourceMeter sm;
     private SpotBugs sb;
     private JcodeOdor jo;
+    private PhDProjectScripts phDProjectScripts;
     private String commitId;
     private RepositoryHandler gr;
     private String MVNParam="/C mvn clean install";
@@ -53,12 +55,13 @@ public class Parameters extends javax.swing.JDialog {
         this.tools = new ArrayList<>();
         this.commitId=commitId;
         this.gr=gr;
-        sm=new SourceMeter(p);
-        sb=new SpotBugs(p);
-        jo=new JcodeOdor(p);
+        sm = new SourceMeter(p);
+        sb = new SpotBugs(p);
+        jo = new JcodeOdor(p);
+        phDProjectScripts = new PhDProjectScripts(p);
         smF.setText(sm.getDefaultParam());  
         sbF.setText(sb.getDefaultParam());   
-        joF.setText(jo.getDefaultParam());  
+        PhdSmellsF.setText(phDProjectScripts.getDefaultParam());//test
 
     }
 
@@ -77,12 +80,12 @@ public class Parameters extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         smF = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        joF = new javax.swing.JTextField();
+        PhdSmellsF = new javax.swing.JTextField();
         confirmB = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         sbcheck = new javax.swing.JCheckBox();
         smcheck = new javax.swing.JCheckBox();
-        jcocheck = new javax.swing.JCheckBox();
+        phScheck = new javax.swing.JCheckBox();
         goBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -106,7 +109,7 @@ public class Parameters extends javax.swing.JDialog {
         });
 
         jLabel3.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("JCodeOdor");
+        jLabel3.setText("PhDSmells");
         jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel3MouseClicked(evt);
@@ -137,7 +140,7 @@ public class Parameters extends javax.swing.JDialog {
 
         smcheck.setBackground(new java.awt.Color(0, 0, 0));
 
-        jcocheck.setBackground(new java.awt.Color(0, 0, 0));
+        phScheck.setBackground(new java.awt.Color(0, 0, 0));
 
         goBack.setBorderPainted(false);
         goBack.setContentAreaFilled(false);
@@ -170,9 +173,9 @@ public class Parameters extends javax.swing.JDialog {
                                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(panelLayout.createSequentialGroup()
-                                            .addComponent(jcocheck, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(phScheck, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGap(18, 18, 18)
-                                            .addComponent(joF, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(PhdSmellsF, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelLayout.createSequentialGroup()
                                                 .addComponent(smcheck, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -213,8 +216,8 @@ public class Parameters extends javax.swing.JDialog {
                             .addComponent(smcheck))
                         .addGap(11, 11, 11)
                         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(joF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jcocheck))
+                            .addComponent(PhdSmellsF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(phScheck))
                         .addGap(18, 18, 18)
                         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(confirmB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -257,11 +260,12 @@ public class Parameters extends javax.swing.JDialog {
                 sb.setDefaultParam(sbF.getText());
             tools.add(sb);
         }
-            
-        if(jcocheck.isSelected()){
-            if(!joF.getText().equals(jo.getDefaultParam()))
-                jo.setDefaultParam(joF.getText());
-            tools.add(jo);
+
+        //Quello che appare nella JLabel: -source C:\Users\Federico\AppData\Local\Temp\SBAC-WraithEngine2848535714221642040 -output-type XML -output C:\Users\Federico\AppData\Local\Temp\SBAC-WraithEngine2848535714221642040\jcodeodor.xml
+        if(phScheck.isSelected()){
+            if(!PhdSmellsF.getText().equals(phDProjectScripts.getDefaultParam()))
+                phDProjectScripts.setDefaultParam(PhdSmellsF.getText());
+            tools.add(phDProjectScripts);
         }
     
         if(tools.isEmpty())
@@ -600,7 +604,7 @@ public class Parameters extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        new Helper("<HTML><h3>JCODEODOR ONLINE DOCUMENTATION</h3><p>https://essere.disco.unimib.it/jcodeodor-cli-documentation/</p></HTML>");
+        new Helper("rifare");
     }//GEN-LAST:event_jLabel3MouseClicked
     private void goBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goBackActionPerformed
         // TODO add your handling code here:
@@ -615,8 +619,8 @@ public class Parameters extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JCheckBox jcocheck;
-    private javax.swing.JTextField joF;
+    private javax.swing.JCheckBox phScheck;
+    private javax.swing.JTextField PhdSmellsF;
     private javax.swing.JPanel panel;
     private javax.swing.JTextField sbF;
     private javax.swing.JLabel sbLabel;

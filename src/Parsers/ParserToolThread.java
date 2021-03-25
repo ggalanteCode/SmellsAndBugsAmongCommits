@@ -108,16 +108,17 @@ public class ParserToolThread extends Thread {
                 System.out.println("Partiti parser di SourceMeter");
                 Thread.sleep(50);
                 this.startSourceMeter(tool);
-            }else
-                if(tool instanceof SpotBugs){
-                    System.out.println("Partito parser di SpotBugs");
-                    Thread.sleep(70);
-                    this.startSpotBugs(tool);
-                }else{
-                    System.out.println("Partito parser di JcodeOdor");
-                    Thread.sleep(50);
-                    this.startJcodeOdor(tool);
-                }
+
+            } else if(tool instanceof SpotBugs){
+                System.out.println("Partito parser di SpotBugs");
+                Thread.sleep(70);
+                this.startSpotBugs(tool);
+
+            } else if (tool instanceof JCodeOdorExtrapolator){
+                System.out.println("Partito parser di JcodeOdor");
+                Thread.sleep(50);
+                this.startJcodeOdor(tool);
+            }
         }catch(InterruptedException e){
             System.out.println(e);
         }catch(Exception e){

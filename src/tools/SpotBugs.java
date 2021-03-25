@@ -68,10 +68,10 @@ public class SpotBugs implements Tool{
             System.out.println("Partito SpotBugs");
             String pathToZip = ToolUtils.extract(RUNWIN);
             ToolUtils.unzip(pathToZip);
-            String path=pathToZip.replace("spotbugs.zip","spotbugs"+File.separator+"lib"+File.separator+"spotbugs.jar");
-            String[] tmp ={"-jar",path};
+            String path = pathToZip.replace("spotbugs.zip","spotbugs"+File.separator+"lib"+File.separator+"spotbugs.jar");
+            String[] tmp = {"-jar",path};
             tmp = Stream.concat(Arrays.stream(tmp), Arrays.stream(defaultParam.split(" "))).toArray(String[]::new);
-            this.exitCode=Tool.run("java",tmp);
+            this.exitCode = Tool.run("java",tmp);
             Files.walk(Paths.get(path.replace(File.separator+"lib"+File.separator+"spotbugs.jar","")))
             .sorted(Comparator.reverseOrder())
             .map(Path::toFile)

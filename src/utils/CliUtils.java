@@ -1,9 +1,6 @@
 package utils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +13,7 @@ import java.util.List;
 public class CliUtils {
 
     protected final String[] args;
-    protected final String command;
+    protected String command;
     protected final File directory;
 
     /**
@@ -26,6 +23,9 @@ public class CliUtils {
      */
     public CliUtils(String command, String ... args ) {
         this(command,new File("."), args);
+        if (command.equals("PhDSmells")) {
+            this.command=command;
+        }
     }
     
     /**
@@ -35,8 +35,8 @@ public class CliUtils {
      * @param args list of specific arguments of the command 
      */
     public CliUtils(String command, File directory, String... args) {
-        this.command=command;
-        this.directory=directory;
+        this.command = command;
+        this.directory = directory;
         this.args = args;
     }
     
@@ -47,27 +47,58 @@ public class CliUtils {
      * @throws IOException input/output exception
      */
     public Result execute() throws Exception,IOException {
-    
-        List<String> args = new ArrayList<>();
-        args.add(command);
-        String[] params = this.args;
-        if (this.args != null) {
-            args.addAll(Arrays.asList(params));
-        }
-        
-        ProcessBuilder builder = new ProcessBuilder(args);
-        builder.directory(directory);
-        builder.redirectErrorStream(true);
-        
-        
-        final Process process = builder.start();
-        String output = output(process);
 
-        
-        int exitCode = process.waitFor();
-        process.destroy();
-        System.out.println(exitCode);
-        return new Result(exitCode, output);
+
+        if (command.equals("PhDSmells")){
+
+            ProcessBuilder promptBuilder = new ProcessBuilder(args);
+            promptBuilder.redirectErrorStream(true);
+
+            Process prompt = promptBuilder.start();
+
+            BufferedReader r = new BufferedReader(new InputStreamReader(prompt.getInputStream()));
+            String line;
+
+            while (true) {
+                line = r.readLine();
+                if (line == null) { break; }
+                System.out.println(line);
+            }
+
+
+            String output = output(prompt);
+
+            int exitCode = prompt.waitFor();
+            prompt.destroy();
+            System.out.println(exitCode);
+            return new Result(exitCode, output);
+
+
+        } else {
+
+            List<String> args = new ArrayList<>();
+            args.add(command);
+            String[] params = this.args;
+            if (this.args != null) {
+                args.addAll(Arrays.asList(params));
+            }
+
+            ProcessBuilder promptBuilder = new ProcessBuilder(args);
+            promptBuilder.directory(directory);
+            promptBuilder.redirectErrorStream(true);
+
+            final Process process = promptBuilder.start();
+            String output = output(process);
+
+
+            int exitCode = process.waitFor();
+            process.destroy();
+            System.out.println(exitCode);
+            return new Result(exitCode, output);
+
+        }
+
+
     }
 
     /**

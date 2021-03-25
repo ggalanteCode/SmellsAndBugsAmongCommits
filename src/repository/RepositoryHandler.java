@@ -34,6 +34,7 @@ import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 import org.kohsuke.github.PagedIterable;
 
+import javax.swing.*;
 
 
 /**
@@ -226,7 +227,13 @@ public class RepositoryHandler {
      * @throws GitAPIException
      */
     public void checkoutCommit(String version) throws GitAPIException{
-       this.gitRepo.checkout().setName(version).setStartPoint(version).call();
+        try {
+            this.gitRepo.checkout().setName(version).setStartPoint(version).call();
+        } catch (GitAPIException e) {
+            JOptionPane.showMessageDialog(null, "Impossibile analizzare questa release.",
+                    "Attenzione", JOptionPane.INFORMATION_MESSAGE);
+
+        }
     }
     
     /**
