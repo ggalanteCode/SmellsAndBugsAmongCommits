@@ -38,7 +38,7 @@ public class PhDProjectScripts implements Tool {
         //DEFAULT ARGUMENTS -source <path_progetto_da_analizzare> -output-type XML -output <path_file_risultati>
         this.projectPath = p.getPath();
         this.toolPath = new File(RUNWIN).getAbsolutePath();
-        this.defaultParam = toolPath + " && java -jar " + toolName + " " + projectPath +" -g";
+        this.defaultParam = toolPath + " && java -jar " + toolName + " " + projectPath +" -t";
 
     }
 
