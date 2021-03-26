@@ -1,5 +1,7 @@
 package utils;
 
+import Parsers.PhDProjectScriptsParser;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,16 +57,23 @@ public class CliUtils {
             promptBuilder.redirectErrorStream(true);
 
             Process prompt = promptBuilder.start();
+            PhDProjectScriptsParser phdParser = new PhDProjectScriptsParser();
 
             BufferedReader r = new BufferedReader(new InputStreamReader(prompt.getInputStream()));
             String line;
+
             while (true) {
                 line = r.readLine();
-                if(line.equals("Switch Statement Bad Smell was found in:"))
-                    /* FAI PARTIRE IL PARSER */
-                if (line == null) { break; }
-                System.out.println(line);
+                if (!(line == null)) {
+                    if (line.equals("Switch Statement Bad Smell was found in:")) {
+                        System.err.println(line);
+                        break;
+                    }
+                    System.out.println(line);
+                }
             }
+
+            phdParser.execute(r);
 
             String output = output(prompt);
 
@@ -151,26 +160,6 @@ public class CliUtils {
     @Override
     public String toString() {
         return String.format("%s %s", command, String.join(" ", args));
-    }
-
-    /* Switch Statement (numeroriga) in method ‘nomemetodo’. */
-    public void prova() {
-        String stringa = "";
-        if(stringa.equals("Switch Statement Bad Smell was found in:")) {
-            String classe = "";
-            String prossimastringa = "";
-            if(prossimastringa.startsWith("FILE")) {
-                prossimastringa = prossimastringa.replace(File.separatorChar,'§');
-                String[] directory = prossimastringa.split("§");
-                classe = directory[directory.length-2];
-                if(prossimastringa.startsWith("Switch Statement")) {
-                    String[] switchSmell = prossimastringa.split("[()']+");
-                    String lineNumber = switchSmell[1];
-                    String method = switchSmell[3];
-                    /* Fornisci dati a SBAC */
-                }
-            }
-        }
     }
 
 }
