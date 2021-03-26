@@ -58,13 +58,13 @@ public class CliUtils {
 
             BufferedReader r = new BufferedReader(new InputStreamReader(prompt.getInputStream()));
             String line;
-
             while (true) {
                 line = r.readLine();
+                if(line.equals("Switch Statement Bad Smell was found in:"))
+                    /* FAI PARTIRE IL PARSER */
                 if (line == null) { break; }
                 System.out.println(line);
             }
-
 
             String output = output(prompt);
 
@@ -152,4 +152,25 @@ public class CliUtils {
     public String toString() {
         return String.format("%s %s", command, String.join(" ", args));
     }
+
+    /* Switch Statement (numeroriga) in method ‘nomemetodo’. */
+    public void prova() {
+        String stringa = "";
+        if(stringa.equals("Switch Statement Bad Smell was found in:")) {
+            String classe = "";
+            String prossimastringa = "";
+            if(prossimastringa.startsWith("FILE")) {
+                prossimastringa = prossimastringa.replace(File.separatorChar,'§');
+                String[] directory = prossimastringa.split("§");
+                classe = directory[directory.length-2];
+                if(prossimastringa.startsWith("Switch Statement")) {
+                    String[] switchSmell = prossimastringa.split("[()']+");
+                    String lineNumber = switchSmell[1];
+                    String method = switchSmell[3];
+                    /* Fornisci dati a SBAC */
+                }
+            }
+        }
+    }
+
 }

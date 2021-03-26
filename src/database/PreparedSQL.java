@@ -83,6 +83,23 @@ public class PreparedSQL {
                                             "	idv integer references variable on delete cascade on update cascade ,\n" +
                                             "	idbc integer references bugcollection on delete cascade on update cascade \n" +
                                             ") ;";
+
+    /*
+
+    public static final String SMELLISTANCE = "create table bugistance (\n" +
+            "	id serial not null primary key ,\n" +
+            "   type text not null, \n" +
+            "	startsourceline integer ,\n" +
+            "	endsourceline integer ,\n" +
+            "	sourcepath text ,\n" +
+            "   method text not null \n" +
+            "   variable text \n" +
+            "   idm integer references method on delete cascade on update cascade ,\n" +
+            "	idv integer references variable on delete cascade on update cascade ,\n" +
+            ") ;";
+
+    */
+
     
     public static final String BUGCOLLECTION = "create table bugcollection (\n" +
                                                 "	id serial not null primary key ,\n" +
