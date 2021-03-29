@@ -9,6 +9,7 @@ public class PhDProjectScriptsParser {
 
     String smell;
     ArrayList<String> classes = new ArrayList<>();
+    String messageChainsTempory;
 
     public void execute(BufferedReader reader) {
 
@@ -21,7 +22,7 @@ public class PhDProjectScriptsParser {
             do {
 
                 line = reader.readLine().trim();
-                System.err.println(line);
+                System.out.println(line);
 
                 switch (line) {
 
@@ -80,31 +81,72 @@ public class PhDProjectScriptsParser {
             }
 
         } else {
+            String lineNumber = "";
+            String method = "";
+            String variable = "";
+            switch (smell){
 
-            switch (smell) {
-
-                case "Switch Statement":
-
+                case "Switch Statement" :
                     String[] switchSmell = line.split("[()']+");
-                    String lineNumber = switchSmell[1].trim();
-                    String method = switchSmell[3].trim();
+                    lineNumber = switchSmell[1].trim();
+                    method = switchSmell[3].trim();
 
                     //Scrivere su DB//
-
                     break;
 
                 case "Speculative Generality":
+                    String[] speculativeSmell = line.split("[()']+");
+                    lineNumber = speculativeSmell[1].trim();
+                    if(line.startsWith("Speculative Generality unused parameter")) {
+                        variable = speculativeSmell[3].trim();
+                        method = speculativeSmell[5].trim();
+                    }
+
+                    //Scrivere su DB//
                     break;
 
                 case "Middle Man":
+                    String[] middleSmell = line.split("[()']+");
+                    lineNumber = middleSmell[1].trim();
+
+                    //Scrivere su DB//
                     break;
 
                 case "Message Chains":
+                    if(line.startsWith("Message Chains"))
+                        messageChainsTempory = line;
+                    String[] strings = line.split("[//(//)]+", 3);
+                    String[] chainsSmell = strings[2].split("[\\[\\]]+");
+                    lineNumber = strings[1].trim();
+                    method = chainsSmell[1].trim();
+
+                    //Scrivere su DB//
                     break;
 
                 case "Data Clumps":
+                    String[] clumpsSmell;
+                    if(line.startsWith("Parameters in method")) {
+                        clumpsSmell = line.split("Parameters in method | and | was found duplicated");
+                        method = clumpsSmell[1].substring(clumpsSmell[1].substring(0, clumpsSmell[1].lastIndexOf(".")).lastIndexOf(".") + 1) + " & " + clumpsSmell[2].substring(clumpsSmell[2].substring(0, clumpsSmell[2].lastIndexOf(".")).lastIndexOf(".") + 1);
+
+                        //Scrivere su DB//
+                    } else if(line.startsWith("Fields")) {
+                        clumpsSmell = line.split("Fields  | was found duplicated");
+                        variable = clumpsSmell[1];
+
+                        //Scrivere su DB//
+                    }
                     break;
             }
+            assert !classes.isEmpty();
+            System.out.print("CLASSI: ");
+            for(String s : classes) {
+                System.out.print(s + " ");
+            }
+            System.out.print(" SMELL: " + smell);
+            System.out.print(" PRINTLN VARIABLE: " + variable);
+            System.out.print(" PRINTLN METHOD: " + method);
+            System.out.print(" PRINTLN LINENUMBER: " + lineNumber + "\n");
         }
     }
 }
