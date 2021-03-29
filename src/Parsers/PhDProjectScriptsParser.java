@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class PhDProjectScriptsParser {
 
-    String smell = "Switch Statement Bad Smell was found in:";
+    String smell;
     ArrayList<String> classes = new ArrayList<>();
 
     public void execute(BufferedReader reader) {
@@ -16,24 +16,31 @@ public class PhDProjectScriptsParser {
 
             String line;
 
-            while (true) {
+            boolean continueReading = true;
 
-                line = reader.readLine();
+            do {
 
-                if (line.equals("Speculative Generality Bad Smell was found in:") || line.equals("Middle Man Bad Smell was found in:")
-                        || line.equals("Message Chains Bad Smell was found in:") || line.equals("Data Clumps Bad Smell was found in:")) {
+                line = reader.readLine().trim();
+                System.err.println(line);
 
-                    smell = line;
+                switch (line) {
 
-                } else if (!line.isBlank()){
-                    analyzeAndWrite(line);
+                    case "Switch Statement Bad Smell was found in:" -> smell = "Switch Statement";
+                    case "Speculative Generality Bad Smell was found in:" -> smell = "Speculative Generality";
+                    case "Middle Man Bad Smell was found in:" -> smell = "Middle Man";
+                    case "Message Chains Bad Smell was found in:" -> smell = "Message Chains";
+                    case "Data Clumps Bad Smell was found in:" -> smell = "Data Clumps";
+
+                    case "***END BAD SMELLS TRANSCRIPTION***" -> continueReading = false;
+
+                    default -> {
+                        if (!line.isBlank()) {
+                            analyzeAndWrite(line);
+                        }
+                    }
                 }
 
-                analyzeAndWrite(line);
-
-                if (line == null) { break; }
-                System.err.println(line.trim());
-            }
+            } while (continueReading);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,9 +56,11 @@ public class PhDProjectScriptsParser {
 
         if (line.startsWith("FILE")){
 
+            //Delete previous paths and split paths in case of more directoy per string.
             classes = new ArrayList<>();
             String[] paths = line.split("&");
 
+            //Obtain class path in project's source.
             for (String p : paths) {
                 classPath = "";
                 beginWritePath = false;
@@ -72,9 +81,9 @@ public class PhDProjectScriptsParser {
 
         } else {
 
-            switch (smell){
+            switch (smell) {
 
-                case "Switch Statement Bad Smell was found in:" :
+                case "Switch Statement":
 
                     String[] switchSmell = line.split("[()']+");
                     String lineNumber = switchSmell[1].trim();
@@ -84,21 +93,19 @@ public class PhDProjectScriptsParser {
 
                     break;
 
-                case "Speculative Generality Bad Smell was found in:":
+                case "Speculative Generality":
                     break;
 
-                case "Middle Man Bad Smell was found in:":
+                case "Middle Man":
                     break;
 
-                case "Message Chains Bad Smell was found in:":
+                case "Message Chains":
                     break;
 
-                case "Data Clumps Bad Smell was found in:":
+                case "Data Clumps":
                     break;
             }
-
         }
-
     }
 }
 

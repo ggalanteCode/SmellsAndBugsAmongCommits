@@ -264,7 +264,7 @@ public class CommitPicker extends javax.swing.JFrame {
                 DbHandler.insertBugComm(allIssueProject,p.getUrl());
 
             this.rh.checkoutCommit(commitList.getSelectedValue().getVersion());
-        } catch (GitAPIException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(CommitPicker.class.getName()).log(Level.SEVERE, null, ex);
         }
         dispose();

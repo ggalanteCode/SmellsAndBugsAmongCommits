@@ -50,7 +50,7 @@ public class CliUtils {
      */
     public Result execute() throws Exception,IOException {
 
-
+        //The field COMMAND contains the name of the tool ONLY for PhDProjectScripts.
         if (command.equals("PhDSmells")){
 
             ProcessBuilder promptBuilder = new ProcessBuilder(args);
@@ -65,8 +65,8 @@ public class CliUtils {
             while (true) {
                 line = r.readLine();
                 if (!(line == null)) {
-                    if (line.equals("Switch Statement Bad Smell was found in:")) {
-                        System.err.println(line);
+                    if (line.equals("***START BAD SMELLS TRANSCRIPTION***")) {
+                        System.err.println(line + "\n");
                         break;
                     }
                     System.out.println(line);

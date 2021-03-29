@@ -226,10 +226,10 @@ public class RepositoryHandler {
      * @param version hash id of the commit to check
      * @throws GitAPIException
      */
-    public void checkoutCommit(String version) throws GitAPIException{
+    public void checkoutCommit(String version) {
         try {
             this.gitRepo.checkout().setName(version).setStartPoint(version).call();
-        } catch (GitAPIException e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Impossibile analizzare questa release.",
                     "Attenzione", JOptionPane.INFORMATION_MESSAGE);
 
