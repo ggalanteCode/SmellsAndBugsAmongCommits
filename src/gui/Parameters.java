@@ -64,7 +64,6 @@ public class Parameters extends javax.swing.JDialog {
         PhdSmellsF.setText(phDProjectScripts.getDefaultParam());//test
 
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -249,7 +248,7 @@ public class Parameters extends javax.swing.JDialog {
 
         tools = new ArrayList<>();
 
-         if(smcheck.isSelected()){ 
+        if(smcheck.isSelected()){
             if(!smF.getText().equals(sm.getDefaultParam()))
                 sm.setDefaultParam(smF.getText());
             tools.add(sm);
@@ -261,7 +260,6 @@ public class Parameters extends javax.swing.JDialog {
             tools.add(sb);
         }
 
-        //Quello che appare nella JLabel: -source C:\Users\Federico\AppData\Local\Temp\SBAC-WraithEngine2848535714221642040 -output-type XML -output C:\Users\Federico\AppData\Local\Temp\SBAC-WraithEngine2848535714221642040\jcodeodor.xml
         if(phScheck.isSelected()){
             if(!PhdSmellsF.getText().equals(phDProjectScripts.getDefaultParam()))
                 phDProjectScripts.setDefaultParam(PhdSmellsF.getText());
@@ -272,9 +270,7 @@ public class Parameters extends javax.swing.JDialog {
             new Dialog("you have to select at least one tool to analyze");
         else{
             dispose();
-            
             /*BUILDING PHASE */
-
 
                 CliUtils cliUtils = new CliUtils("cmd",new File(gr.getLocalPath().toString()),MVNParam.split(" "));
                 int run=1;
@@ -291,10 +287,12 @@ public class Parameters extends javax.swing.JDialog {
                     ex.printStackTrace();
                 }
                 finally{
-                    if(run==0)
+
+                    if(run==0) {
                         System.out.println("build succesfull");
-                    else
-                        System.out.println("build unsuccesfull , local path "+gr.getLocalPath().toString());
+                    } else {
+                        System.out.println("build unsuccesfull , local path " + gr.getLocalPath().toString());
+                    }
                 }
 
                 System.out.println("Invoking Analyzer-Class.");
@@ -307,8 +305,6 @@ public class Parameters extends javax.swing.JDialog {
                 }
                 dispose();
                 new Download();
-
-
 
         }
         //Analyze.getAnalyzer().startAnalyze(tools,joF.getText().split(" "));

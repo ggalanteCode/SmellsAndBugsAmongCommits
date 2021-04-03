@@ -49,6 +49,10 @@ public class PhDProjectScriptsParser {
     }
 
 
+    private void pathPrepper(String classPath) {
+
+    }
+
 
     private void analyzeAndWrite(String line) {
 
@@ -66,17 +70,31 @@ public class PhDProjectScriptsParser {
                 classPath = "";
                 beginWritePath = false;
 
-                String[] path = (p.replace(File.separatorChar,'§')).split("§");
+                p = p.replace(File.separatorChar,'§');
+                String[] path = p.split("§");
 
-                for (String s : path) {
-                    if (s.equals("src") || beginWritePath) {
-                        beginWritePath = true;
-                        classPath += s+".";
+                if (p.contains("§src§")) {
+
+                    for (String s : path) {
+                        if (!beginWritePath & s.equals("src")) {
+                            beginWritePath = true;
+                        } else if (beginWritePath) {
+                            classPath += s+".";
+                        }
+                    }
+
+                } else {
+
+                    for (String s : path) {
+                        if (!beginWritePath & s.contains("SBAC")) {
+                            beginWritePath = true;
+                        } else if (beginWritePath) {
+                            classPath += s+".";
+                        }
                     }
                 }
 
-                classPath = classPath.substring(0, classPath.length()-6);
-                classPath = classPath.replace("src.","");
+                classPath = classPath.substring(0, classPath.lastIndexOf(".java"));
                 classes.add(classPath);
             }
 

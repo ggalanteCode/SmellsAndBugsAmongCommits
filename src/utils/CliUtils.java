@@ -1,6 +1,7 @@
 package utils;
 
 import Parsers.PhDProjectScriptsParser;
+import gui.WorkingAdv;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -66,7 +67,7 @@ public class CliUtils {
                 line = r.readLine();
                 if (!(line == null)) {
                     if (line.equals("***START BAD SMELLS TRANSCRIPTION***")) {
-                        System.err.println(line + "\n");
+                        System.out.println(line + "\n");
                         break;
                     }
                     System.out.println(line);
@@ -104,6 +105,7 @@ public class CliUtils {
             process.destroy();
             System.out.println(exitCode);
             return new Result(exitCode, output);
+
 
         }
 

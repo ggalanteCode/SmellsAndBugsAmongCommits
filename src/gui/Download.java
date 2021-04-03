@@ -16,7 +16,6 @@ import javax.swing.ImageIcon;
 import models.Commit;
 import models.Project;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.postgresql.util.PSQLException;
 import repository.RepositoryHandler;
 
 /**
@@ -222,11 +221,6 @@ public class Download extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void downloader(String url) {
-
-
     }
 
     private void historyBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyBMouseClicked
