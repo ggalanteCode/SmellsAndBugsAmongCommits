@@ -48,6 +48,7 @@ public class WorkingAdv extends Thread {
             } else {
                 label.setText(label.getText()+".");
             }
+            System.out.println(label.getText());
             counter++;
         }
         f.dispose();
