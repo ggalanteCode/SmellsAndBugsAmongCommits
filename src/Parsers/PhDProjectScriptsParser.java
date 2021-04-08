@@ -7,9 +7,13 @@ import java.util.ArrayList;
 
 public class PhDProjectScriptsParser {
 
-    String smell, messageChainsTemp;
+    String smell, messageChainsTemp, idCommit, projectUrl;
     ArrayList<String> classes = new ArrayList<>();
 
+    public PhDProjectScriptsParser(String idCommit, String projectUrl) {
+        this.idCommit = idCommit;
+        this.projectUrl = projectUrl;
+    }
 
     public void execute(BufferedReader reader) {
 
@@ -47,12 +51,6 @@ public class PhDProjectScriptsParser {
             e.printStackTrace();
         }
     }
-
-
-    private void pathPrepper(String classPath) {
-
-    }
-
 
     private void analyzeAndWrite(String line) {
 
@@ -167,4 +165,15 @@ public class PhDProjectScriptsParser {
             System.out.print(" PRINTLN LINENUMBER: " + lineNumber + "\n");
         }
     }
+
+    public static void main(String[] args) {
+        String path = "C:\\Users\\Federico\\Desktop\\Programmi\\Intelli J\\sbac\\src\\tools\\toolsfolder\\PhDProjectScripts\\result.xml";
+        try {
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }

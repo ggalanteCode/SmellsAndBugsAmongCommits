@@ -58,24 +58,6 @@ public class CliUtils {
             promptBuilder.redirectErrorStream(true);
 
             Process prompt = promptBuilder.start();
-            PhDProjectScriptsParser phdParser = new PhDProjectScriptsParser();
-
-            BufferedReader r = new BufferedReader(new InputStreamReader(prompt.getInputStream()));
-            String line;
-
-            while (true) {
-                line = r.readLine();
-                if (!(line == null)) {
-                    if (line.equals("***START BAD SMELLS TRANSCRIPTION***")) {
-                        System.out.println(line + "\n");
-                        break;
-                    }
-                    System.out.println(line);
-                }
-            }
-
-            phdParser.execute(r);
-
             String output = output(prompt);
 
             int exitCode = prompt.waitFor();
