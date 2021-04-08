@@ -8,10 +8,8 @@ package Parsers;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Comparator;
-import tools.JcodeOdor;
-import tools.SourceMeter;
-import tools.SpotBugs;
-import tools.Tool;
+
+import tools.*;
 
 /**
  * class that handles the execution of parsers associated with tools
@@ -97,6 +95,10 @@ public class ParserToolThread extends Thread {
         xmlParser.parse(jo.getOutputPath());
         System.out.println("Parser JcodeOdor terminato");
     }
+
+    public void startPhDProjectScriptsParser(Tool t) throws Exception {
+
+    }
     
     /**
      *run method executed by threads to use parsers 
@@ -114,10 +116,14 @@ public class ParserToolThread extends Thread {
                 Thread.sleep(70);
                 this.startSpotBugs(tool);
 
-            } else if (tool instanceof JCodeOdorExtrapolator){
+            } else if (tool instanceof JcodeOdor){
                 System.out.println("Partito parser di JcodeOdor");
                 Thread.sleep(50);
                 this.startJcodeOdor(tool);
+            } else if (tool instanceof PhDProjectScripts) {
+                System.out.println("Partito parser di PhdProjectScripts");
+                Thread.sleep(50);
+                this.startPhDProjectScriptsParser(tool);
             }
         }catch(InterruptedException e){
             System.out.println(e);
