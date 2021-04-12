@@ -2,13 +2,13 @@ package Parsers;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class PhDProjectScriptsParser {
 
     String smell, messageChainsTemp, idCommit, projectUrl;
     ArrayList<String> classes = new ArrayList<>();
+    String analyzableFileName = "result.txt";
 
     public PhDProjectScriptsParser(String idCommit, String projectUrl) {
         this.idCommit = idCommit;
@@ -22,6 +22,7 @@ public class PhDProjectScriptsParser {
             String line;
 
             boolean continueReading = true;
+            boolean startAnalysis = false;
 
             do {
 
@@ -29,6 +30,8 @@ public class PhDProjectScriptsParser {
                 System.out.println(line);
 
                 switch (line) {
+
+                    case "***START BAD SMELLS TRANSCRIPTION***" -> startAnalysis = true;
 
                     case "Switch Statement Bad Smell was found in:" -> smell = "Switch Statement";
                     case "Speculative Generality Bad Smell was found in:" -> smell = "Speculative Generality";
@@ -39,7 +42,7 @@ public class PhDProjectScriptsParser {
                     case "***END BAD SMELLS TRANSCRIPTION***" -> continueReading = false;
 
                     default -> {
-                        if (!line.isBlank()) {
+                        if (!line.isBlank() && startAnalysis) {
                             analyzeAndWrite(line);
                         }
                     }
@@ -166,14 +169,7 @@ public class PhDProjectScriptsParser {
         }
     }
 
-    public static void main(String[] args) {
-        String path = "C:\\Users\\Federico\\Desktop\\Programmi\\Intelli J\\sbac\\src\\tools\\toolsfolder\\PhDProjectScripts\\result.xml";
-        try {
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+    public String getAnalyzableFileName() {
+        return analyzableFileName;
     }
-
 }

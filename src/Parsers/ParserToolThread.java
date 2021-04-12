@@ -7,6 +7,7 @@ package Parsers;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -98,7 +99,20 @@ public class ParserToolThread extends Thread {
         System.out.println("Parser JcodeOdor terminato");
     }
 
-    public void startPhDProjectScriptsParser() {
+    /**
+     * method that runs PhDProjectScripts parsers
+     * @param t
+     */
+    public void startPhDProjectScriptsParser(Tool t) {
+        PhDProjectScriptsParser parser = new PhDProjectScriptsParser(idCommit, projectUrl);
+        PhDProjectScripts ps = (PhDProjectScripts) t;
+        String resultFileAbsPath = ps.getToolPath() + File.separator + parser.getAnalyzableFileName();
+
+        try {
+            parser.execute(new BufferedReader(new FileReader(resultFileAbsPath)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
     /**
@@ -124,7 +138,7 @@ public class ParserToolThread extends Thread {
             } else if (tool instanceof PhDProjectScripts) {
                 System.out.println("Partito parser di PhdProjectScripts");
                 Thread.sleep(50);
-                this.startPhDProjectScriptsParser();
+                this.startPhDProjectScriptsParser(tool);
             }
         }catch(InterruptedException e){
             System.out.println(e);
