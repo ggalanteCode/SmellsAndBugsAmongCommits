@@ -169,8 +169,10 @@ public class PreparedSQL {
                                         "	value double precision not null ,  \n" +
                                         "	idc text not null references commit on delete cascade on update cascade ,\n" +
                                         "	idp integer references package on delete cascade on update cascade  ,\n" +
+                                        "	idcl integer references class on delete cascade on update cascade ,\n" +
                                         "	idm integer references method on delete cascade on update cascade  ,\n" +
-                                        "	idcl integer references class on delete cascade on update cascade\n" +
+                                        "	idv integer references variable on delete cascade on update cascade ,\n" +
+                                        "	linenumber integer \n" +
                                         ") ;";
     
     public static final String CLONEISTANCE = "create table cloneistance (\n" +
@@ -525,7 +527,7 @@ public class PreparedSQL {
     
     public static final String INSERTMETRIC = "insert into metric (key, value , idc, idm, idcl, idp) values (?,?,?,?,?,?);";
 
-    public static final String INSERTSMELL = "insert into smell (key, value , idc, idm, idcl, idp) values (?,?,?,?,?,?);";
+    public static final String INSERTSMELL = "insert into smell (key, value , idc, idm, idcl, idp, idv, linenumber) values (?,?,?,?,?,?,?,?);";
     
     public static final String INSERTPMD = "insert into pmd (line, solution, type, idc, idcl) values (?,?,?,?,?);";
     
@@ -575,7 +577,9 @@ public class PreparedSQL {
     public static final String CLASSINPROJECT = "select distinct class.id from class inner join pmd on class.id= pmd.idcl inner join commit on pmd.idc = commit.version inner join project on commit.url=project.url where class.name =? and project.url=? union select distinct class.id from class inner join metrichunter on class.id= metrichunter.idcl inner join commit on metrichunter.idc = commit.version inner join project on commit.url=project.url where class.name =? and project.url=? union select distinct class.id from class inner join cloneistance on class.id= cloneistance.idcl inner join clone on cloneistance.idc = clone.id inner join commit on clone.idc = commit.version inner join project on commit.url=project.url where class.name =? and project.url=? union select distinct class.id from class inner join metric on class.id= metric.idcl inner join commit on metric.idc = commit.version inner join project on commit.url=project.url where class.name =? and project.url=? union select distinct class.id from class inner join smell on class.id= smell.idcl inner join commit on smell.idc = commit.version inner join project on commit.url=project.url where class.name =? and project.url=?;";
     
     public static final String METHODINCLASS = "select distinct method.id from method inner join class on method.idc = class.id where method.name = ? and class.id = ?;";
-    
+
+    public static final String VARIABLEINCLASS = "select distinct variable.id from variable inner join class on variable.idc = class.id where variable.name = ? and class.id = ?;";
+
     public static final String CLASSPATH = "select class.path from class where class.id = ?;";
     
     public static final String UPDATECLASSPATH = "update class set path =? where class.id = ?;";

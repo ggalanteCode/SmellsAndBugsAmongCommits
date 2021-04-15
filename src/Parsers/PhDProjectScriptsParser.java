@@ -2,7 +2,6 @@ package Parsers;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import models.Method;
@@ -16,10 +15,11 @@ public class PhDProjectScriptsParser {
 
     String analyzableFileName = "result.txt";
     String smell, messageChainsTemp, idCommit, projectUrl;
-    ArrayList<String> classes, pathClasses, packages;
+    ArrayList<String> classesPath, packages;
+    int[] existsClass, existsPackage;
     Class c1, c2;
     Method m;
-    Package p;
+    Package pac1, pac2;
     Variable v;
 
     public PhDProjectScriptsParser(String idCommit, String projectUrl) {
@@ -75,14 +75,14 @@ public class PhDProjectScriptsParser {
         if (line.startsWith("FILE")){
 
             //Delete previous paths and split paths in case of more directoy per string.
-            classes = new ArrayList<>();
-            pathClasses = new ArrayList<>();
+            classesPath = new ArrayList<>();
             packages = new ArrayList<>();
+            existsClass = new int[2];
+            existsPackage = new int[2];
             String[] paths = line.split("&");
 
             //Obtain class path in project's source.
             for (String p : paths) {
-                pathClasses.add(p);
                 classPath = "";
                 beginWritePath = false;
 
@@ -103,6 +103,7 @@ public class PhDProjectScriptsParser {
                 } else {
 
                     for (String s : path) {
+                        packages.add(path[path.length-2]);
                         if (!beginWritePath & s.contains("SBAC")) {
                             beginWritePath = true;
                         } else if (beginWritePath) {
@@ -112,7 +113,56 @@ public class PhDProjectScriptsParser {
                 }
 
                 classPath = classPath.substring(0, classPath.lastIndexOf(".java"));
-                classes.add(classPath);
+                classesPath.add(classPath);
+                int i;
+                if(classesPath.size() == 1)
+                    i=0;
+                else
+                    i=1;
+                try {
+                    //idClass
+                    existsClass[i] = DbHandler.classInProject(classesPath.get(i), projectUrl);
+                    int lastpoint = (classesPath.get(i)).lastIndexOf(".");
+                    String className = classesPath.get(i).substring(lastpoint + 1);
+                    Class c0 = new Class(className, classesPath.get(i));
+                    if (existsClass[i] == 0) {
+                        existsClass[i] = DbHandler.insertClass(c0);
+                    } else {
+                        String Cpath = DbHandler.getClassPath(existsClass[i]);
+                        if (Cpath == null) {
+                            DbHandler.updateClassPath(classesPath.get(i), existsClass[i]);
+                        } else {
+                            if (!DbHandler.getClassPath(existsClass[i]).equals(classesPath.get(i)))
+                                existsClass[i] = DbHandler.insertClass(c0);
+                            else
+                                c0.setId(existsClass[i]);
+                        }
+                    }
+
+                    //idPackage
+                    Package pac0 = new Package(packages.get(i));
+                    int indexOfClass = (classesPath.get(i)).indexOf(className);
+                    String packagePath = (classesPath.get(i)).substring(0, indexOfClass-1);
+                    pac0.setPath(packagePath);
+                    existsPackage[i] = DbHandler.packageExist(packages.get(i));
+                    if(existsPackage[i] == 0) {
+                        existsPackage[i] = DbHandler.insertPackage(pac0);
+                        pac0.setId(existsPackage[i]);
+                    } else {
+                        pac0.setId(existsPackage[i]);
+                    }
+
+                    if(i==0) {
+                        c1 = c0;
+                        pac1 = pac0;
+                    } else {
+                        c2 = c0;
+                        pac2 = pac0;
+                    }
+
+
+
+                } catch (SQLException e) {e.printStackTrace();}
             }
 
         } else {
@@ -120,6 +170,7 @@ public class PhDProjectScriptsParser {
             String lineNumber = "";
             String methodName = "";
             String variableName = "";
+            String variableType = "";
             Smell sm;
 
             switch (smell) {
@@ -130,53 +181,12 @@ public class PhDProjectScriptsParser {
                     methodName = switchSmell[3].trim();
 
                     try {
-
-                        //idClass
-                        int existsClass = DbHandler.classInProject(classes.get(0), projectUrl);
-                        c1 = new Class(classes.get(0), pathClasses.get(0));
-                        if(existsClass==0) {
-                            c1.setId(DbHandler.insertClass(c1));
-                        } else {
-                            String path = DbHandler.getClassPath(existsClass);
-                            if(path==null) {
-                                DbHandler.updateClassPath(pathClasses.get(0), existsClass);
-                                c1.setId(existsClass);
-                            } else {
-                                if(!DbHandler.getClassPath(existsClass).equals(classes.get(0)))
-                                    c1.setId(DbHandler.insertClass(c1));
-                                else
-                                    c1.setId(existsClass);
-                            }
-                        }
-
                         //idMethod
-                        m = new Method();
-                        m.setName(methodName);
-                        int existsMethod = DbHandler.MethodInClass(m.getName(), (int) c1.getId());
-                        if (existsMethod == 0) {
-                            existsMethod = DbHandler.insertMethod(m, (int) c1.getId());
-                            m.setId(existsMethod);
-                        } else {
-                            m.setId(existsMethod);
-                        }
-
-                        //idPackage
-                        p = new Package(packages.get(0));
-                        int indexOfClass = (pathClasses.get(0)).indexOf(classes.get(0));
-                        String packagePath = (pathClasses.get(0)).substring(0, indexOfClass);
-                        p.setPath(packagePath);
-                        int existsPackage = DbHandler.packageExist(packages.get(0));
-                        if(existsPackage == 0) {
-                            existsPackage = DbHandler.insertPackage(p);
-                            p.setId(existsPackage);
-                        } else {
-                            p.setId(existsPackage);
-                        }
-
+                        int idMethod = InsertMethod(methodName);
 
                         //Writing on DB
                         sm = new Smell("Switch Statement", 0.0);
-                        DbHandler.insertSmell(sm, idCommit, existsMethod, existsClass, existsPackage);
+                        DbHandler.insertSmell(sm, idCommit, 0, idMethod, existsClass[0], existsPackage[0], 0);
 
                     } catch(SQLException e) {e.printStackTrace();}
 
@@ -186,14 +196,33 @@ public class PhDProjectScriptsParser {
                     lineNumber = speculativeSmell[1].trim();
                     if (line.startsWith("Speculative Generality unused parameter")) {
                         variableName = speculativeSmell[3].trim();
-                        methodName = speculativeSmell[5].trim();
+                        variableType = speculativeSmell[5].trim();
+                        methodName = speculativeSmell[7].trim();
                     }
+
+                    try {
+                        //idVariable
+                        int idVariable = InsertVariable(variableName, variableType);
+
+                        //idMethod
+                        int idMethod = InsertMethod(methodName);
+
+                        //Writing on DB
+                        sm = new Smell("Speculative Generality", 0.0);
+                        DbHandler.insertSmell(sm, idCommit, idVariable, idMethod, existsClass[0], existsPackage[0], Integer.valueOf(lineNumber));
+
+                    } catch(SQLException e) {e.printStackTrace();}
                     //Scrivere su DB//
                 }
                 case "Middle Man" -> {
                     String[] middleSmell = line.split("[()']+");
                     lineNumber = middleSmell[1].trim();
-                    //Scrivere su DB//
+
+                    try {
+                        //Writing on DB
+                        sm = new Smell("Middle Man", 0.0);
+                        DbHandler.insertSmell(sm, idCommit, 0, 0, existsClass[0], existsPackage[0], Integer.valueOf(lineNumber));
+                    } catch(SQLException e) {e.printStackTrace();}
                 }
                 case "Message Chains" -> {
                     if (line.startsWith("Message Chains")) {
@@ -207,7 +236,15 @@ public class PhDProjectScriptsParser {
                         String[] chainsSmell = strings[2].split("[\\[\\]]+");
                         lineNumber = strings[1].trim();
                         methodName = chainsSmell[1].trim();
-                        //Scrivere su DB//
+
+                        try {
+                            //idMethod
+                            int idMethod = InsertMethod(methodName);
+
+                            //Writing on DB
+                            sm = new Smell("Message Chains", 0.0);
+                            DbHandler.insertSmell(sm, idCommit, 0, idMethod, existsClass[0], existsPackage[0], Integer.valueOf(lineNumber));
+                        } catch(SQLException e) {e.printStackTrace();}
                     }
                 }
                 case "Data Clumps" -> {
@@ -216,7 +253,14 @@ public class PhDProjectScriptsParser {
                         clumpsSmell = line.split("Parameters in method | and | was found duplicated");
                         methodName = clumpsSmell[1].substring(clumpsSmell[1].substring(0, clumpsSmell[1].lastIndexOf(".")).lastIndexOf(".") + 1) + " & " + clumpsSmell[2].substring(clumpsSmell[2].substring(0, clumpsSmell[2].lastIndexOf(".")).lastIndexOf(".") + 1);
 
-                        //Scrivere su DB//
+                        try {
+                            //idMethod
+                            int idMethod = InsertMethod(methodName);
+
+                            //Writing on DB
+                            sm = new Smell("Data Clumps", 0.0);
+                            // DbHandler.insertSmell(sm, idCommit, 0, idMethod, existsClass[0], existsPackage[0], Integer.valueOf(lineNumber));
+                        } catch(SQLException e) {e.printStackTrace();}
                     } else if (line.startsWith("Fields")) {
                         clumpsSmell = line.split("Fields  | was found duplicated");
                         variableName = clumpsSmell[1];
@@ -225,9 +269,9 @@ public class PhDProjectScriptsParser {
                     }
                 }
             }
-            assert !classes.isEmpty();
+            assert !classesPath.isEmpty();
             System.out.print("CLASSI: ");
-            for(String s : classes) {
+            for(String s : classesPath) {
                 System.out.print(s + " ");
             }
             System.out.print(" SMELL: " + smell);
@@ -235,6 +279,43 @@ public class PhDProjectScriptsParser {
             System.out.print(" PRINTLN METHOD: " + methodName);
             System.out.print(" PRINTLN LINENUMBER: " + lineNumber + "\n");
         }
+    }
+
+    public int InsertMethod(String nameMethod) throws SQLException {
+        //idMethod
+        m = new Method();
+        m.setName(nameMethod);
+        int existsMethod = DbHandler.MethodInClass(m.getName(), (int) c1.getId());
+        if (existsMethod == 0) {
+            existsMethod = DbHandler.insertMethod(m, (int) c1.getId());
+            m.setId(existsMethod);
+        } else {
+            m.setId(existsMethod);
+        }
+        return existsMethod;
+    }
+
+    public int InsertVariable(String nameVariable, String typeVariable) throws SQLException {
+        //idVariable
+        v = new Variable();
+        v.setName(nameVariable);
+        v.setRole(typeVariable);
+        int existsVariable = DbHandler.VariableInClass(v.getName(), (int) c1.getId());
+        if (existsVariable == 0) {
+            existsVariable = DbHandler.insertVariable(v, (int) c1.getId());
+            v.setId(existsVariable);
+        } else {
+            v.setId(existsVariable);
+        }
+        return existsVariable;
+    }
+
+    public void InsertCommPac(int idp, String idc) throws SQLException {
+        DbHandler.insertCommPac(idp, idc);
+    }
+
+    public void InsertClassPac(int idp, int idcl) throws SQLException {
+        DbHandler.insertClassPac(idp, idcl);
     }
 
     public String getAnalyzableFileName() {

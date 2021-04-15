@@ -37,7 +37,7 @@ public class DbHandler {
     private static final String URLPOSTGRES = "jdbc:postgresql://localhost:5432/postgres";
     private static final String URL = "jdbc:postgresql://localhost:5432/sbac";
     private static final String USER = "postgres";
-    private static final String PSW = "Password";
+    private static final String PSW = "postgres";
     private static Connection connection;
     
     public DbHandler(){}
@@ -433,6 +433,41 @@ public class DbHandler {
                 ResultSet  rs = stmt.getResultSet();
                 rs.next();
                 m.setId(rs.getInt(1));
+                return rs.getInt(1);
+            }
+            else
+                return -1;
+        } catch (SQLException ex) {
+            Logger.getLogger(DbHandler.class.getName()).log(Level.SEVERE, null, ex);
+            printSQLException(ex);
+            return -1;
+        }
+        finally{
+            if(stmt!=null)
+                stmt.close();
+        }
+    }
+
+    public static int insertVariable(models.Variable v,int idc) throws SQLException{
+        PreparedStatement stmt=null;
+        try {
+            if(v != null){
+                stmt = connection.prepareStatement(PreparedSQL.INSERTVARIABLE);
+                stmt.setString(1, v.getName());
+                stmt.setBoolean(2, v.getIsStatic());
+                if(v.getRole()!=null )
+                    stmt.setString(3, v.getRole());
+                else
+                    stmt.setNull(3,java.sql.Types.NULL);
+                stmt.setString(4, v.getValue());
+                if(idc!=-1)
+                    stmt.setInt(5, idc);
+                else
+                    stmt.setNull(5,java.sql.Types.NULL);
+                stmt.execute();
+                ResultSet  rs = stmt.getResultSet();
+                rs.next();
+                v.setId(rs.getInt(1));
                 return rs.getInt(1);
             }
             else
@@ -902,10 +937,14 @@ public class DbHandler {
     * @throws SQLException incorrect insertion
     * @return boolean true if succesfull
     */  
-    public static boolean insertSmell(models.Smell s,String idcommit,int idm, int idcl, int idp) throws SQLException {
+    public static boolean insertSmell(models.Smell s,String idcommit,int idv, int idm, int idcl, int idp, int linenumber) throws SQLException {
         PreparedStatement stmt=null;
         try {
-            if(idm!=0){
+            if(idv!=0) {
+                stmt =connection.prepareStatement(PreparedSQL.SMELLRECORDEXISTS+" idv=?;");
+                stmt.setInt(4,idv);
+            }
+            else if(idm!=0){
                 stmt =connection.prepareStatement(PreparedSQL.SMELLRECORDEXISTS+" idm=?;");
                 stmt.setInt(4,idm);
             }
@@ -937,6 +976,14 @@ public class DbHandler {
                     stmt.setInt(6,idp);
                 else 
                    stmt.setNull(6,java.sql.Types.NULL);
+                if(idv!=0)
+                    stmt.setInt(7, idv);
+                else
+                    stmt.setNull(7, java.sql.Types.NULL);
+                if(linenumber!=0)
+                    stmt.setInt(8, linenumber);
+                else
+                    stmt.setNull(8, java.sql.Types.NULL);
 
                 stmt.executeUpdate();
                 return true;
@@ -1181,7 +1228,28 @@ public class DbHandler {
                 return 0;
         } catch (SQLException ex) {
             Logger.getLogger(DbHandler.class.getName()).log(Level.SEVERE, null, ex);
-            printSQLException(ex);
+            ex.printStackTrace();
+            return 0;
+        }finally{
+            if(stmt!=null)
+                stmt.close();
+        }
+    }
+
+    public static int VariableInClass(String name, int classId) throws SQLException {
+        Statement stmt = null;
+        try {
+            PreparedStatement ps = connection.prepareStatement(PreparedSQL.VARIABLEINCLASS);
+            ps.setString(1, name);
+            ps.setInt(2, classId);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next())
+                return rs.getInt("id");
+            else
+                return 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DbHandler.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
             return 0;
         }finally{
             if(stmt!=null)

@@ -95,11 +95,11 @@ public class JCodeOdorExtrapolator implements Extrapolator {
                         //System.out.println("             Smell "+n.getTextContent().toUpperCase()+":"+value );
                         s = new Smell(n.getTextContent(),value);
                         if(n.getParentNode().getParentNode().getParentNode().getNodeName().equals("package"))
-                            DbHandler.insertSmell(s, commitId,0,0,(int)p.getId());
+                            DbHandler.insertSmell(s, commitId,0,0,0,(int)p.getId(), 0);
                         else if(n.getParentNode().getParentNode().getParentNode().getNodeName().equals("types"))
-                            DbHandler.insertSmell(s, commitId,0,(int)c.getId(),0);
+                            DbHandler.insertSmell(s, commitId,0,0,(int)c.getId(),0, 0);
                         else 
-                            DbHandler.insertSmell(s, commitId,(int)m.getId(),0,0);
+                            DbHandler.insertSmell(s, commitId,0,(int)m.getId(),0,0, 0);
                     }
 
                     break;
