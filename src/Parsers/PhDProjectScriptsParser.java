@@ -121,9 +121,9 @@ public class PhDProjectScriptsParser {
                     i=1;
                 try {
                     //idClass
-                    existsClass[i] = DbHandler.classInProject(classesPath.get(i), projectUrl);
                     int lastpoint = (classesPath.get(i)).lastIndexOf(".");
                     String className = classesPath.get(i).substring(lastpoint + 1);
+                    existsClass[i] = DbHandler.classInProject(className, classesPath.get(i));
                     Class c0 = new Class(className, classesPath.get(i));
                     if (existsClass[i] == 0) {
                         existsClass[i] = DbHandler.insertClass(c0);

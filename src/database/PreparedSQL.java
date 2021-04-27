@@ -573,12 +573,12 @@ public class PreparedSQL {
     
     // QUERY CONTROLLO JCODE,SOURCEMETER
     public static final String PACKAGEEXIST = "select distinct package.id from package where package.name=?;";
-       
-    public static final String CLASSINPROJECT = "select distinct class.id from class inner join pmd on class.id= pmd.idcl inner join commit on pmd.idc = commit.version inner join project on commit.url=project.url where class.name =? and project.url=? union select distinct class.id from class inner join metrichunter on class.id= metrichunter.idcl inner join commit on metrichunter.idc = commit.version inner join project on commit.url=project.url where class.name =? and project.url=? union select distinct class.id from class inner join cloneistance on class.id= cloneistance.idcl inner join clone on cloneistance.idc = clone.id inner join commit on clone.idc = commit.version inner join project on commit.url=project.url where class.name =? and project.url=? union select distinct class.id from class inner join metric on class.id= metric.idcl inner join commit on metric.idc = commit.version inner join project on commit.url=project.url where class.name =? and project.url=? union select distinct class.id from class inner join smell on class.id= smell.idcl inner join commit on smell.idc = commit.version inner join project on commit.url=project.url where class.name =? and project.url=?;";
     
-    public static final String METHODINCLASS = "select distinct method.id from method inner join class on method.idc = class.id where method.name = ? and class.id = ?;";
+    public static final String CLASSINPROJECT = "select distinct class.id from class where class.name = ? and class.path = ?;";
 
-    public static final String VARIABLEINCLASS = "select distinct variable.id from variable inner join class on variable.idc = class.id where variable.name = ? and class.id = ?;";
+    public static final String METHODINCLASS = "select distinct method.id from method where method.name = ? and method.idc = ?;";
+
+    public static final String VARIABLEINCLASS = "select distinct variable.id from variable where variable.name = ? and variable.idc = ?;";
 
     public static final String CLASSPATH = "select class.path from class where class.id = ?;";
     

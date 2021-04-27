@@ -1183,23 +1183,12 @@ public class DbHandler {
                 stmt.close();
         }
     }*/
-    
-    
     public static int classInProject(String className, String projectName) throws SQLException{
         Statement stmt=null;
         try {
             PreparedStatement ps = connection.prepareStatement(PreparedSQL.CLASSINPROJECT);
             ps.setString(1, className);
             ps.setString(2, projectName);
-            ps.setString(3, className);
-            ps.setString(4, projectName);
-            ps.setString(5, className);
-            ps.setString(6, projectName);
-            ps.setString(7, className);
-            ps.setString(8, projectName);
-            ps.setString(9, className);
-            ps.setString(10, projectName);            
-
             ResultSet rs = ps.executeQuery();
             if(rs.next())
                 return rs.getInt("id");
