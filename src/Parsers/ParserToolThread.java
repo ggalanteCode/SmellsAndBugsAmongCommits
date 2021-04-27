@@ -100,17 +100,21 @@ public class ParserToolThread extends Thread {
     }
 
     /**
-     * method that runs PhDProjectScripts parsers
+     * method that runs PhDProjectScriptsParsers.
      * @param t
      */
     public void startPhDProjectScriptsParser(Tool t) {
-        PhDProjectScriptsParser parser = new PhDProjectScriptsParser(idCommit, projectUrl);
-        PhDProjectScripts ps = (PhDProjectScripts) t;
-        String resultFileAbsPath = ps.getToolPath() + File.separator + parser.getAnalyzableFileName();
-
         try {
-            parser.execute(new BufferedReader(new FileReader(resultFileAbsPath)));
+
+            PhDProjectScriptsParser parser = new PhDProjectScriptsParser(idCommit, projectUrl);
+            PhDProjectScripts ps = (PhDProjectScripts) t;
+            String resultFileAbsPath = ps.getToolPath() + File.separator + parser.getAnalyzableFileName();
+            File result = new File(resultFileAbsPath);
+            parser.execute(new BufferedReader(new FileReader(result)));
+            result.delete();
+
         } catch (Exception e) {
+
             e.printStackTrace();
         }
     }

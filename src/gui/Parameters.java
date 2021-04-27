@@ -270,41 +270,47 @@ public class Parameters extends javax.swing.JDialog {
             new Dialog("you have to select at least one tool to analyze");
         else{
             dispose();
+
             /*BUILDING PHASE */
 
-                CliUtils cliUtils = new CliUtils("cmd",new File(gr.getLocalPath().toString()),MVNParam.split(" "));
-                int run=1;
-                try {
-                    CliUtils.Result execute = cliUtils.execute();
-                    run = execute.code;
 
-                } catch (IOException ex) {
-                    Logger.getLogger(Parameters.class.getName()).log(Level.SEVERE, null, ex);
-                    ex.printStackTrace();
-                    System.out.println("cannot find build file");
-                } catch (Exception ex) {
-                    Logger.getLogger(Parameters.class.getName()).log(Level.SEVERE, null, ex);
-                    ex.printStackTrace();
-                }
-                finally{
+            WorkingAdv wa = new WorkingAdv();
 
-                    if(run==0) {
-                        System.out.println("build succesfull");
-                    } else {
-                        System.out.println("build unsuccesfull , local path " + gr.getLocalPath().toString());
-                    }
+            CliUtils cliUtils = new CliUtils("cmd",new File(gr.getLocalPath().toString()),MVNParam.split(" "));
+            int run=1;
+            try {
+                CliUtils.Result execute = cliUtils.execute();
+                run = execute.code;
+
+            } catch (IOException ex) {
+                Logger.getLogger(Parameters.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
+                System.out.println("cannot find build file");
+            } catch (Exception ex) {
+                Logger.getLogger(Parameters.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
+            }
+            finally{
+
+                if(run==0) {
+                    System.out.println("build succesfull");
+                } else {
+                    System.out.println("build unsuccesfull , local path " + gr.getLocalPath().toString());
                 }
 
-                System.out.println("Invoking Analyzer-Class.");
-                Analyze.getAnalyzer().startAnalyze(tools);
-                String checkEnd = Loading.checkEnd(tools);
-                new Dialog(checkEnd); //exitcode
-                setVisible(true);
-                if(!tools.isEmpty()){
-                    new ParserStarter(tools,commitId,p.getUrl());
-                }
-                dispose();
-                new Download();
+                wa.halt();
+            }
+
+            System.out.println("Invoking Analyzer-Class.");
+            Analyze.getAnalyzer().startAnalyze(tools);
+            String checkEnd = Loading.checkEnd(tools);
+            new Dialog(checkEnd); //exitcode
+            setVisible(true);
+            if(!tools.isEmpty()){
+                new ParserStarter(tools,commitId,p.getUrl());
+            }
+            dispose();
+            new Download();
 
         }
         //Analyze.getAnalyzer().startAnalyze(tools,joF.getText().split(" "));

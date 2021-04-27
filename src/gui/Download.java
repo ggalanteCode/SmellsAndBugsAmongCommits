@@ -157,7 +157,7 @@ public class Download extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void downloadBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_downloadBMouseClicked
-        String url = urlField.getText();
+        String url = urlField.getText().trim();
         if(url.isEmpty())
             new Dialog("insert a valid url please");
         else{
@@ -168,10 +168,14 @@ public class Download extends javax.swing.JFrame {
                 }
                 dispose();
 
+                WorkingAdv wa = new WorkingAdv();
+
                 RepositoryHandler repo = new RepositoryHandler(url);
                 ArrayList<Commit> commits = new ArrayList<>(repo.getCommits());
                 Project project = new Project(repo.getRemoteURL(), repo.repoNameFromURI(), repo.getLocalPath().toString());
                 DbHandler.insertProjectCommit(project, commits);
+
+                wa.halt();
 
                 setVisible(true);
 
@@ -204,11 +208,10 @@ public class Download extends javax.swing.JFrame {
             return;
         }
 
-        //Delete folders and project from DB  (RepositoryHandel.delete invokes DbHandles projectDeleter
+        //Delete folders and project from DB  (RepositoryHandel.delete invokes DbHandles projectDeleter)
         RepositoryHandler.deleter(url);
 
         //New Download
-
         try {
 
             RepositoryHandler repo = new RepositoryHandler(url);

@@ -62,6 +62,8 @@ public class PhDProjectScriptsParser {
 
             } while (continueReading);
 
+            reader.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

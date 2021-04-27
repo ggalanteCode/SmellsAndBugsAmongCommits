@@ -82,6 +82,10 @@ public class RepositoryHandler {
         this.findAllCommits();
     }
 
+    /**
+     * Delete a folder given a path.
+     * @param url
+     */
     public static void deleter(String url) {
 
         try {
@@ -97,6 +101,10 @@ public class RepositoryHandler {
 
     }
 
+    /**
+     * Uses recursion to delete a folder and all it contains.
+     * @param folder
+     */
     private static void deleteUtils (File folder) {
 
         for (File f : Objects.requireNonNull(folder.listFiles())) {
@@ -104,7 +112,7 @@ public class RepositoryHandler {
                 deleteUtils(f);
                 f.delete();
             } else {
-                if (f.getName().contains("pack")){
+                if (f.getPath().endsWith(".pack")){
                     gitRepo.getRepository().close();
                 }
                if (f.delete()) {
@@ -350,7 +358,7 @@ public class RepositoryHandler {
         GHRepository repo=github.getRepository(coordinates);
         return repo;
         }catch(IOException e){
-            System.out.println(e);
+            e.printStackTrace();
             return null;
         }
     }

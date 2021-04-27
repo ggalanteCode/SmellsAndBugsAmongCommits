@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 
 /**
  * Class for PhDSmells analysis tool
- * @author Francesco Florio
+ * @author Federico Caspani
  */
 public class PhDProjectScripts implements Tool {
     private static final String RUNWIN ="src/tools/toolsfolder/PhDProjectScripts";

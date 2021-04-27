@@ -18,6 +18,7 @@ public class WorkingAdv extends Thread {
         f.setSize(250,120);
         f.setContentPane(panel);
         f.setVisible(true);
+        f.update(f.getGraphics());
 
         start();
     }
@@ -33,7 +34,7 @@ public class WorkingAdv extends Thread {
 
     private synchronized boolean check() {
         try {
-            wait(1000);
+            wait(750);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -48,7 +49,8 @@ public class WorkingAdv extends Thread {
             } else {
                 label.setText(label.getText()+".");
             }
-            System.out.println(label.getText());
+            f.update(f.getGraphics());
+            //System.out.println(label.getText());
             counter++;
         }
         f.dispose();
