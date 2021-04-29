@@ -111,6 +111,7 @@ public class DbHandler {
                                     PreparedSQL.METRICHUNTER+
                                     PreparedSQL.METRIC+
                                     PreparedSQL.SMELL+
+                                    PreparedSQL.DATACLUMPS+
                                     PreparedSQL.CLONEISTANCE+
                                     PreparedSQL.ISSUEISTANCE+
                                     PreparedSQL.METRICCLASSCOLLECTION+
@@ -999,7 +1000,38 @@ public class DbHandler {
             if(stmt!=null)
             stmt.close();
         }
-    }    
+    }
+
+    public static boolean insertDataClumps(models.DataClumps d) throws SQLException {
+        PreparedStatement stmt=null;
+        try {
+            stmt = connection.prepareStatement(PreparedSQL.DATACLUMPSRECORDEXISTS);
+            stmt.setString(1, d.getIdm());
+            stmt.setString(2, d.getIdv());
+            ResultSet rs=stmt.executeQuery();
+            if(!rs.next()) {
+                stmt = connection.prepareStatement(PreparedSQL.INSERTDATACLUMPS);
+                stmt.setString(1, d.getMethods());
+                stmt.setString(2, d.getVariables());
+                stmt.setString(3, d.getIdCommit());
+                stmt.setString(4, d.getIdp());
+                stmt.setString(5, d.getIdcl());
+                stmt.setString(6, d.getIdm());
+                stmt.setString(7, d.getIdv());
+                stmt.executeUpdate();
+                return true;
+            }
+            return false;
+        } catch (SQLException ex) {
+            Logger.getLogger(DbHandler.class.getName()).log(Level.SEVERE, null, ex);
+            printSQLException(ex);
+            return false;
+        }
+        finally{
+            if(stmt!=null)
+                stmt.close();
+        }
+    }
     
     // QUERY PMD
     

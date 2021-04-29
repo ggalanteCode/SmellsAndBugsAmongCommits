@@ -10,6 +10,7 @@ import models.Package;
 import models.Variable;
 import database.DbHandler;
 import models.Smell;
+import models.DataClumps;
 
 public class PhDProjectScriptsParser {
 
@@ -174,17 +175,22 @@ public class PhDProjectScriptsParser {
             String variableName = "";
             String variableType = "";
             Smell sm;
+            DataClumps dc;
 
             switch (smell) {
 
                 case "Switch Statement" -> {
                     String[] switchSmell = line.split("[()']+");
                     lineNumber = switchSmell[1].trim();
-                    methodName = switchSmell[3].trim();
+                    if(!(switchSmell[4].equals("."))) {
+                        methodName = switchSmell[3].trim() + "(" + switchSmell[4].trim() + ")";
+                    } else {
+                        methodName = switchSmell[3].trim() + "()";
+                    }
 
                     try {
                         //idMethod
-                        int idMethod = InsertMethod(methodName);
+                        int idMethod = InsertMethod(methodName, c1);
 
                         //Writing on DB
                         sm = new Smell("Switch Statement", 0.0);
@@ -199,15 +205,15 @@ public class PhDProjectScriptsParser {
                     if (line.startsWith("Speculative Generality unused parameter")) {
                         variableName = speculativeSmell[3].trim();
                         variableType = speculativeSmell[5].trim();
-                        methodName = speculativeSmell[7].trim();
+                        methodName = speculativeSmell[7].trim() + "(" + speculativeSmell[8].trim() + ")";
                     }
 
                     try {
                         //idVariable
-                        int idVariable = InsertVariable(variableName, variableType);
+                        int idVariable = InsertVariable(variableName, variableType, c1);
 
                         //idMethod
-                        int idMethod = InsertMethod(methodName);
+                        int idMethod = InsertMethod(methodName, c1);
 
                         //Writing on DB
                         sm = new Smell("Speculative Generality", 0.0);
@@ -241,7 +247,7 @@ public class PhDProjectScriptsParser {
 
                         try {
                             //idMethod
-                            int idMethod = InsertMethod(methodName);
+                            int idMethod = InsertMethod(methodName, c1);
 
                             //Writing on DB
                             sm = new Smell("Message Chains", 0.0);
@@ -254,20 +260,36 @@ public class PhDProjectScriptsParser {
                     if (line.startsWith("Parameters in method")) {
                         clumpsSmell = line.split("Parameters in method | and | was found duplicated");
                         methodName = clumpsSmell[1].substring(clumpsSmell[1].substring(0, clumpsSmell[1].lastIndexOf(".")).lastIndexOf(".") + 1) + " & " + clumpsSmell[2].substring(clumpsSmell[2].substring(0, clumpsSmell[2].lastIndexOf(".")).lastIndexOf(".") + 1);
+                        String[] methodsName = methodName.split("[&.]+");
 
                         try {
                             //idMethod
-                            int idMethod = InsertMethod(methodName);
+                            int idMethod1 = InsertMethod(methodsName[1].trim(), c1);
+                            int idMethod2 = InsertMethod(methodsName[3].trim(), c2);
 
                             //Writing on DB
-                            sm = new Smell("Data Clumps", 0.0);
-                            // DbHandler.insertSmell(sm, idCommit, 0, idMethod, existsClass[0], existsPackage[0], Integer.valueOf(lineNumber));
+                            dc = new DataClumps(methodName, "not required", idCommit, existsPackage[0] + ", " + existsPackage[1], existsClass[0] + ", " + existsClass[1], idMethod1 + ", " + idMethod2, "not required");
+                            DbHandler.insertDataClumps(dc);
                         } catch(SQLException e) {e.printStackTrace();}
                     } else if (line.startsWith("Fields")) {
-                        clumpsSmell = line.split("Fields  | was found duplicated");
-                        variableName = clumpsSmell[1];
+                        clumpsSmell = line.split("Fields  | was found duplicated|,");
 
-                        //Scrivere su DB//
+                        //idVariables
+                        try {
+                            String idVariables = "";
+                            for (int i=1; i<clumpsSmell.length; i+=2) {
+                                idVariables += InsertVariable(clumpsSmell[i], clumpsSmell[i+1].substring(6), c1) + ", ";
+                                idVariables += InsertVariable(clumpsSmell[i], clumpsSmell[i+1].substring(6), c2) + ", ";
+                                variableName += clumpsSmell[i] + ", ";
+                            }
+                            variableName = variableName.substring(0, variableName.length()-2);
+                            idVariables = idVariables.substring(0, idVariables.length()-2);
+
+
+                            //Writing on DB
+                            dc = new DataClumps("not required", variableName, idCommit, existsPackage[0] + ", " + existsPackage[1], existsClass[0] + ", " + existsClass[1], "not required", idVariables);
+                            DbHandler.insertDataClumps(dc);
+                        } catch(SQLException e) {e.printStackTrace();}
                     }
                 }
             }
@@ -283,13 +305,13 @@ public class PhDProjectScriptsParser {
         }
     }
 
-    public int InsertMethod(String nameMethod) throws SQLException {
+    public int InsertMethod(String nameMethod, Class c) throws SQLException {
         //idMethod
         m = new Method();
         m.setName(nameMethod);
-        int existsMethod = DbHandler.MethodInClass(m.getName(), (int) c1.getId());
+        int existsMethod = DbHandler.MethodInClass(m.getName(), (int) c.getId());
         if (existsMethod == 0) {
-            existsMethod = DbHandler.insertMethod(m, (int) c1.getId());
+            existsMethod = DbHandler.insertMethod(m, (int) c.getId());
             m.setId(existsMethod);
         } else {
             m.setId(existsMethod);
@@ -297,14 +319,14 @@ public class PhDProjectScriptsParser {
         return existsMethod;
     }
 
-    public int InsertVariable(String nameVariable, String typeVariable) throws SQLException {
+    public int InsertVariable(String nameVariable, String typeVariable, Class c) throws SQLException {
         //idVariable
         v = new Variable();
         v.setName(nameVariable);
         v.setRole(typeVariable);
-        int existsVariable = DbHandler.VariableInClass(v.getName(), (int) c1.getId());
+        int existsVariable = DbHandler.VariableInClass(v.getName(), (int) c.getId());
         if (existsVariable == 0) {
-            existsVariable = DbHandler.insertVariable(v, (int) c1.getId());
+            existsVariable = DbHandler.insertVariable(v, (int) c.getId());
             v.setId(existsVariable);
         } else {
             v.setId(existsVariable);

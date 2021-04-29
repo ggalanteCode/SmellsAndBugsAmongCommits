@@ -174,6 +174,17 @@ public class PreparedSQL {
                                         "	idv integer references variable on delete cascade on update cascade ,\n" +
                                         "	linenumber integer \n" +
                                         ") ;";
+
+    public static final String DATACLUMPS = "create table dataclumps (\n" +
+                                            "    id serial not null primary key ,\n" +
+                                            "    methodsname text not null ,\n" +
+                                            "    variablesname text not null ,\n" +
+                                            "    idc text not null ,\n" +
+                                            "    idp text not null ,\n" +
+                                            "    idcl text not null ,\n" +
+                                            "    idm text not null ,\n" +
+                                            "    idv text not null \n" +
+                                            ") ;";
     
     public static final String CLONEISTANCE = "create table cloneistance (\n" +
                                                 "	id serial not null primary key ,\n" +
@@ -529,6 +540,8 @@ public class PreparedSQL {
 
     public static final String INSERTSMELL = "insert into smell (key, value , idc, idm, idcl, idp, idv, linenumber) values (?,?,?,?,?,?,?,?);";
     
+    public static final String INSERTDATACLUMPS = "insert into dataclumps (methodsname, variablesname, idc, idp, idcl, idm, idv) values (?,?,?,?,?,?,?)";
+
     public static final String INSERTPMD = "insert into pmd (line, solution, type, idc, idcl) values (?,?,?,?,?);";
     
     public static final String INSERTMETRICHUNTER = "insert into metrichunter (line, value, type, idc, idm, idcl) values (?,?,?,?,?,?);";
@@ -595,6 +608,8 @@ public class PreparedSQL {
     public static final String METRICRECORDEXISTS= "select metric.id from metric where key =? and value=? and idc=? and";
   
     public static final String SMELLRECORDEXISTS= "select smell.id from smell where key =? and value=? and idc=? and";
+
+    public static final String DATACLUMPSRECORDEXISTS= "select dataclumps.id from dataclumps where idm=? and idv=?";
     
    // public static final String METRICCLASSEXISTS= "select id from metricclasscollection where id=? ;";
     
