@@ -15,7 +15,7 @@ import tools.JcodeOdor;
 import tools.SourceMeter;
 import tools.SpotBugs;
 import tools.Tool;
-import tools.PhDProjectScripts;
+import tools.PhDSmells;
 import utils.CliUtils;
 import java.io.File;
 import java.util.logging.Level;
@@ -33,7 +33,7 @@ public class Parameters extends javax.swing.JDialog {
     private SourceMeter sm;
     private SpotBugs sb;
     private JcodeOdor jo;
-    private PhDProjectScripts phDProjectScripts;
+    private PhDSmells phDSmells;
     private String commitId;
     private RepositoryHandler gr;
     private String MVNParam="/C mvn clean install";
@@ -58,10 +58,10 @@ public class Parameters extends javax.swing.JDialog {
         sm = new SourceMeter(p);
         sb = new SpotBugs(p);
         jo = new JcodeOdor(p);
-        phDProjectScripts = new PhDProjectScripts(p);
+        phDSmells = new PhDSmells(p);
         smF.setText(sm.getDefaultParam());  
         sbF.setText(sb.getDefaultParam());   
-        PhdSmellsF.setText(phDProjectScripts.getDefaultParam());//test
+        PhdSmellsF.setText(phDSmells.getDefaultParam());//test
 
     }
     /**
@@ -261,9 +261,9 @@ public class Parameters extends javax.swing.JDialog {
         }
 
         if(phScheck.isSelected()){
-            if(!PhdSmellsF.getText().equals(phDProjectScripts.getDefaultParam()))
-                phDProjectScripts.setDefaultParam(PhdSmellsF.getText());
-            tools.add(phDProjectScripts);
+            if(!PhdSmellsF.getText().equals(phDSmells.getDefaultParam()))
+                phDSmells.setDefaultParam(PhdSmellsF.getText());
+            tools.add(phDSmells);
         }
     
         if(tools.isEmpty())
@@ -606,7 +606,7 @@ public class Parameters extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        new Helper("rifare");
+        new Helper( "-g: to get a GUI at the end of analysis\n-t: default settings to save results into DB\n-x: to obtain a NON analysable XML");
     }//GEN-LAST:event_jLabel3MouseClicked
     private void goBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goBackActionPerformed
         // TODO add your handling code here:

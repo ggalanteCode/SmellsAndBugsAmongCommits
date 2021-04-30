@@ -1,8 +1,5 @@
 package utils;
 
-import Parsers.PhDProjectScriptsParser;
-import gui.WorkingAdv;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;

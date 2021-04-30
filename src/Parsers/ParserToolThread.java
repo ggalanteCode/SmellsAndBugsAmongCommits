@@ -8,7 +8,6 @@ package Parsers;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -103,11 +102,11 @@ public class ParserToolThread extends Thread {
      * method that runs PhDProjectScriptsParsers.
      * @param t
      */
-    public void startPhDProjectScriptsParser(Tool t) {
+    public void startPhDSmellsParser(Tool t) {
         try {
 
-            PhDProjectScriptsParser parser = new PhDProjectScriptsParser(idCommit, projectUrl);
-            PhDProjectScripts ps = (PhDProjectScripts) t;
+            PhDSmellsParser parser = new PhDSmellsParser(idCommit, projectUrl);
+            PhDSmells ps = (PhDSmells) t;
             String resultFileAbsPath = ps.getToolPath() + File.separator + parser.getAnalyzableFileName();
             File result = new File(resultFileAbsPath);
             parser.execute(new BufferedReader(new FileReader(result)));
@@ -139,10 +138,10 @@ public class ParserToolThread extends Thread {
                 System.out.println("Partito parser di JcodeOdor");
                 Thread.sleep(50);
                 this.startJcodeOdor(tool);
-            } else if (tool instanceof PhDProjectScripts) {
+            } else if (tool instanceof PhDSmells) {
                 System.out.println("Partito parser di PhdProjectScripts");
                 Thread.sleep(50);
-                this.startPhDProjectScriptsParser(tool);
+                this.startPhDSmellsParser(tool);
             }
         }catch(InterruptedException e){
             System.out.println(e);

@@ -20,7 +20,7 @@ import java.util.stream.Stream;
  * Class for PhDSmells analysis tool
  * @author Federico Caspani
  */
-public class PhDProjectScripts implements Tool {
+public class PhDSmells implements Tool {
     private static final String RUNWIN ="src/tools/toolsfolder/PhDProjectScripts";
     private static final String RUNLIN ="src/tools/toolsfolder/PhDProjectScripts";
     private final String toolPath;
@@ -34,7 +34,7 @@ public class PhDProjectScripts implements Tool {
      * <code>-source <i>path_progetto_da_analizzare</i> -output-type XML -output <i>path_file_risultati</i></code>
      * @param p project under study
      */
-    public PhDProjectScripts(Project p) {
+    public PhDSmells(Project p) {
         //DEFAULT ARGUMENTS -source <path_progetto_da_analizzare> -output-type XML -output <path_file_risultati>
         this.projectPath = p.getPath();
         this.toolPath = new File(RUNWIN).getAbsolutePath();

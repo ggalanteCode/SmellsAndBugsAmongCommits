@@ -12,7 +12,7 @@ import database.DbHandler;
 import models.Smell;
 import models.DataClumps;
 
-public class PhDProjectScriptsParser {
+public class PhDSmellsParser {
 
     String analyzableFileName = "result.txt";
     String smell, messageChainsTemp, idCommit, projectUrl;
@@ -23,7 +23,7 @@ public class PhDProjectScriptsParser {
     Package pac1, pac2;
     Variable v;
 
-    public PhDProjectScriptsParser(String idCommit, String projectUrl) {
+    public PhDSmellsParser(String idCommit, String projectUrl) {
         this.idCommit = idCommit;
         this.projectUrl = projectUrl;
     }
