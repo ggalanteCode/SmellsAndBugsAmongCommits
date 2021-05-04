@@ -199,6 +199,11 @@ public class Download extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_downloadBMouseClicked
 
+    /**
+     * Starts the procedure that allows the user to update a project already downloaded
+     * on the PC, deleting everything related to the project itself and downloading it again.
+     * @param url Git repository address.
+     */
     public static void updater(String url) {
         System.out.println("updater");
 

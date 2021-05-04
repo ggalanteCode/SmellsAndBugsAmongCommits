@@ -83,7 +83,7 @@ public class RepositoryHandler {
     }
 
     /**
-     * Delete a folder given a path.
+     * Delete a folder given its path.
      * @param url
      */
     public static void deleter(String url) {
@@ -102,7 +102,7 @@ public class RepositoryHandler {
     }
 
     /**
-     * Uses recursion to delete a folder and all it contains.
+     * Recursively delete a folder and its contents.
      * @param folder
      */
     private static void deleteUtils (File folder) {

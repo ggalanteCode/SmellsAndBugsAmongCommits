@@ -37,7 +37,7 @@ public class DbHandler {
     private static final String URLPOSTGRES = "jdbc:postgresql://localhost:5432/postgres";
     private static final String URL = "jdbc:postgresql://localhost:5432/sbac";
     private static final String USER = "postgres";
-    private static final String PSW = "postgres";
+    private static final String PSW = "Password";
     private static Connection connection;
     
     public DbHandler(){}
@@ -180,8 +180,7 @@ public class DbHandler {
     * @param commits ArrayList of commits
     * @see ArrayList
     * @see Project
-    * @throws SQLException incorrect insertion
-    * @author mattia
+    * @throws SQLException incorrect insertion / duplicate
     */
     public static void insertProjectCommit(models.Project p,ArrayList<models.Commit> commits) throws SQLException{
         PreparedStatement stmt=null;
@@ -1315,6 +1314,11 @@ public class DbHandler {
         }
     }
 
+    /**
+     * Deletes a project given its URL address and returns the path of the repository on the pc.
+     * @param url
+     * @return
+     */
     public static String projectDeleter (String url) {
         String returnPath = null;
         try {

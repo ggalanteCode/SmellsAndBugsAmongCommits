@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 /**
- * Class for PhDSmells analysis tool
+ * Class for PhDSmells analysis tool.
  * @author Federico Caspani
  */
 public class PhDSmells implements Tool {
@@ -31,15 +31,12 @@ public class PhDSmells implements Tool {
 
     /**
      * Create a phDSmells object with the default launch parameter:
-     * <code>-source <i>path_progetto_da_analizzare</i> -output-type XML -output <i>path_file_risultati</i></code>
-     * @param p project under study
+     * @param p project under study.
      */
     public PhDSmells(Project p) {
-        //DEFAULT ARGUMENTS -source <path_progetto_da_analizzare> -output-type XML -output <path_file_risultati>
         this.projectPath = p.getPath();
         this.toolPath = new File(RUNWIN).getAbsolutePath();
         this.defaultParam = toolPath + " && java -jar " + toolName + " " + projectPath +" -t";
-
     }
 
     public String getToolPath() {
@@ -65,7 +62,7 @@ public class PhDSmells implements Tool {
     
     /**
      * Run analysis for Windows o.s.
-     * At the end of the process all extracted files are remove
+     * At the end of the process all extracted files are removed.
      */
     @Override
     public void runWin() {
@@ -76,7 +73,8 @@ public class PhDSmells implements Tool {
 
     /**
      * Extract JCodeOdor executable file and run analysis for Linux o.s 
-     * At the end of the process all extracted files are remove
+     * At the end of the process all extracted files are removed.
+     * NOT TESTED YET!
      */
     @Override
     public void runLin() {

@@ -12,6 +12,11 @@ import database.DbHandler;
 import models.Smell;
 import models.DataClumps;
 
+/**
+ *This class parses the "result.txt" file produced by the "PhDProjectScripts" tool,
+ *started by the PhDSmells class and inserts the results into the "sbac" DB.
+ * @author Federico Caspani & Davide Altieri
+ */
 public class PhDSmellsParser {
 
     String analyzableFileName = "result.txt";
@@ -28,6 +33,10 @@ public class PhDSmellsParser {
         this.projectUrl = projectUrl;
     }
 
+    /**
+     * Read the entire document "result.txt" via the BufferedReader reader passed as a parameter.
+     * @param reader BufferedReader
+     */
     public void execute(BufferedReader reader) {
 
         try {
@@ -70,6 +79,12 @@ public class PhDSmellsParser {
         }
     }
 
+    /**
+     * This method parses the row passed as a parameter.
+     * If the line shows class paths, the classes and their relative paths are saved in specific fields of the class.
+     * If the line represents a smell instance, the analysis results are saved to the DB.
+     * @param line String
+     */
     private void analyzeAndWrite(String line) {
 
         String classPath;
