@@ -165,7 +165,10 @@ public class PhDSmellsParser {
                     existsPackage[i] = DbHandler.packageExist(packages.get(i));
                     if(existsPackage[i] == 0) {
                         existsPackage[i] = DbHandler.insertPackage(pac0);
+                        InsertCommPac(existsPackage[i], idCommit);
+                        InsertClassPac(existsPackage[i], existsPackage[i]);
                         pac0.setId(existsPackage[i]);
+
                     } else {
                         pac0.setId(existsPackage[i]);
                     }
@@ -320,6 +323,12 @@ public class PhDSmellsParser {
         }
     }
 
+    /**
+     * Insert into the table "Method" of the Database
+     * @param nameMethod String
+     * @param c Class
+     * @return the method id
+     */
     public int InsertMethod(String nameMethod, Class c) throws SQLException {
         //idMethod
         m = new Method();
@@ -334,6 +343,13 @@ public class PhDSmellsParser {
         return existsMethod;
     }
 
+    /**
+     * Insert into the table "Variable" of the Database
+     * @param nameVariable String
+     * @param typeVariable String
+     * @param c Class
+     * @return the variable id
+     */
     public int InsertVariable(String nameVariable, String typeVariable, Class c) throws SQLException {
         //idVariable
         v = new Variable();
@@ -349,10 +365,20 @@ public class PhDSmellsParser {
         return existsVariable;
     }
 
+    /**
+     * Insert into the table "CommPac" of the Database
+     * @param idp int
+     * @param idc String
+     */
     public void InsertCommPac(int idp, String idc) throws SQLException {
         DbHandler.insertCommPac(idp, idc);
     }
 
+    /**
+     * Insert into the table "ClassPac" of the Database
+     * @param idp int
+     * @param idcl int
+     */
     public void InsertClassPac(int idp, int idcl) throws SQLException {
         DbHandler.insertClassPac(idp, idcl);
     }

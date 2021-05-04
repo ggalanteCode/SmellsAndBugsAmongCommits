@@ -37,7 +37,7 @@ public class DbHandler {
     private static final String URLPOSTGRES = "jdbc:postgresql://localhost:5432/postgres";
     private static final String URL = "jdbc:postgresql://localhost:5432/sbac";
     private static final String USER = "postgres";
-    private static final String PSW = "Password";
+    private static final String PSW = "postgres";
     private static Connection connection;
     
     public DbHandler(){}
@@ -1001,6 +1001,12 @@ public class DbHandler {
         }
     }
 
+    /**
+     * Method used to insert into DATACLUMPS
+     * @param d DataClumps
+     * @throws SQLException incorrect insertion
+     * @return boolean true if succesfull
+     */
     public static boolean insertDataClumps(models.DataClumps d) throws SQLException {
         PreparedStatement stmt=null;
         try {
