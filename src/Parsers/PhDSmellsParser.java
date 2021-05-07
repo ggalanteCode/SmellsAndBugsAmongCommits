@@ -129,9 +129,9 @@ public class PhDSmellsParser {
                         }
                     }
                 }
-
                 classPath = classPath.substring(0, classPath.lastIndexOf(".java"));
                 classesPath.add(classPath);
+
                 int i;
                 if(classesPath.size() == 1)
                     i=0;
@@ -159,29 +159,43 @@ public class PhDSmellsParser {
 
                     //idPackage
                     Package pac0 = new Package(packages.get(i));
-                    int indexOfClass = (classesPath.get(i)).indexOf(className);
-                    String packagePath = (classesPath.get(i)).substring(0, indexOfClass-1);
-                    pac0.setPath(packagePath);
-                    existsPackage[i] = DbHandler.packageExist(packages.get(i));
-                    if(existsPackage[i] == 0) {
-                        existsPackage[i] = DbHandler.insertPackage(pac0);
-                        InsertCommPac(existsPackage[i], idCommit);
-                        InsertClassPac(existsPackage[i], existsPackage[i]);
-                        pac0.setId(existsPackage[i]);
+                    try {
+                        int indexOfClass = (classesPath.get(i)).indexOf(className);
+                        String packagePath = (classesPath.get(i)).substring(0, indexOfClass-1);
+                        pac0.setPath(packagePath);
+                        existsPackage[i] = DbHandler.packageExist(packages.get(i));
+                        if(existsPackage[i] == 0) {
+                            existsPackage[i] = DbHandler.insertPackage(pac0);
+                            InsertCommPac(existsPackage[i], idCommit);
+                            InsertClassPac(existsPackage[i], existsPackage[i]);
+                            pac0.setId(existsPackage[i]);
 
-                    } else {
-                        pac0.setId(existsPackage[i]);
+                        } else {
+                            pac0.setId(existsPackage[i]);
+                        }
+
+                        if(i==0) {
+                            c1 = c0;
+                            pac1 = pac0;
+                        } else {
+                            c2 = c0;
+                            pac2 = pac0;
+                        }
+
+
+                    } catch (StringIndexOutOfBoundsException oobException) {
+                        packages.add(i,null);
+
+                        if(i==0) {
+                            c1 = c0;
+                            pac1 = new Package(null);
+                            pac1.setId(0);
+                        } else {
+                            c2 = c0;
+                            pac2 = new Package(null);
+                            pac2.setId(0);
+                        }
                     }
-
-                    if(i==0) {
-                        c1 = c0;
-                        pac1 = pac0;
-                    } else {
-                        c2 = c0;
-                        pac2 = pac0;
-                    }
-
-
 
                 } catch (SQLException e) {e.printStackTrace();}
             }
