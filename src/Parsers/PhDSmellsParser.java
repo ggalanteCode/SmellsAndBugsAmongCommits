@@ -53,21 +53,40 @@ public class PhDSmellsParser {
 
                 switch (line) {
 
-                    case "***START BAD SMELLS TRANSCRIPTION***" -> startAnalysis = true;
+                    case "***START BAD SMELLS TRANSCRIPTION***":
+                        startAnalysis = true;
+                        break;
 
-                    case "Switch Statement Bad Smell was found in:" -> smell = "Switch Statement";
-                    case "Speculative Generality Bad Smell was found in:" -> smell = "Speculative Generality";
-                    case "Middle Man Bad Smell was found in:" -> smell = "Middle Man";
-                    case "Message Chains Bad Smell was found in:" -> smell = "Message Chains";
-                    case "Data Clumps Bad Smell was found in:" -> smell = "Data Clumps";
+                    case "Switch Statement Bad Smell was found in:":
+                        smell = "Switch Statement";
+                        break;
 
-                    case "***END BAD SMELLS TRANSCRIPTION***" -> continueReading = false;
+                    case "Speculative Generality Bad Smell was found in:":
+                        smell = "Speculative Generality";
+                        break;
 
-                    default -> {
+                    case "Middle Man Bad Smell was found in:":
+                        smell = "Middle Man";
+                        break;
+
+                    case "Message Chains Bad Smell was found in:":
+                        smell = "Message Chains";
+                        break;
+
+                    case "Data Clumps Bad Smell was found in:":
+                        smell = "Data Clumps";
+                        break;
+
+                    case "***END BAD SMELLS TRANSCRIPTION***":
+                        continueReading = false;
+                        break;
+
+                    default:
                         if (!line.isBlank() && startAnalysis) {
                             analyzeAndWrite(line);
                         }
-                    }
+                        break;
+
                 }
 
             } while (continueReading);
@@ -211,7 +230,7 @@ public class PhDSmellsParser {
 
             switch (smell) {
 
-                case "Switch Statement" -> {
+                case "Switch Statement":
                     String[] switchSmell = line.split("[()']+");
                     lineNumber = switchSmell[1].trim();
                     if(!(switchSmell[4].equals("."))) {
@@ -229,9 +248,10 @@ public class PhDSmellsParser {
                         DbHandler.insertSmell(sm, idCommit, 0, idMethod, existsClass[0], existsPackage[0], 0);
 
                     } catch(SQLException e) {e.printStackTrace();}
+                    break;
 
-                }
-                case "Speculative Generality" -> {
+
+                case "Speculative Generality":
                     String[] speculativeSmell = line.split("[()']+");
                     lineNumber = speculativeSmell[1].trim();
                     if (line.startsWith("Speculative Generality unused parameter")) {
@@ -253,8 +273,9 @@ public class PhDSmellsParser {
 
                     } catch(SQLException e) {e.printStackTrace();}
                     //Scrivere su DB//
-                }
-                case "Middle Man" -> {
+                    break;
+
+                case "Middle Man":
                     String[] middleSmell = line.split("[()']+");
                     lineNumber = middleSmell[1].trim();
 
@@ -263,8 +284,9 @@ public class PhDSmellsParser {
                         sm = new Smell("Middle Man", 0.0);
                         DbHandler.insertSmell(sm, idCommit, 0, 0, existsClass[0], existsPackage[0], Integer.valueOf(lineNumber));
                     } catch(SQLException e) {e.printStackTrace();}
-                }
-                case "Message Chains" -> {
+                    break;
+
+                case "Message Chains":
                     if (line.startsWith("Message Chains")) {
                         messageChainsTemp = line;
                     } else {
@@ -286,8 +308,9 @@ public class PhDSmellsParser {
                             DbHandler.insertSmell(sm, idCommit, 0, idMethod, existsClass[0], existsPackage[0], Integer.valueOf(lineNumber));
                         } catch(SQLException e) {e.printStackTrace();}
                     }
-                }
-                case "Data Clumps" -> {
+                    break;
+
+                case "Data Clumps":
                     String[] clumpsSmell;
                     if (line.startsWith("Parameters in method")) {
                         clumpsSmell = line.split("Parameters in method | and | was found duplicated");
@@ -323,7 +346,8 @@ public class PhDSmellsParser {
                             DbHandler.insertDataClumps(dc);
                         } catch(SQLException e) {e.printStackTrace();}
                     }
-                }
+                    break;
+
             }
             assert !classesPath.isEmpty();
             System.out.print("CLASSI: ");

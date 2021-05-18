@@ -55,6 +55,31 @@ public class CliUtils {
             promptBuilder.redirectErrorStream(true);
 
             Process prompt = promptBuilder.start();
+
+            /*
+
+            BufferedReader stdInput = new BufferedReader(new
+                    InputStreamReader(prompt.getInputStream()));
+
+            BufferedReader stdError = new BufferedReader(new
+                    InputStreamReader(prompt.getErrorStream()));
+
+            // Read the output from the command
+            System.out.println("Here is the standard output of the command:\n");
+            String s = null;
+            while ((s = stdInput.readLine()) != null) {
+                System.out.println(s);
+            }
+
+            // Read any errors from the attempted command
+            System.out.println("Here is the standard error of the command (if any):\n");
+            while ((s = stdError.readLine()) != null) {
+                System.out.println(s);
+            }
+
+            */
+
+
             String output = output(prompt);
 
             int exitCode = prompt.waitFor();
@@ -77,6 +102,30 @@ public class CliUtils {
             promptBuilder.redirectErrorStream(true);
 
             final Process process = promptBuilder.start();
+
+            /*
+
+            BufferedReader stdInput = new BufferedReader(new
+                    InputStreamReader(process.getInputStream()));
+
+            BufferedReader stdError = new BufferedReader(new
+                    InputStreamReader(process.getErrorStream()));
+
+            // Read the output from the command
+            System.out.println("Here is the standard output of the command:\n");
+            String s = null;
+            while ((s = stdInput.readLine()) != null) {
+                System.out.println(s);
+            }
+
+            // Read any errors from the attempted command
+            System.out.println("Here is the standard error of the command (if any):\n");
+            while ((s = stdError.readLine()) != null) {
+                System.out.println(s);
+            }
+
+            */
+
             String output = output(process);
 
 
@@ -87,7 +136,6 @@ public class CliUtils {
 
 
         }
-
 
     }
 

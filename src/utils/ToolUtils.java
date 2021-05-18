@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
+import java.util.Objects;
+
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 
@@ -30,7 +32,7 @@ public class ToolUtils {
      */
     synchronized public static String extract(String file) throws URISyntaxException, IOException{
         OutputStream os;
-        try (InputStream is = ToolUtils.class.getResource(file).openStream()) {
+        try (InputStream is = Objects.requireNonNull(ToolUtils.class.getResource(file)).openStream()) {
             File f = new File(file.substring(file.lastIndexOf("/")+1));
             f.deleteOnExit();
             os = new FileOutputStream(f);
