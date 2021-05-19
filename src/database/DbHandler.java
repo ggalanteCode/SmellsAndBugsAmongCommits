@@ -37,7 +37,7 @@ public class DbHandler {
     private static final String URLPOSTGRES = "jdbc:postgresql://localhost:5432/postgres";
     private static final String URL = "jdbc:postgresql://localhost:5432/sbac";
     private static final String USER = "postgres";
-    private static final String PSW = "Password";
+    private static final String PSW = "postgres";
     private static Connection connection;
     
     public DbHandler(){}
@@ -111,7 +111,7 @@ public class DbHandler {
                                     PreparedSQL.METRICHUNTER+
                                     PreparedSQL.METRIC+
                                     PreparedSQL.SMELL+
-                                    PreparedSQL.DATACLUMPS+
+                                    PreparedSQL.MULTICODESMELL+
                                     PreparedSQL.CLONEISTANCE+
                                     PreparedSQL.ISSUEISTANCE+
                                     PreparedSQL.METRICCLASSCOLLECTION+
@@ -1007,22 +1007,24 @@ public class DbHandler {
      * @throws SQLException incorrect insertion
      * @return boolean true if succesfull
      */
-    public static boolean insertDataClumps(models.DataClumps d) throws SQLException {
+    public static boolean insertMultiCodeSmell(int key, String smellType, models.MultiCodeSmell d) throws SQLException {
         PreparedStatement stmt=null;
         try {
-            stmt = connection.prepareStatement(PreparedSQL.DATACLUMPSRECORDEXISTS);
+            stmt = connection.prepareStatement(PreparedSQL.MULTICODESMELLRECORDEXISTS);
             stmt.setString(1, d.getIdm());
             stmt.setString(2, d.getIdv());
             ResultSet rs=stmt.executeQuery();
             if(!rs.next()) {
-                stmt = connection.prepareStatement(PreparedSQL.INSERTDATACLUMPS);
-                stmt.setString(1, d.getMethods());
-                stmt.setString(2, d.getVariables());
-                stmt.setString(3, d.getIdCommit());
-                stmt.setString(4, d.getIdp());
-                stmt.setString(5, d.getIdcl());
-                stmt.setString(6, d.getIdm());
-                stmt.setString(7, d.getIdv());
+                stmt = connection.prepareStatement(PreparedSQL.INSERTMULTICODESMELL);
+                stmt.setInt(1, key);
+                stmt.setString(2, smellType);
+                stmt.setString(3, d.getMethods());
+                stmt.setString(4, d.getVariables());
+                stmt.setString(5, d.getIdCommit());
+                stmt.setString(6, d.getIdp());
+                stmt.setString(7, d.getIdcl());
+                stmt.setString(8, d.getIdm());
+                stmt.setString(9, d.getIdv());
                 stmt.executeUpdate();
                 return true;
             }

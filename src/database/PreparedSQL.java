@@ -175,15 +175,17 @@ public class PreparedSQL {
                                         "	linenumber integer \n" +
                                         ") ;";
 
-    public static final String DATACLUMPS = "create table dataclumps (\n" +
-                                            "    id serial not null primary key ,\n" +
-                                            "    methodsname text not null ,\n" +
-                                            "    variablesname text not null ,\n" +
+    public static final String MULTICODESMELL = "create table multicodesmell (\n" +
+                                            "    id integer not null ,\n" +
+                                            "    smelltype text not null ,\n" +
+                                            "    methodname text not null ,\n" +
+                                            "    variablename text not null ,\n" +
                                             "    idc text not null ,\n" +
                                             "    idp text not null ,\n" +
                                             "    idcl text not null ,\n" +
                                             "    idm text not null ,\n" +
-                                            "    idv text not null \n" +
+                                            "    idv text not null ,\n" +
+                                            "    primary key(id, methodname, variablename) \n" +
                                             ") ;";
     
     public static final String CLONEISTANCE = "create table cloneistance (\n" +
@@ -285,42 +287,21 @@ public class PreparedSQL {
                                                   "       warninginfo text not null, \n"+
                                                   "       warningmajor text not null, \n"+
                                                   "       warningminor text not null, \n"+
-                                                  "       androidrules text not null, \n"+
-                                                  "       basicrules text not null, \n"+
-                                                  "       bracerules text not null, \n"+
-                                                  "       cloneimplementationrules text not null, \n"+
+                                                  "       bestpraticerules text not null, \n"+
                                                   "       clonemetricrules text not null, \n"+
-                                                  "       codesizerules text not null, \n"+
+                                                  "       codestylerules text not null, \n"+
                                                   "       cohesionmetricrules text not null, \n"+
-                                                  "       commentrules text not null, \n"+
                                                   "       complexitymetricrules text not null, \n"+
-                                                  "       controversialrules text not null, \n"+
                                                   "       couplingmetricrules text not null, \n"+
-                                                  "       couplingrules text not null, \n"+
                                                   "       designrules text not null, \n"+
                                                   "       documentationmetricrules text not null, \n"+
-                                                  "       emptycoderules text not null, \n"+
-                                                  "       finalizerrules text not null, \n"+
-                                                  "       importstatementrules text not null, \n"+
+                                                  "       documentationrules text not null, \n"+
+                                                  "       errorpronerules text not null, \n"+
                                                   "       inheritancemetricrules text not null, \n"+
-                                                  "       j2eerules text not null, \n"+
-                                                  "       junitrules text not null, \n"+
-                                                  "       jakartacommonsloggingrules text not null, \n"+
-                                                  "       javaloggingrules text not null, \n"+
-                                                  "       javabeanrules text not null, \n"+
-                                                  "       migratingtojunit4rules text not null, \n"+
-                                                  "       migrationrules text not null, \n"+
-                                                  "       migration13rules text not null, \n"+
-                                                  "       migration14rules text not null, \n"+
-                                                  "       migration15rules text not null, \n"+
-                                                  "       namingrules text not null, \n"+
-                                                  "       optimizationrules text not null, \n"+
-                                                  "       securitycodeguidelinerules text not null, \n"+
+                                                  "       multithreadingrules text not null, \n"+
+                                                  "       performancerules text not null, \n"+
+                                                  "       secutiryrules text not null, \n"+
                                                   "       sizemetricrules text not null, \n"+
-                                                  "       strictexceptionrules text not null, \n"+
-                                                  "       stringandstringbufferrules text not null, \n"+
-                                                  "       typeresolutionrules text not null, \n"+
-                                                  "       unnecessaryandunusedcoderules text not null, \n"+
                                                   "       version text not null references commit on delete cascade on update cascade, \n"+
                                                   "       url text not null references project on delete cascade on update cascade\n"+
                                                   ") ;";
@@ -379,40 +360,19 @@ public class PreparedSQL {
                                                        "       warninginfo text not null, \n"+
                                                        "       warningmajor text not null, \n"+
                                                        "       warningminor text not null, \n"+
-                                                       "       androidrules text not null, \n"+
-                                                       "       basicrules text not null, \n"+
-                                                       "       bracerules text not null, \n"+
-                                                       "       cloneimplementationrules text not null, \n"+
+                                                       "       bestpracticerules text not null, \n"+
                                                        "       clonemetricrules text not null, \n"+
-                                                       "       codesizerules text not null, \n"+
-                                                       "       commentrules text not null, \n"+
+                                                       "       codestylerules text not null, \n"+
                                                        "       complexitymetricrules text not null, \n"+
-                                                       "       controversialrules text not null, \n"+
                                                        "       couplingmetricrules text not null, \n"+
-                                                       "       couplingrules text not null, \n"+
                                                        "       designrules text not null, \n"+
                                                        "       documentationmetricrules text not null, \n"+
-                                                       "       emptycoderules text not null, \n"+
-                                                       "       finalizerrules text not null, \n"+
-                                                       "       importstatementrules text not null, \n"+
-                                                       "       j2eerules text not null, \n"+
-                                                       "       junitrules text not null, \n"+
-                                                       "       jakartacommonsloggingrules text not null, \n"+
-                                                       "       javaloggingrules text not null, \n"+
-                                                       "       javabeanrules text not null, \n"+
-                                                       "       migratingtojunit4rules text not null, \n"+
-                                                       "       migrationrules text not null, \n"+
-                                                       "       migration13rules text not null, \n"+
-                                                       "       migration14rules text not null, \n"+
-                                                       "       migration15rules text not null, \n"+
-                                                       "       namingrules text not null, \n"+
-                                                       "       optimizationrules text not null, \n"+
-                                                       "       securitycodeguidelinerules text not null, \n"+
+                                                       "       documentationrules text not null, \n"+
+                                                       "       errorpronerules text not null, \n"+
+                                                       "       multithreadingrules text not null, \n"+
+                                                       "       performancerules text not null, \n"+
+                                                       "       securityrules text not null, \n"+
                                                        "       sizemetricrules text not null, \n"+
-                                                       "       strictexceptionrules text not null, \n"+
-                                                       "       stringandstringbufferrules text not null, \n"+
-                                                       "       typeresolutionrules text not null, \n"+
-                                                       "       unnecessaryandunusedcoderules text not null, \n"+
                                                        "       version text not null references commit on delete cascade on update cascade, \n"+
                                                        "       url text not null references project on delete cascade on update cascade\n"+
                                                        ") ;";
@@ -477,35 +437,14 @@ public class PreparedSQL {
                                                          "       warninginfo text not null, \n"+
                                                          "       warningmajor text not null, \n"+
                                                          "       warningminor text not null, \n"+
-                                                         "       androidrules text not null, \n"+
-                                                         "       basicrules text not null, \n"+
-                                                         "       bracerules text not null, \n"+
-                                                         "       cloneimplementationrules text not null, \n"+
-                                                         "       codesizerules text not null, \n"+
-                                                         "       commentrules text not null, \n"+
-                                                         "       controversialrules text not null, \n"+
-                                                         "       couplingrules text not null, \n"+
+                                                         "       bestpracticerules text not null, \n"+
+                                                         "       codestylerules text not null, \n"+
                                                          "       designrules text not null, \n"+
-                                                         "       emptycoderules text not null, \n"+
-                                                         "       finalizerrules text not null, \n"+
-                                                         "       importstatementrules text not null, \n"+
-                                                         "       j2eerules text not null, \n"+
-                                                         "       junitrules text not null, \n"+
-                                                         "       jakartacommonsloggingrules text not null, \n"+
-                                                         "       javaloggingrules text not null, \n"+
-                                                         "       javabeanrules text not null, \n"+
-                                                         "       migratingtojunit4rules text not null, \n"+
-                                                         "       migrationrules text not null, \n"+
-                                                         "       migration13rules text not null, \n"+
-                                                         "       migration14rules text not null, \n"+
-                                                         "       migration15rules text not null, \n"+
-                                                         "       namingrules text not null, \n"+
-                                                         "       optimizationrules text not null, \n"+
-                                                         "       securitycodeguidelinerules text not null, \n"+
-                                                         "       strictexceptionrules text not null, \n"+
-                                                         "       stringandstringbufferrules text not null, \n"+
-                                                         "       typeresolutionrules text not null, \n"+
-                                                         "       unnecessaryandunusedcoderules text not null, \n"+
+                                                         "       documentationrules text not null, \n"+
+                                                         "       errorpronerules text not null, \n"+
+                                                         "       multithreadingrules text not null, \n"+
+                                                         "       performancerules text not null, \n"+
+                                                         "       securityrules text not null, \n"+
                                                          "       version text not null references commit on delete cascade on update cascade, \n"+
                                                          "       url text not null references project on delete cascade on update cascade\n"+
                                                          ") ;";
@@ -540,7 +479,7 @@ public class PreparedSQL {
 
     public static final String INSERTSMELL = "insert into smell (key, value , idc, idm, idcl, idp, idv, linenumber) values (?,?,?,?,?,?,?,?);";
     
-    public static final String INSERTDATACLUMPS = "insert into dataclumps (methodsname, variablesname, idc, idp, idcl, idm, idv) values (?,?,?,?,?,?,?)";
+    public static final String INSERTMULTICODESMELL = "insert into multicodesmell (key, smelltype, methodsname, variablesname, idc, idp, idcl, idm, idv) values (?,?,?,?,?,?,?,?,?)";
 
     public static final String INSERTPMD = "insert into pmd (line, solution, type, idc, idcl) values (?,?,?,?,?);";
     
@@ -552,11 +491,11 @@ public class PreparedSQL {
     
     public static final String INSERTISSUEISTANCE= "insert into issueistance (title,state,label,description,issuenumber,url,filesnamemodified,numberlineschanged) values (?,?,?,?,?,?,?,?) returning id;";
     
-    public static final String INSERTMETRICCLASSCOLLECTION = "insert into metricclasscollection (metricnumber,name,longname,parent,component,path,line,startcolumn,endline,endcolumn,cc,ccl,cco,ci,clc,cllc,ldc,lldc,lcom5,nl,nle,wmc,cbo,cboi,nii,noi,rfc,ad,cd,cloc,dloc,pda,pua,tcd,tcloc,dit,noa,noc,nod,nop,lloc,loc,na,ng,nla,nlg,nlm,nlpa,nlpm,nls,nm,nos,npa,npm,ns,tlloc,tloc,tna,tng,tnla,tnlg,tnlm,tnlpa,tnlpm,tnls,tnm,tnos,tnpa,tnpm,tns,warningblocker,warningcritical,warninginfo,warningmajor,warningminor,androidrules,basicrules,bracerules,cloneimplementationrules,clonemetricrules,codesizerules,cohesionmetricrules,commentrules,complexitymetricrules,controversialrules,couplingmetricrules,couplingrules,designrules,documentationmetricrules,emptycoderules,finalizerrules,importstatementrules,inheritancemetricrules,j2eerules,junitrules,jakartacommonsloggingrules,javaloggingrules,javabeanrules,migratingTojunit4rules,migrationrules,migration13rules,migration14rules,migration15rules,namingrules,optimizationrules,securitycodeguidelinerules,sizemetricrules,strictexceptionrules,stringandstringbufferrules,typeresolutionrules,unnecessaryandunusedcoderules,version,url) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); ";
+    public static final String INSERTMETRICCLASSCOLLECTION = "insert into metricclasscollection (metricnumber,name,longname,parent,component,path,line,startcolumn,endline,endcolumn,cc,ccl,cco,ci,clc,cllc,ldc,lldc,lcom5,nl,nle,wmc,cbo,cboi,nii,noi,rfc,ad,cd,cloc,dloc,pda,pua,tcd,tcloc,dit,noa,noc,nod,nop,lloc,loc,na,ng,nla,nlg,nlm,nlpa,nlpm,nls,nm,nos,npa,npm,ns,tlloc,tloc,tna,tng,tnla,tnlg,tnlm,tnlpa,tnlpm,tnls,tnm,tnos,tnpa,tnpm,tns,warningblocker,warningcritical,warninginfo,warningmajor,warningminor,bestpraticerules,clonemtricrules,codestylerules,cohesionmetricrules,complexitymetricrules,couplingmetricrules,designrules,documentationmetricrules,documentationrules,errorpronerules,inheritancemetricrules,multithreadingrules,performancerules,secutirytules,sizemetricrules,version,url) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); ";
                                                                             
-    public static final String INSERTMETRICMETHODCOLLECTION= "insert into metricmethodcollection (metricnumber,name,longname,parent,component,path,line,startcolumn,endline,endcolumn,cc,ccl,cco,ci,clc,cllc,ldc,lldc,hcpl,hdif,heff,hndb,hpl,hpv,htrp,hvol,mi,mims,misei,mism,mccc,nl,nle,nii,noi,cd,cloc,dloc,tcd,tcloc,lloc,loc,nos,numpar,tlloc,tloc,tnos,warningblocker,warningcritical,warninginfo,warningmajor,warningminor,androidrules,basicrules,bracerules,cloneimplementationrules,clonemetricrules,codesizerules,commentrules,complexitymetricrules,controversialrules,couplingmetricrules,couplingrules,designrules,documentationmetricrules,emptycoderules,finalizerrules,importstatementrules,j2eerules,junitrules,jakartacommonsloggingrules,javaloggingrules,javabeanrules,migratingtojunit4rules,migrationrules,migration13rules,migration14rules,migration15rules,namingrules,optimizationrules,securitycodeguidelinerules,sizemetricrules,strictexceptionrules,stringandstringbufferrules,typeresolutionrules,unnecessaryandunusedcoderules,version,url) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); ";
+    public static final String INSERTMETRICMETHODCOLLECTION= "insert into metricmethodcollection (metricnumber,name,longname,parent,component,path,line,startcolumn,endline,endcolumn,cc,ccl,cco,ci,clc,cllc,ldc,lldc,hcpl,hdif,heff,hndb,hpl,hpv,htrp,hvol,mi,mims,misei,mism,mccc,nl,nle,nii,noi,cd,cloc,dloc,tcd,tcloc,lloc,loc,nos,numpar,tlloc,tloc,tnos,warningblocker,warningcritical,warninginfo,warningmajor,warningminor,bestpracticerules,clonemetricrules,codestylerules,complexitymetricrules,couplingmetricrules,designrules,documentationmetricrules,documentationrules,errorpronerules,multithreadingrules,performancerules,securityrules,sizemetricrules,version,url) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); ";
     
-    public static final String INSERTMETRICPACKAGECOLLECTION= "insert into metricpackagecollection (metricnumber,name,longname,parent,component,cc,ccl,cco,ci,clc,cllc,ldc,lldc,ad,cd,cloc,pda,pua,tad,tcd,tcloc,tpda,tpua,lloc,loc,na,ncl,nen,ng,nin,nm,npa,npkg,npm,ns,tlloc,tloc,tna,tncl,tndi,tnen,tnfi,tng,tnin,tnm,tnos,tnpa,tnpcl,tnpen,tnpin,tnpkg,tnpm,tns,warningblocker,warningcritical,warninginfo,warningmajor,warningminor,androidrules,basicrules,bracerules,cloneimplementationrules,codesizerules,commentrules,controversialrules,couplingrules,designrules,emptycoderules,finalizerrules,importstatementrules,j2eerules,junitrules,jakartacommonsloggingrules,javaloggingrules,javabeanrules,migratingtojunit4rules,migrationrules,migration13rules,migration14rules,migration15rules,namingrules,optimizationrules,securitycodeguidelinerules,strictexceptionrules,stringandstringbufferrules,typeresolutionrules,unnecessaryandunusedcoderules,version,url) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ;";
+    public static final String INSERTMETRICPACKAGECOLLECTION= "insert into metricpackagecollection (metricnumber,name,longname,parent,component,cc,ccl,cco,ci,clc,cllc,ldc,lldc,ad,cd,cloc,pda,pua,tad,tcd,tcloc,tpda,tpua,lloc,loc,na,ncl,nen,ng,nin,nm,npa,npkg,npm,ns,tlloc,tloc,tna,tncl,tndi,tnen,tnfi,tng,tnin,tnm,tnos,tnpa,tnpcl,tnpen,tnpin,tnpkg,tnpm,tns,warningblocker,warningcritical,warninginfo,warningmajor,warningminor,bestpracticerules,codestylerules,designrules,documentationrules,errorpronerules,multithreadingrules,performancerules,securityrules,version,url) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ;";
     
     // query tables
     
@@ -609,7 +548,7 @@ public class PreparedSQL {
   
     public static final String SMELLRECORDEXISTS= "select smell.id from smell where key =? and value=? and idc=? and";
 
-    public static final String DATACLUMPSRECORDEXISTS= "select dataclumps.id from dataclumps where idm=? and idv=?";
+    public static final String MULTICODESMELLRECORDEXISTS= "select multicodesmell.id from multicodesmell where idm=? and idv=?";
     
    // public static final String METRICCLASSEXISTS= "select id from metricclasscollection where id=? ;";
     

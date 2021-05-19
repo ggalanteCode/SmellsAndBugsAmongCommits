@@ -10,7 +10,7 @@ import models.Package;
 import models.Variable;
 import database.DbHandler;
 import models.Smell;
-import models.DataClumps;
+import models.MultiCodeSmell;
 
 /**
  *This class parses the "result.txt" file produced by the "PhDProjectScripts" tool,
@@ -27,6 +27,8 @@ public class PhDSmellsParser {
     Method m;
     Package pac1, pac2;
     Variable v;
+    String currentDataClumpMethod = "";
+    int dataclumpblockid = 0;
 
     public PhDSmellsParser(String idCommit, String projectUrl) {
         this.idCommit = idCommit;
@@ -226,7 +228,7 @@ public class PhDSmellsParser {
             String variableName = "";
             String variableType = "";
             Smell sm;
-            DataClumps dc;
+            MultiCodeSmell mcs;
 
             switch (smell) {
 
@@ -314,36 +316,50 @@ public class PhDSmellsParser {
                     String[] clumpsSmell;
                     if (line.startsWith("Parameters in method")) {
                         clumpsSmell = line.split("Parameters in method | and | was found duplicated");
-                        methodName = clumpsSmell[1].substring(clumpsSmell[1].substring(0, clumpsSmell[1].lastIndexOf(".")).lastIndexOf(".") + 1) + " & " + clumpsSmell[2].substring(clumpsSmell[2].substring(0, clumpsSmell[2].lastIndexOf(".")).lastIndexOf(".") + 1);
-                        String[] methodsName = methodName.split("[&.]+");
+                        String methodName1 = clumpsSmell[1].substring(clumpsSmell[1].substring(0, clumpsSmell[1].lastIndexOf(".")).lastIndexOf(".") + 1).trim();
+                        String methodName2 = clumpsSmell[2].substring(clumpsSmell[2].substring(0, clumpsSmell[2].lastIndexOf(".")).lastIndexOf(".") + 1).trim();
 
                         try {
                             //idMethod
-                            int idMethod1 = InsertMethod(methodsName[1].trim(), c1);
-                            int idMethod2 = InsertMethod(methodsName[3].trim(), c2);
+                            String idMethod1 = InsertMethod(methodName1, c1) + "";
+                            String idMethod2 = InsertMethod(methodName2, c2) + "";
 
                             //Writing on DB
-                            dc = new DataClumps(methodName, "not required", idCommit, existsPackage[0] + ", " + existsPackage[1], existsClass[0] + ", " + existsClass[1], idMethod1 + ", " + idMethod2, "not required");
-                            DbHandler.insertDataClumps(dc);
+                            if(!methodName1.equals(currentDataClumpMethod)) {
+                                dataclumpblockid++;
+                                mcs = new MultiCodeSmell(methodName1, "not required", idCommit, existsPackage[0] + "", existsClass[0] + "", idMethod1, "not required");
+                                DbHandler.insertMultiCodeSmell(dataclumpblockid,"Data Clumps", mcs);
+                                mcs = new MultiCodeSmell(methodName2, "not required", idCommit, existsPackage[1] + "", existsClass[1] + "", idMethod2, "not required");
+                                DbHandler.insertMultiCodeSmell(dataclumpblockid,"Data Clumps", mcs);
+                                currentDataClumpMethod = methodName1;
+                            } else {
+                                mcs = new MultiCodeSmell(methodName2, "not required", idCommit, existsPackage[1] + "", existsClass[1] + "", idMethod2, "not required");
+                                DbHandler.insertMultiCodeSmell(dataclumpblockid,"Data Clumps", mcs);
+                            }
                         } catch(SQLException e) {e.printStackTrace();}
                     } else if (line.startsWith("Fields")) {
                         clumpsSmell = line.split("Fields  | was found duplicated|,");
 
                         //idVariables
                         try {
-                            String idVariables = "";
+                            ArrayList<String> idVariables = new ArrayList<String>();
+                            ArrayList<String> variablesName = new ArrayList<String>();
+                            String currentIdVariable = "";
                             for (int i=1; i<clumpsSmell.length; i+=2) {
-                                idVariables += InsertVariable(clumpsSmell[i], clumpsSmell[i+1].substring(6), c1) + ", ";
-                                idVariables += InsertVariable(clumpsSmell[i], clumpsSmell[i+1].substring(6), c2) + ", ";
-                                variableName += clumpsSmell[i] + ", ";
+                                currentIdVariable += InsertVariable(clumpsSmell[i], clumpsSmell[i+1].substring(6), c1) + ", ";
+                                currentIdVariable += InsertVariable(clumpsSmell[i], clumpsSmell[i+1].substring(6), c2) + ", ";
+                                idVariables.add(currentIdVariable);
+                                currentIdVariable = "";
+                                variablesName.add(clumpsSmell[i]);
                             }
-                            variableName = variableName.substring(0, variableName.length()-2);
-                            idVariables = idVariables.substring(0, idVariables.length()-2);
-
+                            currentIdVariable = currentIdVariable.substring(0, currentIdVariable.length()-2);
 
                             //Writing on DB
-                            dc = new DataClumps("not required", variableName, idCommit, existsPackage[0] + ", " + existsPackage[1], existsClass[0] + ", " + existsClass[1], "not required", idVariables);
-                            DbHandler.insertDataClumps(dc);
+                            dataclumpblockid++;
+                            for(int i=0; i<variablesName.size(); i++) {
+                                mcs = new MultiCodeSmell("not required", variableName, idCommit, existsPackage[0] + ", " + existsPackage[1], existsClass[0] + ", " + existsClass[1], "not required", currentIdVariable);
+                                DbHandler.insertMultiCodeSmell(dataclumpblockid, "Data Clumps", mcs);
+                            }
                         } catch(SQLException e) {e.printStackTrace();}
                     }
                     break;
