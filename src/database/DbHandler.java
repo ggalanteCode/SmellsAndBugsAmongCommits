@@ -1012,8 +1012,9 @@ public class DbHandler {
         try {
             stmt = connection.prepareStatement(PreparedSQL.MULTICODESMELLRECORDEXISTS);
             stmt.setString(1, smellType);
-            stmt.setString(2, d.getIdm());
-            stmt.setString(3, d.getIdv());
+            stmt.setString(2, d.getIdcl());
+            stmt.setString(3, d.getIdm());
+            stmt.setString(4, d.getIdv());
             ResultSet rs=stmt.executeQuery();
             if(!rs.next()) {
                 stmt = connection.prepareStatement(PreparedSQL.INSERTMULTICODESMELL);
@@ -1044,11 +1045,32 @@ public class DbHandler {
     // QUERY PMD
 
 
+    public static int MethodExistMultiCodeSmell(String smellType, String idcl, String idm) {
+        PreparedStatement stmt = null;
+        try {
+            stmt = connection.prepareStatement(PreparedSQL.MULTICODESMELLRECORDEXISTS);
+            stmt.setString(1, smellType);
+            stmt.setString(2, idcl);
+            stmt.setString(3, idm);
+            stmt.setString(4, "not required");
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            } else
+                return 0;
+        } catch(SQLException ex) {
+            Logger.getLogger(DbHandler.class.getName()).log(Level.SEVERE, null, ex);
+            printSQLException(ex);
+            return 0;
+        }
+    }
+
+
     public static int getLastIDBlock() {
         PreparedStatement stmt=null;
         try {
             stmt = connection.prepareStatement(PreparedSQL.LASTIDBLOCK);
-            ResultSet rs = stmt.getResultSet();
+            ResultSet rs = stmt.executeQuery();
             if(rs.next())
                 return rs.getInt(1);
         } catch (SQLException ex) {
@@ -1058,6 +1080,8 @@ public class DbHandler {
         }
         return 0;
     }
+
+
     
     /**
     * Method used to insert into PMD

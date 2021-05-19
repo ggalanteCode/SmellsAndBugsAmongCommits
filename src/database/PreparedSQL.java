@@ -479,7 +479,7 @@ public class PreparedSQL {
 
     public static final String INSERTSMELL = "insert into smell (key, value , idc, idm, idcl, idp, idv, linenumber) values (?,?,?,?,?,?,?,?);";
     
-    public static final String INSERTMULTICODESMELL = "insert into multicodesmell (id, smelltype, methodsname, variablesname, idc, idp, idcl, idm, idv) values (?,?,?,?,?,?,?,?,?)";
+    public static final String INSERTMULTICODESMELL = "insert into multicodesmell (id, smelltype, methodname, variablename, idc, idp, idcl, idm, idv) values (?,?,?,?,?,?,?,?,?)";
 
     public static final String INSERTPMD = "insert into pmd (line, solution, type, idc, idcl) values (?,?,?,?,?);";
     
@@ -548,7 +548,7 @@ public class PreparedSQL {
   
     public static final String SMELLRECORDEXISTS= "select smell.id from smell where key =? and value=? and idc=? and";
 
-    public static final String MULTICODESMELLRECORDEXISTS= "select multicodesmell.id from multicodesmell where smelltype=? and idm=? and idv=?";
+    public static final String MULTICODESMELLRECORDEXISTS= "select multicodesmell.id from multicodesmell where smelltype=? and idcl=? and idm=? and idv=?";
 
     public static final String LASTIDBLOCK= "select max(id) as max_id from multicodesmell";
     
