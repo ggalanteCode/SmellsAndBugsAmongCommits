@@ -28,7 +28,7 @@ public class PhDSmellsParser {
     Package pac1, pac2;
     Variable v;
     String currentDataClumpMethod = "";
-    int dataclumpblockid = 0;
+    int dataclumpblockid;
 
     public PhDSmellsParser(String idCommit, String projectUrl) {
         this.idCommit = idCommit;
@@ -47,6 +47,8 @@ public class PhDSmellsParser {
 
             boolean continueReading = true;
             boolean startAnalysis = false;
+
+            dataclumpblockid = DbHandler.getLastIDBlock();
 
             do {
 

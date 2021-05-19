@@ -269,13 +269,13 @@ public class DbHandler {
         try{
             stmt=connection.prepareStatement(PreparedSQL.INSERTMETRICCLASSCOLLECTION);
             for(int i=0;i<list.size();i++){
-                if(!(list.get(i).equals("")) && numCol<111){
+                if(!(list.get(i).equals("")) && numCol<90){
                    numCol++; 
                    stmt.setString(numCol,list.get(i));
                 }
             }
-            stmt.setString(112, version);
-            stmt.setString(113, url);
+            stmt.setString(91, version);
+            stmt.setString(92, url);
             stmt.execute();
         }catch(SQLException ex){
             Logger.getLogger(DbHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -296,13 +296,13 @@ public class DbHandler {
         try{
             stmt=connection.prepareStatement(PreparedSQL.INSERTMETRICMETHODCOLLECTION);
             for(int i=0;i<list.size();i++){
-                if(!(list.get(i).equals("")) && numCol<86){
+                if(!(list.get(i).equals("")) && numCol<65){
                     numCol++;
                     stmt.setString(numCol, list.get(i));
                 }
             }
-            stmt.setString(87, version);
-            stmt.setString(88, url);
+            stmt.setString(66, version);
+            stmt.setString(67, url);
             stmt.execute();
         }catch(SQLException ex){
             Logger.getLogger(DbHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -322,13 +322,13 @@ public class DbHandler {
         try{
             stmt=connection.prepareStatement(PreparedSQL.INSERTMETRICPACKAGECOLLECTION);
             for(int i=0;i<list.size();i++){
-                if(!(list.get(i).equals("")) && numCol<87){
+                if(!(list.get(i).equals("")) && numCol<66){
                     numCol++;
                     stmt.setString(numCol, list.get(i));
                 }
             }
-            stmt.setString(88, version);
-            stmt.setString(89, url);
+            stmt.setString(67, version);
+            stmt.setString(68, url);
             stmt.execute();
         }catch(SQLException ex){
             Logger.getLogger(DbHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -1007,16 +1007,17 @@ public class DbHandler {
      * @throws SQLException incorrect insertion
      * @return boolean true if succesfull
      */
-    public static boolean insertMultiCodeSmell(int key, String smellType, models.MultiCodeSmell d) throws SQLException {
+    public static boolean insertMultiCodeSmell(int id, String smellType, models.MultiCodeSmell d) throws SQLException {
         PreparedStatement stmt=null;
         try {
             stmt = connection.prepareStatement(PreparedSQL.MULTICODESMELLRECORDEXISTS);
-            stmt.setString(1, d.getIdm());
-            stmt.setString(2, d.getIdv());
+            stmt.setString(1, smellType);
+            stmt.setString(2, d.getIdm());
+            stmt.setString(3, d.getIdv());
             ResultSet rs=stmt.executeQuery();
             if(!rs.next()) {
                 stmt = connection.prepareStatement(PreparedSQL.INSERTMULTICODESMELL);
-                stmt.setInt(1, key);
+                stmt.setInt(1, id);
                 stmt.setString(2, smellType);
                 stmt.setString(3, d.getMethods());
                 stmt.setString(4, d.getVariables());
@@ -1041,6 +1042,22 @@ public class DbHandler {
     }
     
     // QUERY PMD
+
+
+    public static int getLastIDBlock() {
+        PreparedStatement stmt=null;
+        try {
+            stmt = connection.prepareStatement(PreparedSQL.LASTIDBLOCK);
+            ResultSet rs = stmt.getResultSet();
+            if(rs.next())
+                return rs.getInt(1);
+        } catch (SQLException ex) {
+            Logger.getLogger(DbHandler.class.getName()).log(Level.SEVERE, null, ex);
+            printSQLException(ex);
+            return 0;
+        }
+        return 0;
+    }
     
     /**
     * Method used to insert into PMD

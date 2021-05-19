@@ -185,7 +185,7 @@ public class PreparedSQL {
                                             "    idcl text not null ,\n" +
                                             "    idm text not null ,\n" +
                                             "    idv text not null ,\n" +
-                                            "    primary key(id, methodname, variablename) \n" +
+                                            "    primary key(id, idm, idv) \n" +
                                             ") ;";
     
     public static final String CLONEISTANCE = "create table cloneistance (\n" +
@@ -287,7 +287,7 @@ public class PreparedSQL {
                                                   "       warninginfo text not null, \n"+
                                                   "       warningmajor text not null, \n"+
                                                   "       warningminor text not null, \n"+
-                                                  "       bestpraticerules text not null, \n"+
+                                                  "       bestpracticerules text not null, \n"+
                                                   "       clonemetricrules text not null, \n"+
                                                   "       codestylerules text not null, \n"+
                                                   "       cohesionmetricrules text not null, \n"+
@@ -300,7 +300,7 @@ public class PreparedSQL {
                                                   "       inheritancemetricrules text not null, \n"+
                                                   "       multithreadingrules text not null, \n"+
                                                   "       performancerules text not null, \n"+
-                                                  "       secutiryrules text not null, \n"+
+                                                  "       securityrules text not null, \n"+
                                                   "       sizemetricrules text not null, \n"+
                                                   "       version text not null references commit on delete cascade on update cascade, \n"+
                                                   "       url text not null references project on delete cascade on update cascade\n"+
@@ -479,7 +479,7 @@ public class PreparedSQL {
 
     public static final String INSERTSMELL = "insert into smell (key, value , idc, idm, idcl, idp, idv, linenumber) values (?,?,?,?,?,?,?,?);";
     
-    public static final String INSERTMULTICODESMELL = "insert into multicodesmell (key, smelltype, methodsname, variablesname, idc, idp, idcl, idm, idv) values (?,?,?,?,?,?,?,?,?)";
+    public static final String INSERTMULTICODESMELL = "insert into multicodesmell (id, smelltype, methodsname, variablesname, idc, idp, idcl, idm, idv) values (?,?,?,?,?,?,?,?,?)";
 
     public static final String INSERTPMD = "insert into pmd (line, solution, type, idc, idcl) values (?,?,?,?,?);";
     
@@ -491,7 +491,7 @@ public class PreparedSQL {
     
     public static final String INSERTISSUEISTANCE= "insert into issueistance (title,state,label,description,issuenumber,url,filesnamemodified,numberlineschanged) values (?,?,?,?,?,?,?,?) returning id;";
     
-    public static final String INSERTMETRICCLASSCOLLECTION = "insert into metricclasscollection (metricnumber,name,longname,parent,component,path,line,startcolumn,endline,endcolumn,cc,ccl,cco,ci,clc,cllc,ldc,lldc,lcom5,nl,nle,wmc,cbo,cboi,nii,noi,rfc,ad,cd,cloc,dloc,pda,pua,tcd,tcloc,dit,noa,noc,nod,nop,lloc,loc,na,ng,nla,nlg,nlm,nlpa,nlpm,nls,nm,nos,npa,npm,ns,tlloc,tloc,tna,tng,tnla,tnlg,tnlm,tnlpa,tnlpm,tnls,tnm,tnos,tnpa,tnpm,tns,warningblocker,warningcritical,warninginfo,warningmajor,warningminor,bestpraticerules,clonemtricrules,codestylerules,cohesionmetricrules,complexitymetricrules,couplingmetricrules,designrules,documentationmetricrules,documentationrules,errorpronerules,inheritancemetricrules,multithreadingrules,performancerules,secutirytules,sizemetricrules,version,url) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); ";
+    public static final String INSERTMETRICCLASSCOLLECTION = "insert into metricclasscollection (metricnumber,name,longname,parent,component,path,line,startcolumn,endline,endcolumn,cc,ccl,cco,ci,clc,cllc,ldc,lldc,lcom5,nl,nle,wmc,cbo,cboi,nii,noi,rfc,ad,cd,cloc,dloc,pda,pua,tcd,tcloc,dit,noa,noc,nod,nop,lloc,loc,na,ng,nla,nlg,nlm,nlpa,nlpm,nls,nm,nos,npa,npm,ns,tlloc,tloc,tna,tng,tnla,tnlg,tnlm,tnlpa,tnlpm,tnls,tnm,tnos,tnpa,tnpm,tns,warningblocker,warningcritical,warninginfo,warningmajor,warningminor,bestpracticerules,clonemetricrules,codestylerules,cohesionmetricrules,complexitymetricrules,couplingmetricrules,designrules,documentationmetricrules,documentationrules,errorpronerules,inheritancemetricrules,multithreadingrules,performancerules,securityrules,sizemetricrules,version,url) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); ";
                                                                             
     public static final String INSERTMETRICMETHODCOLLECTION= "insert into metricmethodcollection (metricnumber,name,longname,parent,component,path,line,startcolumn,endline,endcolumn,cc,ccl,cco,ci,clc,cllc,ldc,lldc,hcpl,hdif,heff,hndb,hpl,hpv,htrp,hvol,mi,mims,misei,mism,mccc,nl,nle,nii,noi,cd,cloc,dloc,tcd,tcloc,lloc,loc,nos,numpar,tlloc,tloc,tnos,warningblocker,warningcritical,warninginfo,warningmajor,warningminor,bestpracticerules,clonemetricrules,codestylerules,complexitymetricrules,couplingmetricrules,designrules,documentationmetricrules,documentationrules,errorpronerules,multithreadingrules,performancerules,securityrules,sizemetricrules,version,url) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); ";
     
@@ -548,7 +548,9 @@ public class PreparedSQL {
   
     public static final String SMELLRECORDEXISTS= "select smell.id from smell where key =? and value=? and idc=? and";
 
-    public static final String MULTICODESMELLRECORDEXISTS= "select multicodesmell.id from multicodesmell where idm=? and idv=?";
+    public static final String MULTICODESMELLRECORDEXISTS= "select multicodesmell.id from multicodesmell where smelltype=? and idm=? and idv=?";
+
+    public static final String LASTIDBLOCK= "select max(id) as max_id from multicodesmell";
     
    // public static final String METRICCLASSEXISTS= "select id from metricclasscollection where id=? ;";
     
