@@ -1013,8 +1013,6 @@ public class DbHandler {
     public static boolean insertMultiCodeSmell(int id, String smellType, models.MultiCodeSmell d) throws SQLException {
         PreparedStatement stmt=null;
         try {
-            stmt.setString(1, smellType);
-            stmt.setInt(2, d.getIdcl());
             if(d.getIdm()!=0) {
                 stmt = connection.prepareStatement(PreparedSQL.MULTICODESMELLRECORDEXISTS + " idm=?;");
                 stmt.setInt(3, d.getIdm());
@@ -1022,6 +1020,8 @@ public class DbHandler {
                 stmt = connection.prepareStatement(PreparedSQL.MULTICODESMELLRECORDEXISTS + " idv=?;");
                 stmt.setInt(3, d.getIdv());
             }
+            stmt.setString(1, smellType);
+            stmt.setInt(2, d.getIdcl());
             ResultSet rs=stmt.executeQuery();
             if(!rs.next()) {
                 stmt = connection.prepareStatement(PreparedSQL.INSERTMULTICODESMELL);
@@ -1032,14 +1032,8 @@ public class DbHandler {
                 stmt.setString(5, d.getIdCommit());
                 stmt.setInt(6, d.getIdp());
                 stmt.setInt(7, d.getIdcl());
-                if(d.getIdm()==0)
-                    stmt.setNull(8, java.sql.Types.NULL);
-                else
-                    stmt.setInt(8, d.getIdm());
-                if(d.getIdv()==0)
-                    stmt.setNull(9, java.sql.Types.NULL);
-                else
-                    stmt.setInt(9, d.getIdv());
+                stmt.setInt(8, d.getIdm());
+                stmt.setInt(9, d.getIdv());
                 stmt.executeUpdate();
                 return true;
             }
