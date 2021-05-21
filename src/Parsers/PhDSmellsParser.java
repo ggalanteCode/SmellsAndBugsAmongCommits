@@ -317,8 +317,8 @@ public class PhDSmellsParser {
                     String[] clumpsSmell;
                     if (line.startsWith("Parameters in method")) {
                         clumpsSmell = line.split("Parameters in method | and | was found duplicated");
-                        String methodName1 = clumpsSmell[1].substring(clumpsSmell[1].substring(0, clumpsSmell[1].lastIndexOf(".")).lastIndexOf(".") + 1).trim();
-                        String methodName2 = clumpsSmell[2].substring(clumpsSmell[2].substring(0, clumpsSmell[2].lastIndexOf(".")).lastIndexOf(".") + 1).trim();
+                        String methodName1 = clumpsSmell[1].substring(clumpsSmell[1].lastIndexOf(".")).trim();
+                        String methodName2 = clumpsSmell[2].substring(clumpsSmell[2].lastIndexOf(".")).trim();;
 
                         try {
                             //idMethod

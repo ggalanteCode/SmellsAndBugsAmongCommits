@@ -1003,6 +1003,8 @@ public class DbHandler {
 
     /**
      * Method used to insert into DATACLUMPS
+     * @param id int
+     * @param smellType String
      * @param d DataClumps
      * @throws SQLException incorrect insertion
      * @return boolean true if succesfull
