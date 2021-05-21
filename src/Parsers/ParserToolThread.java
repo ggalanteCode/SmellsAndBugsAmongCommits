@@ -50,7 +50,6 @@ public class ParserToolThread extends Thread {
         File[] files = dir.listFiles();
         File lastModified = Arrays.stream(files).filter(File::isDirectory).max(Comparator.comparing(File::lastModified)).orElse(null);
         txtParser= new TxtParser(new PMDReader(idCommit, projectUrl));
-        System.out.println("1");
         txtParser.parse(lastModified.getAbsolutePath()+File.separator+sm.getProjectName()+"-PMD.txt");
         txtParser= new TxtParser(new ClonesReader(idCommit, projectUrl));
         txtParser.parse(lastModified.getAbsolutePath()+File.separator+sm.getProjectName()+"-clones.txt");
@@ -113,7 +112,7 @@ public class ParserToolThread extends Thread {
             result.delete();
 
         } catch (Exception e) {
-
+            System.err.println("Nessun file 'result.txt' trovato\n");
             e.printStackTrace();
         }
     }

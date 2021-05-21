@@ -213,7 +213,7 @@ public class Download extends javax.swing.JFrame {
             return;
         }
 
-        //Delete folders and project from DB  (RepositoryHandel.delete invokes DbHandles projectDeleter)
+        //Delete folders and project from DB  (RepositoryHandler.delete invokes DbHandles projectDeleter)
         RepositoryHandler.deleter(url);
 
         //New Download

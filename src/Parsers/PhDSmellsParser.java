@@ -52,7 +52,7 @@ public class PhDSmellsParser {
             do {
 
                 line = reader.readLine().trim();
-                System.out.println(line);
+                //System.out.println(line);
 
                 switch (line) {
 
@@ -93,9 +93,7 @@ public class PhDSmellsParser {
                 }
 
             } while (continueReading);
-
             reader.close();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -374,15 +372,6 @@ public class PhDSmellsParser {
                     break;
 
             }
-            assert !classesPath.isEmpty();
-            System.out.print("CLASSI: ");
-            for(String s : classesPath) {
-                System.out.print(s + " ");
-            }
-            System.out.print(" SMELL: " + smell);
-            System.out.print(" PRINTLN VARIABLE: " + variableName);
-            System.out.print(" PRINTLN METHOD: " + methodName);
-            System.out.print(" PRINTLN LINENUMBER: " + lineNumber + "\n");
         }
     }
 

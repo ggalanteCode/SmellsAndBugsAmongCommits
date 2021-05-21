@@ -59,8 +59,8 @@ public class MetricCollectionReader implements Reader{
     public void read(String row){
         ArrayList<String> list=splitRow(row);
 
-        int paramNum = list.size();
-        System.out.println("MetricCollectionReader: " + "N. of parameters " + paramNum + " row >> " + row);
+        //int paramNum = list.size();
+        //System.out.println("MetricCollectionReader: " + "N. of parameters " + paramNum + ", row >> " + row);
 
         if(path.matches("(.*)(-Class.csv)"))
             DbHandler.insertMetricClass(list, commitId, projectUrl);

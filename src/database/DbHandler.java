@@ -37,7 +37,7 @@ public class DbHandler {
     private static final String URLPOSTGRES = "jdbc:postgresql://localhost:5432/postgres";
     private static final String URL = "jdbc:postgresql://localhost:5432/sbac";
     private static final String USER = "postgres";
-    private static final String PSW = "postgres";
+    private static final String PSW = "Password";
     private static Connection connection;
     
     public DbHandler(){}
@@ -305,8 +305,12 @@ public class DbHandler {
             stmt.setString(67, url);
             stmt.execute();
         }catch(SQLException ex){
-            Logger.getLogger(DbHandler.class.getName()).log(Level.SEVERE, null, ex);
-            printSQLException(ex);
+            if (ex.getSQLState().equals("22023")) {
+                System.err.println(list.get(5) + " is NOT a class.");
+            } else {
+                Logger.getLogger(DbHandler.class.getName()).log(Level.SEVERE, null, ex);
+                printSQLException(ex);
+            }
         }
     }
     
