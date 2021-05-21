@@ -934,9 +934,10 @@ public class DbHandler {
     * @param idm  id method
     * @param idcl  id class
     * @param idp  id package
+    * @param linenumber lineNumber
     * @throws SQLException incorrect insertion
     * @return boolean true if succesfull
-    */  
+    */
     public static boolean insertSmell(models.Smell s,String idcommit,int idv, int idm, int idcl, int idp, int linenumber) throws SQLException {
         PreparedStatement stmt=null;
         try {
@@ -1015,10 +1016,10 @@ public class DbHandler {
             stmt.setString(1, smellType);
             stmt.setInt(2, d.getIdcl());
             if(d.getIdm()!=0) {
-                stmt = connection.prepareStatement(PreparedSQL.MULTICODESMELLRECORDEXISTS + "idm=?;");
+                stmt = connection.prepareStatement(PreparedSQL.MULTICODESMELLRECORDEXISTS + " idm=?;");
                 stmt.setInt(3, d.getIdm());
             } else if(d.getIdv()!=0) {
-                stmt = connection.prepareStatement(PreparedSQL.MULTICODESMELLRECORDEXISTS + "idv=?;");
+                stmt = connection.prepareStatement(PreparedSQL.MULTICODESMELLRECORDEXISTS + " idv=?;");
                 stmt.setInt(3, d.getIdv());
             }
             ResultSet rs=stmt.executeQuery();
@@ -1068,7 +1069,7 @@ public class DbHandler {
     public static int MethodExistMultiCodeSmell(String smellType, int idcl, int idm) {
         PreparedStatement stmt = null;
         try {
-            stmt = connection.prepareStatement(PreparedSQL.MULTICODESMELLRECORDEXISTS + "idm=?;");
+            stmt = connection.prepareStatement(PreparedSQL.MULTICODESMELLRECORDEXISTS + " idm=?;");
             stmt.setString(1, smellType);
             stmt.setInt(2, idcl);
             stmt.setInt(3, idm);
