@@ -2,9 +2,10 @@ package models;
 
 public class MultiCodeSmell {
     private long id;
-    private String methods, variables, idCommit, idp, idcl, idm, idv = "";
+    private String methods, variables, idCommit = "";
+    private int idp, idcl, idm, idv;
 
-    public MultiCodeSmell(String methods, String variables, String idCommit, String idp, String idcl, String idm, String idv) {
+    public MultiCodeSmell(String methods, String variables, String idCommit, int idp, int idcl, int idm, int idv) {
         this.methods = methods;
         this.variables = variables;
         this.idCommit = idCommit;
@@ -26,13 +27,13 @@ public class MultiCodeSmell {
 
     public String getIdCommit() { return idCommit; }
 
-    public String getIdp() { return idp; }
+    public int getIdp() { return idp; }
 
-    public String getIdcl() { return idcl; }
+    public int getIdcl() { return idcl; }
 
-    public String getIdm() { return idm; }
+    public int getIdm() { return idm; }
 
-    public String getIdv() { return idv; }
+    public int getIdv() { return idv; }
 
     @Override
     public String toString() { return "DataClumps {" + "id=" + id + ", methods=" + methods + ",variables=" + variables + "}"; };

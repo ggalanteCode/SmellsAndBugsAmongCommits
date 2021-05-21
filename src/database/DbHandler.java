@@ -1010,11 +1010,15 @@ public class DbHandler {
     public static boolean insertMultiCodeSmell(int id, String smellType, models.MultiCodeSmell d) throws SQLException {
         PreparedStatement stmt=null;
         try {
-            stmt = connection.prepareStatement(PreparedSQL.MULTICODESMELLRECORDEXISTS);
             stmt.setString(1, smellType);
-            stmt.setString(2, d.getIdcl());
-            stmt.setString(3, d.getIdm());
-            stmt.setString(4, d.getIdv());
+            stmt.setInt(2, d.getIdcl());
+            if(d.getIdm()!=0) {
+                stmt = connection.prepareStatement(PreparedSQL.MULTICODESMELLRECORDEXISTS + "idm=?;");
+                stmt.setInt(3, d.getIdm());
+            } else if(d.getIdv()!=0) {
+                stmt = connection.prepareStatement(PreparedSQL.MULTICODESMELLRECORDEXISTS + "idv=?;");
+                stmt.setInt(3, d.getIdv());
+            }
             ResultSet rs=stmt.executeQuery();
             if(!rs.next()) {
                 stmt = connection.prepareStatement(PreparedSQL.INSERTMULTICODESMELL);
@@ -1023,10 +1027,16 @@ public class DbHandler {
                 stmt.setString(3, d.getMethods());
                 stmt.setString(4, d.getVariables());
                 stmt.setString(5, d.getIdCommit());
-                stmt.setString(6, d.getIdp());
-                stmt.setString(7, d.getIdcl());
-                stmt.setString(8, d.getIdm());
-                stmt.setString(9, d.getIdv());
+                stmt.setInt(6, d.getIdp());
+                stmt.setInt(7, d.getIdcl());
+                if(d.getIdm()==0)
+                    stmt.setNull(8, java.sql.Types.NULL);
+                else
+                    stmt.setInt(8, d.getIdm());
+                if(d.getIdv()==0)
+                    stmt.setNull(9, java.sql.Types.NULL);
+                else
+                    stmt.setInt(9, d.getIdv());
                 stmt.executeUpdate();
                 return true;
             }
@@ -1045,14 +1055,21 @@ public class DbHandler {
     // QUERY PMD
 
 
-    public static int MethodExistMultiCodeSmell(String smellType, String idcl, String idm) {
+    /**
+     * Method used to verify an existent tuple with associated method in table MultiCodeSmell
+     * @param smellType String
+     * @param idcl int
+     * @param idm int
+     * @throws SQLException incorrect insertion
+     * @return int return the associated ID method if there is one on the table, return 0 otherwise
+     */
+    public static int MethodExistMultiCodeSmell(String smellType, int idcl, int idm) {
         PreparedStatement stmt = null;
         try {
-            stmt = connection.prepareStatement(PreparedSQL.MULTICODESMELLRECORDEXISTS);
+            stmt = connection.prepareStatement(PreparedSQL.MULTICODESMELLRECORDEXISTS + "idm=?;");
             stmt.setString(1, smellType);
-            stmt.setString(2, idcl);
-            stmt.setString(3, idm);
-            stmt.setString(4, "not required");
+            stmt.setInt(2, idcl);
+            stmt.setInt(3, idm);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1);

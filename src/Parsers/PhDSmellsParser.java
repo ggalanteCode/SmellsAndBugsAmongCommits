@@ -322,25 +322,25 @@ public class PhDSmellsParser {
 
                         try {
                             //idMethod
-                            String idMethod1 = InsertMethod(methodName1, c1) + "";
-                            String idMethod2 = InsertMethod(methodName2, c2) + "";
+                            int idMethod1 = InsertMethod(methodName1, c1);
+                            int idMethod2 = InsertMethod(methodName2, c2);
 
                             //idMultiCodeBlock & Writing on DB
-                            int IDBlock = DbHandler.MethodExistMultiCodeSmell("Data Clumps", existsClass[0] + "", idMethod1);
+                            int IDBlock = DbHandler.MethodExistMultiCodeSmell("Data Clumps", existsClass[0], idMethod1);
                             if(IDBlock==0) {
-                                IDBlock = DbHandler.MethodExistMultiCodeSmell("Data Clumps", existsClass[1] + "", idMethod2);
+                                IDBlock = DbHandler.MethodExistMultiCodeSmell("Data Clumps", existsClass[1], idMethod2);
                                 if(IDBlock==0) {
                                     IDBlock = ++dataclumpblockmaxid;
-                                    mcs = new MultiCodeSmell(methodName1, "not required", idCommit, existsPackage[0] + "", existsClass[0] + "", idMethod1, "not required");
+                                    mcs = new MultiCodeSmell(methodName1, "not required", idCommit, existsPackage[0], existsClass[0], idMethod1, 0);
                                     DbHandler.insertMultiCodeSmell(IDBlock, "Data Clumps", mcs);
-                                    mcs = new MultiCodeSmell(methodName2, "not required", idCommit, existsPackage[1] + "", existsClass[1] + "", idMethod2, "not required");
+                                    mcs = new MultiCodeSmell(methodName2, "not required", idCommit, existsPackage[1], existsClass[1], idMethod2, 0);
                                     DbHandler.insertMultiCodeSmell(IDBlock, "Data Clumps", mcs);
                                 } else {
-                                    mcs = new MultiCodeSmell(methodName1, "not required", idCommit, existsPackage[0] + "", existsClass[0] + "", idMethod1, "not required");
+                                    mcs = new MultiCodeSmell(methodName1, "not required", idCommit, existsPackage[0], existsClass[0], idMethod1, 0);
                                     DbHandler.insertMultiCodeSmell(IDBlock, "Data Clumps", mcs);
                                 }
                             } else {
-                                mcs = new MultiCodeSmell(methodName2, "not required", idCommit, existsPackage[1] + "", existsClass[1] + "", idMethod2, "not required");
+                                mcs = new MultiCodeSmell(methodName2, "not required", idCommit, existsPackage[1], existsClass[1], idMethod2, 0);
                                 DbHandler.insertMultiCodeSmell(IDBlock, "Data Clumps", mcs);
                             }
 
@@ -350,13 +350,13 @@ public class PhDSmellsParser {
 
                         //idVariables
                         try {
-                            ArrayList<String> idVariables = new ArrayList<String>();
+                            ArrayList<Integer> idVariables = new ArrayList<Integer>();
                             ArrayList<String> variablesName = new ArrayList<String>();
-                            String currentIdVariable = "";
+                            int currentIdVariable;
                             for (int i=1; i<clumpsSmell.length; i+=2) {
-                                currentIdVariable = InsertVariable(clumpsSmell[i].trim(), clumpsSmell[i+1].substring(6).trim(), c1) + "";
+                                currentIdVariable = InsertVariable(clumpsSmell[i].trim(), clumpsSmell[i+1].substring(6).trim(), c1);
                                 idVariables.add(currentIdVariable);
-                                currentIdVariable = InsertVariable(clumpsSmell[i].trim(), clumpsSmell[i+1].substring(6).trim(), c2) + "";
+                                currentIdVariable = InsertVariable(clumpsSmell[i].trim(), clumpsSmell[i+1].substring(6).trim(), c2);
                                 idVariables.add(currentIdVariable);
                                 variablesName.add(clumpsSmell[i].trim());
                             }
@@ -364,9 +364,9 @@ public class PhDSmellsParser {
                             //Writing on DB
                             for(int i=0; i<variablesName.size(); i++) {
                                 dataclumpblockmaxid++;
-                                mcs = new MultiCodeSmell("not required", variablesName.get(i), idCommit, existsPackage[0] + "", existsClass[0] + "", "not required", idVariables.get(i*2));
+                                mcs = new MultiCodeSmell("not required", variablesName.get(i), idCommit, existsPackage[0], existsClass[0], 0, idVariables.get(i*2));
                                 DbHandler.insertMultiCodeSmell(dataclumpblockmaxid, "Data Clumps", mcs);
-                                mcs = new MultiCodeSmell("not required", variablesName.get(i), idCommit, existsPackage[1] + "", existsClass[1] + "", "not required", idVariables.get((i*2)+1));
+                                mcs = new MultiCodeSmell("not required", variablesName.get(i), idCommit, existsPackage[1], existsClass[1], 0, idVariables.get((i*2)+1));
                                 DbHandler.insertMultiCodeSmell(dataclumpblockmaxid, "Data Clumps", mcs);
                             }
                         } catch(SQLException e) {e.printStackTrace();}

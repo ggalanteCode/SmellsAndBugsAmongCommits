@@ -180,11 +180,11 @@ public class PreparedSQL {
                                             "    smelltype text not null ,\n" +
                                             "    methodname text not null ,\n" +
                                             "    variablename text not null ,\n" +
-                                            "    idc text not null ,\n" +
-                                            "    idp text not null ,\n" +
-                                            "    idcl text not null ,\n" +
-                                            "    idm text not null ,\n" +
-                                            "    idv text not null ,\n" +
+                                            "    idc text not null references commit on delete cascade on update cascade ,\n" +
+                                            "    idp integer references package on delete cascade on update cascade,\n" +
+                                            "    idcl integer references class on delete cascade on update cascade ,\n" +
+                                            "    idm integer references method on delete cascade on update cascade ,\n" +
+                                            "    idv integer references variable on delete cascade on update cascade ,\n" +
                                             "    primary key(id, idm, idv) \n" +
                                             ") ;";
     
@@ -548,7 +548,7 @@ public class PreparedSQL {
   
     public static final String SMELLRECORDEXISTS= "select smell.id from smell where key =? and value=? and idc=? and";
 
-    public static final String MULTICODESMELLRECORDEXISTS= "select multicodesmell.id from multicodesmell where smelltype=? and idcl=? and idm=? and idv=?";
+    public static final String MULTICODESMELLRECORDEXISTS= "select multicodesmell.id from multicodesmell where smelltype=? and idcl=? and";
 
     public static final String LASTIDBLOCK= "select max(id) as max_id from multicodesmell";
     
