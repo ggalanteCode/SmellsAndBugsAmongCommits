@@ -185,7 +185,7 @@ public class PreparedSQL {
                                             "    idcl integer references class on delete cascade on update cascade ,\n" +
                                             "    idm integer references method on delete cascade on update cascade ,\n" +
                                             "    idv integer references variable on delete cascade on update cascade ,\n" +
-                                            "    primary key(id, idm, idv) \n" +
+                                            "    primary key(id, methodname, variablename, idcl) \n" +
                                             ") ;";
     
     public static final String CLONEISTANCE = "create table cloneistance (\n" +

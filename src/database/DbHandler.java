@@ -1032,8 +1032,14 @@ public class DbHandler {
                 stmt.setString(5, d.getIdCommit());
                 stmt.setInt(6, d.getIdp());
                 stmt.setInt(7, d.getIdcl());
-                stmt.setInt(8, d.getIdm());
-                stmt.setInt(9, d.getIdv());
+                if(d.getIdm()==0)
+                    stmt.setNull(8, java.sql.Types.NULL);
+                else
+                    stmt.setInt(8, d.getIdm());
+                if(d.getIdv()==0)
+                    stmt.setNull(9, java.sql.Types.NULL);
+                else
+                    stmt.setInt(9, d.getIdv());
                 stmt.executeUpdate();
                 return true;
             }
