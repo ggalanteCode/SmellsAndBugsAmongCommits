@@ -530,6 +530,10 @@ public class PreparedSQL {
 
     public static final String METHODINCLASS = "select distinct method.id from method where method.name = ? and method.idc = ?;";
 
+    public static final String METHODWITHSIGNATURE = "select distinct method.id from method where method.name = ? and method.signature = ?;";
+
+    public static final String VARIABLEWITHROLE = "select distinct variable.id from variable where variable.name = ? and variable.role = ?;";
+
     public static final String VARIABLEINCLASS = "select distinct variable.id from variable where variable.name = ? and variable.idc = ?;";
 
     public static final String CLASSPATH = "select class.path from class where class.id = ?;";

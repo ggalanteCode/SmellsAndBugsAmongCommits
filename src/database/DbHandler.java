@@ -37,7 +37,7 @@ public class DbHandler {
     private static final String URLPOSTGRES = "jdbc:postgresql://localhost:5432/postgres";
     private static final String URL = "jdbc:postgresql://localhost:5432/sbac";
     private static final String USER = "postgres";
-    private static final String PSW = "Password";
+    private static final String PSW = "postgres";
     private static Connection connection;
     
     public DbHandler(){}
@@ -692,29 +692,39 @@ public class DbHandler {
             long mid=-1,vid=-1;
             Method m = bi.getM();
             if(m != null){
-                stmt = connection.prepareStatement(PreparedSQL.INSERTMETHOD);
-                stmt.setString(1, m.getName());
-                stmt.setBoolean(2, m.getIsStatic());
-                stmt.setString(3, m.getRole());
-                stmt.setString(4, m.getSignature());
-                stmt.setNull(5,java.sql.Types.NULL);
-                stmt.execute();
-                ResultSet  rs = stmt.getResultSet();
-                rs.next();
-                mid=rs.getInt(1);
+                int existsMethod = MethodWithSignature(m.getName(), m.getSignature());
+                if(existsMethod != 0) {
+                    mid = existsMethod;
+                } else {
+                    stmt = connection.prepareStatement(PreparedSQL.INSERTMETHOD);
+                    stmt.setString(1, m.getName());
+                    stmt.setBoolean(2, m.getIsStatic());
+                    stmt.setString(3, m.getRole());
+                    stmt.setString(4, m.getSignature());
+                    stmt.setNull(5, java.sql.Types.NULL);
+                    stmt.execute();
+                    ResultSet rs = stmt.getResultSet();
+                    rs.next();
+                    mid = rs.getInt(1);
+                }
             }
             Variable v = bi.getV();
             if(v != null){
-                stmt = connection.prepareStatement(PreparedSQL.INSERTVARIABLE);
-                stmt.setString(1, v.getName());
-                stmt.setBoolean(2, v.getIsStatic());
-                stmt.setString(3, v.getRole());
-                stmt.setString(4, v.getValue());
-                stmt.setNull(5,java.sql.Types.NULL);
-                stmt.execute();
-                ResultSet  rs = stmt.getResultSet();
-                rs.next();
-                vid=rs.getInt(1);
+                int existsVariable = VariableWithRole(v.getName(), v.getRole());
+                if(existsVariable != 0) {
+                    vid = existsVariable;
+                } else {
+                    stmt = connection.prepareStatement(PreparedSQL.INSERTVARIABLE);
+                    stmt.setString(1, v.getName());
+                    stmt.setBoolean(2, v.getIsStatic());
+                    stmt.setString(3, v.getRole());
+                    stmt.setString(4, v.getValue());
+                    stmt.setNull(5, java.sql.Types.NULL);
+                    stmt.execute();
+                    ResultSet rs = stmt.getResultSet();
+                    rs.next();
+                    vid = rs.getInt(1);
+                }
             }
             stmt = connection.prepareStatement(PreparedSQL.INSERTBUGISTANCE);
             stmt.setString(1, bi.getType());
@@ -1314,6 +1324,48 @@ public class DbHandler {
             PreparedStatement ps = connection.prepareStatement(PreparedSQL.METHODINCLASS);
             ps.setString(1, name);
             ps.setInt(2, classId);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next())
+                return rs.getInt("id");
+            else
+                return 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DbHandler.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+            return 0;
+        }finally{
+            if(stmt!=null)
+                stmt.close();
+        }
+    }
+
+    public static int MethodWithSignature(String name, String signature) throws SQLException {
+        Statement stmt=null;
+        try {
+            PreparedStatement ps = connection.prepareStatement(PreparedSQL.METHODWITHSIGNATURE);
+            ps.setString(1, name);
+            ps.setString(2, signature);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next())
+                return rs.getInt("id");
+            else
+                return 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DbHandler.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+            return 0;
+        }finally{
+            if(stmt!=null)
+                stmt.close();
+        }
+    }
+
+    public static int VariableWithRole(String name, String role) throws SQLException {
+        Statement stmt=null;
+        try {
+            PreparedStatement ps = connection.prepareStatement(PreparedSQL.VARIABLEWITHROLE);
+            ps.setString(1, name);
+            ps.setString(2, role);
             ResultSet rs = ps.executeQuery();
             if(rs.next())
                 return rs.getInt("id");

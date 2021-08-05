@@ -15,6 +15,9 @@ import java.nio.file.Paths;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
+import org.eclipse.jgit.api.errors.RefNotFoundException;
 import org.eclipse.jgit.revwalk.RevCommit;
 import models.Commit;
 import org.eclipse.jgit.lib.Ref;
@@ -238,18 +241,23 @@ public class RepositoryHandler {
         try {
             this.gitRepo.checkout().setName(version).setStartPoint(version).call();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Impossibile analizzare questa release.",
+            JOptionPane.showMessageDialog(null, "Questa release potrebbe non essere analizzabile",
                     "Attenzione", JOptionPane.INFORMATION_MESSAGE);
 
         }
     }
+
     
     /**
      * Get all the commits that contains in the messagge a reference of fixing code
      * @throws GitAPIException
      */
-    public void reset() throws GitAPIException{
-        this.gitRepo.checkout().setName("master").call();
+    public void reset() throws GitAPIException {
+        try {
+            this.gitRepo.checkout().setName("master").call();
+        } catch(RefNotFoundException e) {
+            this.gitRepo.branchCreate().setName("master").call();
+        }
     }
     
     /**
