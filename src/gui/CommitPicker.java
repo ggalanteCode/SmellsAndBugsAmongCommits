@@ -235,7 +235,7 @@ public class CommitPicker extends javax.swing.JFrame {
         //Aggiungere verifica esistenza file POM.xml, in caso contrario avvisare.
 
         String projectPath = rh.getLocalPath().toString() + File.separator;
-        String [] possibleNamesBuildFile = {"POM.xml","pom.xml","Pom.xml"};
+        String [] possibleNamesBuildFile = {"POM.xml","pom.xml","Pom.xml", "build.xml", "Build.xml"};
         File buildFile;
         int nTentativi = possibleNamesBuildFile.length;
         int test = 0;
@@ -247,7 +247,7 @@ public class CommitPicker extends javax.swing.JFrame {
             if (buildFile.exists()){
                 break;
             } else if (test == nTentativi) {
-                Adv dialog = new Adv("Build file not found. Coninue anyway?");
+                Adv dialog = new Adv("Build file not found. Continue anyway?");
                 if (!dialog.getDecision()) {
                     return;
                 }
