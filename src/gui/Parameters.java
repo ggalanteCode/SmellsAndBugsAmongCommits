@@ -6,8 +6,12 @@
 package gui;
 
 import Parsers.ParserStarter;
+
+import java.io.FileWriter;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+
+import com.google.common.base.Stopwatch;
 import models.Project;
 import repository.RepositoryHandler;
 import tools.Analyze;
@@ -245,7 +249,8 @@ public class Parameters extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void confirmBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmBActionPerformed
-
+        long stopwatch = System.currentTimeMillis();
+        System.out.println("CRONOMETRO PARTITO");
         tools = new ArrayList<>();
 
         if(smcheck.isSelected()){
@@ -306,6 +311,12 @@ public class Parameters extends javax.swing.JDialog {
             String checkEnd = Loading.checkEnd(tools);
             new Dialog(checkEnd); //exitcode
             setVisible(true);
+            stopwatch = System.currentTimeMillis() - stopwatch;
+            try {
+                FileWriter myWriter = new FileWriter("C:\\Users\\laura\\OneDrive - Università degli Studi di Milano\\Desktop\\Tirocinio\\Database\\cronometro.txt", true);
+                myWriter.write("CRONOMETRO: " + stopwatch/1000 + " sec");
+                myWriter.close();
+            } catch(IOException e) {}
             if(!tools.isEmpty()){
                 new ParserStarter(tools,commitId,p.getUrl());
             }

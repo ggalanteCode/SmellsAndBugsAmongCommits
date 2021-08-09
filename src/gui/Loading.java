@@ -48,7 +48,7 @@ public class Loading extends javax.swing.JDialog {
             else
                 end+= tmp.getClass().getSimpleName()+": tool successful<BR>";
         }
-        
+
         return end+="</HTML>";
     }
 
