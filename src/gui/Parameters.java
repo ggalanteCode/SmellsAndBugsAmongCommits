@@ -314,7 +314,7 @@ public class Parameters extends javax.swing.JDialog {
             stopwatch = System.currentTimeMillis() - stopwatch;
             try {
                 FileWriter myWriter = new FileWriter("C:\\Users\\laura\\OneDrive - Università degli Studi di Milano\\Desktop\\Tirocinio\\Database\\cronometro.txt", true);
-                myWriter.write("CRONOMETRO: " + stopwatch/1000 + " sec");
+                myWriter.write("CRONOMETRO: " + stopwatch/1000 + " sec\r\n");
                 myWriter.close();
             } catch(IOException e) {}
             if(!tools.isEmpty()){
