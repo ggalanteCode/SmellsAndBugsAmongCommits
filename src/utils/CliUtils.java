@@ -153,9 +153,10 @@ public class CliUtils {
         int readBytes;
         byte[] buffer = new byte[2048];
         while ((readBytes = inputStream.read(buffer)) >= 0) {
-            bytes.write(buffer, 0, readBytes);
+        //    bytes.write(buffer, 0, readBytes);
         }
-        return new String(bytes.toByteArray());
+        // return new String(bytes.toByteArray());
+        return "ggg";
     }
 
 

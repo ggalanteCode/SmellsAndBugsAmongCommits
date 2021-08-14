@@ -43,16 +43,18 @@ public class PhDSmellsParser {
         try {
 
             String line;
+            String nextLine;
 
             boolean continueReading = true;
             boolean startAnalysis = false;
 
             dataclumpblockmaxid = DbHandler.getLastIDBlock();
+            nextLine = reader.readLine().trim();
 
             do {
-
-                line = reader.readLine().trim();
-                //System.out.println(line);
+                line = nextLine.trim();
+                if((nextLine = reader.readLine()) == null)
+                    line = "***END BAD SMELLS TRANSCRIPTION***";
 
                 switch (line) {
 
@@ -234,10 +236,14 @@ public class PhDSmellsParser {
                 case "Switch Statement":
                     String[] switchSmell = line.split("[()']+");
                     lineNumber = switchSmell[1].trim();
-                    if(!(switchSmell[4].equals("."))) {
-                        methodName = switchSmell[3].trim() + "(" + switchSmell[4].trim() + ")";
+                    if(switchSmell[3].equals(".")) {
+                        methodName = "";
                     } else {
-                        methodName = switchSmell[3].trim() + "()";
+                        if (!(switchSmell[4].equals("."))) {
+                            methodName = switchSmell[3].trim() + "(" + switchSmell[4].trim() + ")";
+                        } else {
+                            methodName = switchSmell[3].trim() + "()";
+                        }
                     }
 
                     try {
@@ -246,7 +252,7 @@ public class PhDSmellsParser {
 
                         //Writing on DB
                         sm = new Smell("Switch Statement", 0.0);
-                        DbHandler.insertSmell(sm, idCommit, 0, idMethod, existsClass[0], existsPackage[0], 0);
+                        DbHandler.insertSmell(sm, idCommit, 0, idMethod, existsClass[0], existsPackage[0], Integer.valueOf(lineNumber));
 
                     } catch(SQLException e) {e.printStackTrace();}
                     break;
