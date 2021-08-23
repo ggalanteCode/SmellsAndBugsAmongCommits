@@ -1,6 +1,8 @@
 package Parsers;
 
 import database.DbHandler;
+
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
@@ -39,30 +41,47 @@ public class MetricHunterReader implements Reader{
     @Override
     public void read(String row) {
         if(row.contains("warning_Class")){
-            
             String[] MHInfo=row.split("\\(");
             String[] MHInfo2=MHInfo[1].split("\\)");
+            // System.out.println("WARNING CLASS: " + MHInfo2[1]);
             String codice=(MHInfo2[1].substring(1)).split("_")[0];
             String valore=MHInfo[2].split("'")[3];
+            String classPath =MHInfo[0];
+            classPath = classPath.substring(0, classPath.lastIndexOf(".java"));
+            String className =Paths.get(classPath).getName(Paths.get(classPath).getNameCount()-1).toString();
+            classPath = classPath.replace(File.separator, ".");
+            String[] classPathSplit = classPath.split(".src.");
+            classPath = classPathSplit[classPathSplit.length-1];
 
-            Path p= Paths.get(MHInfo[0]);
             try {
-                int exists = DbHandler.classInProject(p.getName(p.getNameCount()-1).toString(),this.projectUrl);
-                c= new Class(p.getName(p.getNameCount()-1).toString(),MHInfo[0]);
-                if(exists==0)
-                        DbHandler.insertClass(c);
-                else{
+                int exists = DbHandler.classInProject(className, classPath);
+                c= new Class(className, classPath);
+                if(exists==0) {
+                    DbHandler.insertClass(c);
+                }else{
                     String path=DbHandler.getClassPath(exists);
                     if(path==null){
-                        DbHandler.updateClassPath(MHInfo[0],exists);
+                        DbHandler.updateClassPath(classPath,exists);
                         c.setId(exists);
                     }
                     else{
-                        if(!DbHandler.getClassPath(exists).equals(MHInfo[0]))
+                        if(!DbHandler.getClassPath(exists).equals(classPath)) {
                             DbHandler.insertClass(c);
-                        else
+                        }else
                             c.setId(exists);
                     }
+                }
+                String packagePath = classPath.substring(0, classPath.lastIndexOf("."));
+                String packageName;
+                if(packagePath.lastIndexOf(".") != -1)
+                    packageName = packagePath.substring(packagePath.lastIndexOf(".") + 1);
+                else
+                    packageName = packagePath;
+                models.Package pac = new models.Package(packageName);
+                pac.setPath(packagePath);
+                int existsPackage = DbHandler.packageExist(packageName);
+                if(existsPackage==0) {
+                    DbHandler.insertPackage(pac);
                 }
                 mh= new MetricHunter(Integer.parseInt(MHInfo2[0]), Double.parseDouble(valore), codice);
                 DbHandler.insertMetricHunter(mh,commitId,(int)c.getId(),0);
@@ -75,26 +94,44 @@ public class MetricHunterReader implements Reader{
                 String[] MHInfo=row.split("\\(");
                 String[] MHInfo2=MHInfo[1].split("\\)");
                 String[] MHInfo3=row.split("'");
+                // System.out.println("WARNING METHOD: " + MHInfo[0]);
                 String classPath =MHInfo[0];
+                classPath = classPath.substring(0, classPath.lastIndexOf(".java"));
                 String className =Paths.get(classPath).getName(Paths.get(classPath).getNameCount()-1).toString();
+                classPath = classPath.replace(File.separator, ".");
+                String[] classPathSplit = classPath.split(".src.");
+                classPath = classPathSplit[classPathSplit.length-1];
                 try {
-                    int existsClass = DbHandler.classInProject(className,this.projectUrl);
+                    int existsClass = DbHandler.classInProject(className,classPath);
                     c= new Class(className,classPath);
-                    if(existsClass==0)
-                            DbHandler.insertClass(c);
-                    else{
+                    if(existsClass==0) {
+                        DbHandler.insertClass(c);
+                    }else{
                         String path=DbHandler.getClassPath(existsClass);
                         if(path==null){
                             DbHandler.updateClassPath(classPath,existsClass);
                             c.setId(existsClass);
                         }
                         else{
-                            if(!DbHandler.getClassPath(existsClass).equals(MHInfo[0]))
+                            if(!DbHandler.getClassPath(existsClass).equals(classPath)) {
                                 DbHandler.insertClass(c);
-                            else
+                            }else
                                 c.setId(existsClass);
                         }
                     }
+                    String packagePath = classPath.substring(0, classPath.lastIndexOf("."));
+                    String packageName;
+                    if(packagePath.lastIndexOf(".") != -1)
+                        packageName = packagePath.substring(packagePath.lastIndexOf(".") + 1);
+                    else
+                        packageName = packagePath;
+                    models.Package pac = new models.Package(packageName);
+                    pac.setPath(packagePath);
+                    int existsPackage = DbHandler.packageExist(packageName);
+                    if(existsPackage==0) {
+                        DbHandler.insertPackage(pac);
+                    }
+
                     String methodSignature = MHInfo3[1];
                     int i=methodSignature.indexOf(" ");
                     if(i==-1) i=0;

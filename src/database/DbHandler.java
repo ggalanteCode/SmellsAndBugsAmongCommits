@@ -28,6 +28,7 @@ import models.Method;
 import models.Project;
 import models.Variable;
 import models.IssueCollection;
+import models.Package;
 
 /**
     * Class used to manage all the interactions with database
@@ -689,7 +690,48 @@ public class DbHandler {
     public static void insertBugIstance(BugIstance bi,int bcid) throws SQLException{
         PreparedStatement stmt=null;
         try {
-            long mid=-1,vid=-1;
+            long mid=-1,vid=-1,clid=-1,pacid=-1;
+
+            models.Package pac = bi.getPac();
+            if(pac != null){
+                int existsPackage = packageExist(pac.getName());
+                if(existsPackage != 0) {
+                    pacid = existsPackage;
+                } else {
+                    stmt = connection.prepareStatement(PreparedSQL.INSERTPACKAGE);
+                    stmt.setString(1, pac.getName());
+                    if(pac.getPath() != null)
+                        stmt.setString(2, pac.getPath());
+                    else
+                        stmt.setNull(2, java.sql.Types.NULL);
+                    stmt.execute();
+                    ResultSet rs = stmt.getResultSet();
+                    rs.next();
+                    pacid = rs.getInt(1);
+                }
+
+            }
+
+            models.Class cl = bi.getCl();
+            if(cl != null){
+                int existsClass = classInProject(cl.getName(), cl.getPath());
+                if(existsClass != 0) {
+                    clid = existsClass;
+                } else {
+                    stmt = connection.prepareStatement(PreparedSQL.INSERTCLASS);
+                    stmt.setString(1, cl.getName());
+                    if(cl.getPath() != null)
+                        stmt.setString(2, cl.getPath());
+                    else
+                        stmt.setNull(2, java.sql.Types.NULL);
+                    stmt.execute();
+                    ResultSet rs = stmt.getResultSet();
+                    rs.next();
+                    clid = rs.getInt(1);
+                }
+
+            }
+
             Method m = bi.getM();
             if(m != null){
                 int existsMethod = MethodWithSignature(m.getName(), m.getSignature());
@@ -701,7 +743,7 @@ public class DbHandler {
                     stmt.setBoolean(2, m.getIsStatic());
                     stmt.setString(3, m.getRole());
                     stmt.setString(4, m.getSignature());
-                    stmt.setNull(5, java.sql.Types.NULL);
+                    stmt.setInt(5, (int)clid);
                     stmt.execute();
                     ResultSet rs = stmt.getResultSet();
                     rs.next();
@@ -719,7 +761,7 @@ public class DbHandler {
                     stmt.setBoolean(2, v.getIsStatic());
                     stmt.setString(3, v.getRole());
                     stmt.setString(4, v.getValue());
-                    stmt.setNull(5, java.sql.Types.NULL);
+                    stmt.setInt(5, (int)clid);
                     stmt.execute();
                     ResultSet rs = stmt.getResultSet();
                     rs.next();
@@ -738,18 +780,26 @@ public class DbHandler {
             stmt.setInt(9, bi.getStartbytecode());
             stmt.setInt(10, bi.getEndsbytecode());
             stmt.setString(11, bi.getSourcepath());
-            if(mid!=-1)
-                stmt.setLong(12, mid);
+            if(pacid!=-1)
+                stmt.setLong(12, pacid);
             else
                 stmt.setNull(12,java.sql.Types.NULL);
-            if(vid!=-1)
-                stmt.setLong(13, vid);
+            if(clid!=-1)
+                stmt.setLong(13, clid);
             else
                 stmt.setNull(13,java.sql.Types.NULL);
-            if(bcid!=-1)
-                stmt.setLong(14, bcid);
+            if(mid!=-1)
+                stmt.setLong(14, mid);
             else
                 stmt.setNull(14,java.sql.Types.NULL);
+            if(vid!=-1)
+                stmt.setLong(15, vid);
+            else
+                stmt.setNull(15,java.sql.Types.NULL);
+            if(bcid!=-1)
+                stmt.setLong(16, bcid);
+            else
+                stmt.setNull(16,java.sql.Types.NULL);
             
             stmt.executeUpdate();
                 

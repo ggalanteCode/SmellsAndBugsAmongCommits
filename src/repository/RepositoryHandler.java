@@ -9,6 +9,7 @@ import database.DbHandler;
 import gui.GitTokenRequest;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.CheckoutConflictException;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -243,6 +244,7 @@ public class RepositoryHandler {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Questa release potrebbe non essere analizzabile",
                     "Attenzione", JOptionPane.INFORMATION_MESSAGE);
+            e.printStackTrace();
 
         }
     }

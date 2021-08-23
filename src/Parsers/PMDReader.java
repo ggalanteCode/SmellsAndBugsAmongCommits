@@ -1,6 +1,8 @@
 package Parsers;
 
 import database.DbHandler;
+
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
@@ -41,24 +43,42 @@ public class PMDReader implements Reader{
         String[] PMDInfo2=PMDInfo[1].split("\\)");
         String codice=(PMDInfo2[1].substring(5)).split(":")[0];
         String soluzione=row.split(":")[3].trim();
-        Path p= Paths.get(PMDInfo[0]);
+        // System.out.println("PMD: " + PMDInfo[0]);
+        String classPath =PMDInfo[0];
+        classPath = classPath.substring(0, classPath.lastIndexOf(".java"));
+        String className =Paths.get(classPath).getName(Paths.get(classPath).getNameCount()-1).toString();
+        classPath = classPath.replace(File.separator, ".");
+        String[] classPathSplit = classPath.split(".src.");
+        classPath = classPathSplit[classPathSplit.length-1];
         try {
-            c= new Class(p.getName(p.getNameCount()-1).toString(),PMDInfo[0]);
-            int existsClass = DbHandler.classInProject(p.getName(p.getNameCount()-1).toString(),this.projectUrl);
-            if(existsClass==0)
-                    DbHandler.insertClass(c);
-            else{
+            c= new Class(className, classPath);
+            int existsClass = DbHandler.classInProject(className, classPath);
+            if(existsClass==0) {
+                DbHandler.insertClass(c);
+            }else{
                 String path=DbHandler.getClassPath(existsClass);
                 if(path==null){
-                    DbHandler.updateClassPath(PMDInfo[0],existsClass);
+                    DbHandler.updateClassPath(classPath,existsClass);
                     c.setId(existsClass);
                 }
                 else{
-                    if(!DbHandler.getClassPath(existsClass).equals(PMDInfo[0]))
+                    if(!DbHandler.getClassPath(existsClass).equals(classPath)) {
                         DbHandler.insertClass(c);
-                    else
+                    } else
                         c.setId(existsClass);
                 }
+            }
+            String packagePath = classPath.substring(0, classPath.lastIndexOf("."));
+            String packageName;
+            if(packagePath.lastIndexOf(".") != -1)
+                packageName = packagePath.substring(packagePath.lastIndexOf(".") + 1);
+            else
+                packageName = packagePath;
+            models.Package pac = new models.Package(packageName);
+            pac.setPath(packagePath);
+            int existsPackage = DbHandler.packageExist(packageName);
+            if(existsPackage==0) {
+                DbHandler.insertPackage(pac);
             }
             pmd= new Pmd(Integer.parseInt(PMDInfo2[0]), soluzione, codice);
             DbHandler.insertPMD(pmd, commitId, (int)c.getId());

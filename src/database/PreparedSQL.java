@@ -79,6 +79,8 @@ public class PreparedSQL {
                                             "	startbytecode integer ,\n" +
                                             "	endsbytecode integer ,\n" +
                                             "	sourcepath text ,\n" +
+                                            "	idp integer references package on delete cascade on update cascade ,\n" +
+                                            "	idcl integer references class on delete cascade on update cascade ,\n" +
                                             "	idm integer references method on delete cascade on update cascade ,\n" +
                                             "	idv integer references variable on delete cascade on update cascade ,\n" +
                                             "	idbc integer references bugcollection on delete cascade on update cascade \n" +
@@ -461,7 +463,7 @@ public class PreparedSQL {
     
     public static final String INSERTBUGCOLLECTION = "insert into bugcollection (time,version,referencedclasses,totalclasses,totalbugs,missingclass,idc) values (?,?,?,?,?,?,?) returning id;";
     
-    public static final String INSERTBUGISTANCE = "insert into bugistance (type,priority,rank,abbrev,category,classname,startsourceline,endsourceline,startbytecode,endsbytecode,sourcepath,idm,idv,idbc) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+    public static final String INSERTBUGISTANCE = "insert into bugistance (type,priority,rank,abbrev,category,classname,startsourceline,endsourceline,startbytecode,endsbytecode,sourcepath,idp, idcl, idm,idv,idbc) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
     
     public static final String INSERTMETHOD = "insert into method (name,isStatic,role,signature,idc) values (?,?,?,?,?) returning id;";
     

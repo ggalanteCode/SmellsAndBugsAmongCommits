@@ -125,7 +125,6 @@ public class PhDSmellsParser {
             for (String p : paths) {
                 classPath = "";
                 beginWritePath = false;
-
                 p = p.replace(File.separatorChar,'§');
                 String[] path = p.split("§");
 

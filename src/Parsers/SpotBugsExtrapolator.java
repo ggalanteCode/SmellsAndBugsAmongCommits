@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.*;
+import models.Class;
+import models.Package;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -238,8 +240,30 @@ public class SpotBugsExtrapolator implements Extrapolator{
             for(int j=0 ; j<l ; j++){
                 String name = attributes.item(j).getNodeName();
                 switch(name){
-                    case "classname": 
-                        bi.setClassname(attributes.item(j).getNodeValue());
+                    case "classname":
+                        String fullclassname = attributes.item(j).getNodeValue();
+                        String packagePath, className, packageName;
+                        if(fullclassname.lastIndexOf(".") != -1) {
+                            int indexlastpointclass = fullclassname.lastIndexOf(".");
+                            className = fullclassname.substring(indexlastpointclass + 1);
+                            packagePath = fullclassname.substring(0, indexlastpointclass);
+                            if(packagePath.lastIndexOf(".") != -1) {
+                                int indexlastpointpackage = packagePath.lastIndexOf(".");
+                                packageName = packagePath.substring(indexlastpointpackage + 1);
+                            } else {
+                                packageName = packagePath;
+                            }
+                        } else {
+                            className = fullclassname;
+                            packagePath = className;
+                            packageName = packagePath;
+                        }
+                        Class cl = new Class(className, fullclassname);
+                        Package pac = new Package(packageName);
+                        pac.setPath(packagePath);
+                        bi.setClassname(fullclassname);
+                        bi.setCl(cl);
+                        bi.setPac(pac);
                         break;
                     case "end": 
                         bi.setEndsourceline(Integer.parseInt(attributes.item(j).getNodeValue()));   

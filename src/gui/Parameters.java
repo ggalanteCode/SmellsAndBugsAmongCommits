@@ -249,7 +249,7 @@ public class Parameters extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void confirmBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmBActionPerformed
-        long stopwatch = System.currentTimeMillis();
+        // long stopwatch = System.currentTimeMillis();
         System.out.println("CRONOMETRO PARTITO");
         tools = new ArrayList<>();
 
@@ -311,10 +311,10 @@ public class Parameters extends javax.swing.JDialog {
             String checkEnd = Loading.checkEnd(tools);
             new Dialog(checkEnd); //exitcode
             setVisible(true);
-            stopwatch = System.currentTimeMillis() - stopwatch;
+            // stopwatch = System.currentTimeMillis() - stopwatch;
             try {
                 FileWriter myWriter = new FileWriter("C:\\Users\\laura\\OneDrive - Università degli Studi di Milano\\Desktop\\Tirocinio\\Database\\cronometro.txt", true);
-                myWriter.write("CRONOMETRO: " + stopwatch/1000 + " sec\r\n");
+                // myWriter.write("CRONOMETRO: " + stopwatch/1000 + " sec\r\n");
                 myWriter.close();
             } catch(IOException e) {}
             if(!tools.isEmpty()){

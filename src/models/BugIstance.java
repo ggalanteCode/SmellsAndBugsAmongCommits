@@ -15,9 +15,19 @@ public class BugIstance {
     private int priority,rank,startsourceline,endsourceline,startbytecode,endsbytecode;
     private Method m;
     private Variable v;
+    private Class cl;
+    private Package pac;
 
     public BugIstance( ) {
     }
+
+    public Class getCl() { return cl; }
+
+    public void setCl(Class cl) { this.cl = cl;}
+
+    public Package getPac() { return pac; }
+
+    public void setPac(Package pac) { this.pac = pac;}
     
     public Method getM() {
         return m;

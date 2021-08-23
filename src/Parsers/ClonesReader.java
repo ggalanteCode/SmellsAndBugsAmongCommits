@@ -1,6 +1,8 @@
 package Parsers;
 
 import database.DbHandler;
+
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
@@ -47,23 +49,42 @@ public class ClonesReader implements Reader {
                 }
                 else{
                     cloneInfo=row.split("\\(");
-                    Path p= Paths.get(cloneInfo[0]);
-                    int exists = DbHandler.classInProject(p.getName(p.getNameCount()-1).toString(),this.projectUrl);
-                    cl= new Class(p.getName(p.getNameCount()-1).toString(),cloneInfo[0]);
-                    if(exists==0)
+
+                    String classPath =cloneInfo[0];
+                    classPath = classPath.substring(0, classPath.lastIndexOf(".java"));
+                    String className =Paths.get(classPath).getName(Paths.get(classPath).getNameCount()-1).toString();
+                    classPath = classPath.replace(File.separator, ".");
+                    String[] classPathSplit = classPath.split(".src.");
+                    classPath = classPathSplit[classPathSplit.length-1];
+
+                    int exists = DbHandler.classInProject(className, classPath);
+                    cl= new Class(className, classPath);
+                    if(exists==0) {
                         DbHandler.insertClass(cl);
-                    else{
+                    } else{
                         String path=DbHandler.getClassPath(exists);
                         if(path==null){
-                            DbHandler.updateClassPath(cloneInfo[0],exists);
+                            DbHandler.updateClassPath(classPath,exists);
                             cl.setId(exists);
                         }
                         else{
-                            if(!DbHandler.getClassPath(exists).equals(cloneInfo[0]))
+                            if(!DbHandler.getClassPath(exists).equals(classPath)) {
                                 DbHandler.insertClass(cl);
-                            else
+                            } else
                                 cl.setId(exists);
                         }
+                    }
+                    String packagePath = classPath.substring(0, classPath.lastIndexOf("."));
+                    String packageName;
+                    if(packagePath.lastIndexOf(".") != -1)
+                        packageName = packagePath.substring(packagePath.lastIndexOf(".") + 1);
+                    else
+                        packageName = packagePath;
+                    models.Package pac = new models.Package(packageName);
+                    pac.setPath(packagePath);
+                    int existsPackage = DbHandler.packageExist(packageName);
+                    if(existsPackage==0) {
+                        DbHandler.insertPackage(pac);
                     }
                     String[] tmp=(cloneInfo[1].substring(0, cloneInfo[1].length()-1)).split("\\[")[1].split("-");
                     String[] tmp2=tmp[0].trim().split(",");
