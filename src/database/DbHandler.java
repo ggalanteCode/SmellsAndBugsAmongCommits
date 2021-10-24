@@ -35,10 +35,10 @@ import models.Package;
     * @author mattia
     */
 public class DbHandler {
-    private static final String URLPOSTGRES = "jdbc:postgresql://localhost:5432/postgres";
-    private static final String URL = "jdbc:postgresql://localhost:5432/sbac";
+    private static final String URLPOSTGRES = "jdbc:postgresql://localhost:5435/postgres";
+    private static final String URL = "jdbc:postgresql://localhost:5435/sbac";
     private static final String USER = "postgres";
-    private static final String PSW = "postgres";
+    private static final String PSW = "Password";
     private static Connection connection;
     
     public DbHandler(){}
@@ -117,7 +117,9 @@ public class DbHandler {
                                     PreparedSQL.ISSUEISTANCE+
                                     PreparedSQL.METRICCLASSCOLLECTION+
                                     PreparedSQL.METRICMETHODCOLLECTION+
-                                    PreparedSQL.METRICPACKAGECOLLECTION
+                                    PreparedSQL.METRICPACKAGECOLLECTION+
+                                    PreparedSQL.CODESHOVELCLASSES+
+                                    PreparedSQL.CODESHOVELMETHODS
                                     );
             System.err.println("Sbac : Created tables on db");
         } catch (SQLException ex) {
@@ -485,6 +487,65 @@ public class DbHandler {
         finally{
             if(stmt!=null)
                 stmt.close();
+        }
+    }
+
+    public static int insertCodeShovelMethod(models.CodeShovelMethod csm, int idc) throws SQLException {
+        //TODO implement method
+        PreparedStatement statement = null;
+        try {
+            if (csm != null) {
+                statement = connection.prepareStatement(database.PreparedSQL.INSERTCODESHOVELMETHOD);
+                statement.setString(1, csm.getSourceFileName());
+                statement.setString(2, csm.getFunctionName());
+                statement.setString(3, csm.getStartCommitName());
+                statement.setString(4, csm.getStartCommitName());
+                statement.setString(5, csm.getPreviousCommitName());
+                statement.setString(6, csm.getChangeType());
+                statement.setInt(7, csm.getLinesOfCodeAdded());
+                statement.setInt(8, csm.getLinesOfCodeDeleted());
+                statement.setInt(9, csm.getLinesOfCodeModified());
+
+                statement.execute();
+                ResultSet resultSet = statement.getResultSet();
+                resultSet.next();
+                csm.setIdentifier(resultSet.getInt(1));
+                return resultSet.getInt(1);
+            } else return -1;
+        }catch (SQLException e) {
+            Logger.getLogger(DbHandler.class.getName()).log(Level.SEVERE, null, e);
+            printSQLException(e);
+            return -1;
+        } finally {
+            if (statement!= null) {
+                statement.close();
+            }
+        }
+    }
+
+    public static int insertCodeShovelClass(models.CodeShovelClass csc, int idc) throws SQLException {
+        PreparedStatement statement = null;
+        try {
+            if (csc != null) {
+                statement = connection.prepareStatement(database.PreparedSQL.INSERTCODESHOVELCLASS);
+                statement.setString(1, csc.getSourceFileName());
+                statement.setString(2, csc.getChangeType());
+                statement.setString(3, csc.getStartCommitName());
+                statement.setString(4, csc.getPreviousCommitName());
+                statement.execute();
+                ResultSet resultSet = statement.getResultSet();
+                resultSet.next();
+                csc.setIdentifier(resultSet.getInt(1));
+                return resultSet.getInt(1);
+            } else return -1;
+        } catch (SQLException e) {
+            Logger.getLogger(DbHandler.class.getName()).log(Level.SEVERE, null, e);
+            printSQLException(e);
+            return -1;
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
         }
     }
     

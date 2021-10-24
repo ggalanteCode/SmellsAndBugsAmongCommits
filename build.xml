@@ -7,9 +7,122 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
-<project name="SmellsAndBugsAmongCommits" default="default" basedir=".">
+<project name="SmellsAndBugsAmongCommits" default="jar" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
     <description>Builds, tests, and runs the project SmellsAndBugsAmongCommits.</description>
     <import file="nbproject/build-impl.xml"/>
+    <taskdef name="ivy-configure" classname="org.apache.ivy.ant.IvyConfigure"/>
+    <taskdef name="ivy-resolve" classname="org.apache.ivy.ant.IvyResolve"/>
+    <taskdef name="ivy-retrieve" classname="org.apache.ivy.ant.IvyRetrieve"/>
+    <taskdef name="ivy-deliver" classname="org.apache.ivy.ant.IvyDeliver"/>
+    <taskdef name="ivy-publish" classname="org.apache.ivy.ant.IvyPublish"/>
+    <property name="ivy.install.version" value="2.1.0-rc2"/>
+    <property name="env.IVY_HOME" value=""/>
+    <condition property="ivy.home" value="${env.IVY_HOME}">
+        <isset property="env.IVY_HOME"/>
+    </condition>
+    <property name="ivy.home" value="${user.home}/.ant"/>
+    <property name="ivy.jar.dir" value="${ivy.home}/lib"/>
+    <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar"/>
+
+    <target name="download-ivy" unless="offline">
+
+        <mkdir dir="${ivy.jar.dir}"/>
+        <!-- download Ivy from web site so that it can be used even without any special installation -->
+        <get src="https://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar"
+             dest="${ivy.jar.file}" usetimestamp="true"/>
+    </target>
+
+    <target name="init-ivy" depends="download-ivy">
+        <!-- try to load Ivy here from Ivy home, in case the user has not already dropped
+                it into Ant's lib dir (note that the latter copy will always take precedence).
+                We will not fail as long as local lib dir exists (it may be empty) and
+                Ivy is in at least one of Ant's lib dir or the local lib dir. -->
+        <path id="ivy.lib.path">
+            <fileset dir="${ivy.jar.dir}" includes="*.jar"/>
+
+        </path>
+        <taskdef resource="org/apache/ivy/ant/antlib.xml"
+                 uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
+    </target>
+
+
+
+
+
+    <property name="directoryLib" value="C:\Users\User\sbac\src\lib"/>
+    <path id="classpath.compile">
+        <pathelement path="${directoryLib}/"/>
+        <fileset dir="src/lib">
+            <include name="${directoryLib}/*.jar"/>
+        </fileset>
+    </path>
+    <property name="src.dir" value="src"/>
+
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="jar.dir" value="${build.dir}/jar"/>
+
+    <property name="main-class" value="gui.Download"/>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" optimize="off" deprecation="off">
+            <classpath refid="classpath.compile"/>
+        </javac>
+    </target>
+    <property name="lib-dir" value="${src.dir}/lib"/>
+    <target name="jar" depends="compile">
+        <zipfileset dir="${lib-dir}" includes="${lib-dir}/*.jar"/>
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="jar">
+        <java jar="${jar.dir}/${ant.project.name}.jar" fork="true"/>
+    </target>
+
+    <target name="clean-build" depends="clean,jar"/>
+
+    <target name="main" depends="clean,run"/>
+    <property name="ivy.jar.dir" value="${user.home}/.ivy2/jars" />
+    <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar" />
+
+    <property name="ivy.install.version" value="2.2.0" />
+
+
+    <target name="check-ivy-installed" unless="INTERN-ivy.jar.exists">
+        <available property="INTERN-ivy.jar.exists" file="${ivy.jar.file}"/>
+    </target>
+
+    <!-- =================================
+          target: install-ivy
+            this target is not necessary if you put ivy.jar in your ant lib directory
+            if you already have ivy in your ant lib, you can simply remove this
+            target and the dependency the 'go' target has on it
+         ================================= -->
+    <target name="install-ivy" depends="download-ivy" description="--> install ivy">
+        <!-- try to load ivy here from local ivy dir, in case the user has not already dropped
+              it into ant's lib dir (note that the latter copy will always take precedence).
+              We will not fail as long as local lib dir exists (it may be empty) and
+              ivy is in at least one of ant's lib dir or the local lib dir. -->
+        <echo message="Installing ivy"/>
+        <path id="ivy.lib.path">
+            <fileset dir="${ivy.jar.dir}" includes="*.jar"/>
+        </path>
+        <!--
+        <taskdef resource="org/apache/ivy/ant/antlib.xml"
+                 uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>-->
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 

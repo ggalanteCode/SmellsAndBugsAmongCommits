@@ -116,6 +116,23 @@ public class ParserToolThread extends Thread {
             e.printStackTrace();
         }
     }
+
+    /**
+     * this method runs the CodeShovel parser
+     * @param t
+     */
+    public void startCodeShovelParser(tools.Tool t) {
+        tools.CodeShovel codeShovel = (tools.CodeShovel) t;
+        JSONFileReader jsonFileReader = new JSONFileReader();
+        CodeShovelParser parser = new CodeShovelParser(projectUrl, idCommit, jsonFileReader);
+        codeShovel.setStartCommit(idCommit);
+        String outputFileAbsolutePath = codeShovel.getToolPath() + File.separator + parser.getAnalyzableFile();
+        File resultFile = new File(outputFileAbsolutePath);
+        jsonFileReader.setResultJSON(resultFile);
+        parser.execute();
+        resultFile.delete();
+        System.out.println("Parser CodeShovel terminato");
+    }
     
     /**
      *run method executed by threads to use parsers 
@@ -141,6 +158,10 @@ public class ParserToolThread extends Thread {
                 System.out.println("Partito parser di PhdProjectScripts");
                 Thread.sleep(50);
                 this.startPhDSmellsParser(tool);
+            } else if (tool instanceof CodeShovel) {
+                System.out.println("Partito parser di CodeShovel");
+                Thread.sleep(50);
+                this.startCodeShovelParser(tool);
             }
         }catch(InterruptedException e){
             System.out.println(e);

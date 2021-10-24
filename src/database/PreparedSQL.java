@@ -450,7 +450,25 @@ public class PreparedSQL {
                                                          "       version text not null references commit on delete cascade on update cascade, \n"+
                                                          "       url text not null references project on delete cascade on update cascade\n"+
                                                          ") ;";
-      
+    public static final String CODESHOVELMETHODS = "create table codeshovelmethods (\n"+
+            "       id serial not null primary key, \n"+
+            "class text not null, \n"+
+            "method text not null, \n"+
+            "currentversion text not null, \n"+
+            "previousversion text not null, \n"+
+            "type text not null, \n"+
+            "locadded integer not null, \n"+
+            "locdeleted integer not null, \n"+
+            "locmodified integer not null, \n"+
+            "idc integer not null references codeshovelclasses on delete cascade on update cascade\n"+
+            ");";
+    public static final String CODESHOVELCLASSES = "create table codeshovelclasses (\n"+
+            "id serial not null primary key, \n"+
+            "class text not null, \n"+
+            "type text not null, \n"+
+            "currentversion text not null, \n"+
+            "previousversion text not null, \n"+
+            ");";
    
     
     // insert in tables
@@ -498,7 +516,11 @@ public class PreparedSQL {
     public static final String INSERTMETRICMETHODCOLLECTION= "insert into metricmethodcollection (metricnumber,name,longname,parent,component,path,line,startcolumn,endline,endcolumn,cc,ccl,cco,ci,clc,cllc,ldc,lldc,hcpl,hdif,heff,hndb,hpl,hpv,htrp,hvol,mi,mims,misei,mism,mccc,nl,nle,nii,noi,cd,cloc,dloc,tcd,tcloc,lloc,loc,nos,numpar,tlloc,tloc,tnos,warningblocker,warningcritical,warninginfo,warningmajor,warningminor,bestpracticerules,clonemetricrules,codestylerules,complexitymetricrules,couplingmetricrules,designrules,documentationmetricrules,documentationrules,errorpronerules,multithreadingrules,performancerules,securityrules,sizemetricrules,version,url) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); ";
     
     public static final String INSERTMETRICPACKAGECOLLECTION= "insert into metricpackagecollection (metricnumber,name,longname,parent,component,cc,ccl,cco,ci,clc,cllc,ldc,lldc,ad,cd,cloc,pda,pua,tad,tcd,tcloc,tpda,tpua,lloc,loc,na,ncl,nen,ng,nin,nm,npa,npkg,npm,ns,tlloc,tloc,tna,tncl,tndi,tnen,tnfi,tng,tnin,tnm,tnos,tnpa,tnpcl,tnpen,tnpin,tnpkg,tnpm,tns,warningblocker,warningcritical,warninginfo,warningmajor,warningminor,bestpracticerules,codestylerules,designrules,documentationrules,errorpronerules,multithreadingrules,performancerules,securityrules,version,url) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ;";
-    
+
+    public static final String INSERTCODESHOVELMETHOD = "insert into codeshovelmethods (class, method, currentversion, previousversion, type, locadded, locdeleted, locmodified, idc) values (?,?,?,?,?,?,?,?,?);";
+
+    public static final String INSERTCODESHOVELCLASS = "insert into codeshovelclasses (class, type, currentversion, previousversion) values (?,?,?,?);";
+
     // query tables
     
     public static final String GETPROJECTS = "select * from project;";

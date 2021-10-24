@@ -40,5 +40,6 @@
 	<classpathentry kind="lib" path="dist/lib/sshd-sftp-2.2.0.jar"/>
 	<classpathentry kind="lib" path="dist/SmellAmongCommits.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/lib"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

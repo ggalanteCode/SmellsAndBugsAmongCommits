@@ -1,0 +1,96 @@
+<ivy-module version="2.0">
+    <info organisation="myorg" module="mymodule"/>
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/args4j/args4j -->
+        <dependency org="args4j" name="args4j" rev="2.33"/>
+        <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcpg-jdk15on -->
+        <dependency org="org.bouncycastle" name="bcpg-jdk15on" rev="1.64"/>
+        <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk15on -->
+        <dependency org="org.bouncycastle" name="bcpkix-jdk15on" rev="1.64"/>
+        <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on -->
+        <dependency org="org.bouncycastle" name="bcprov-jdk15on" rev="1.64"/>
+        <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+        <dependency org="commons-codec" name="commons-codec" rev="1.11"/>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
+        <dependency org="org.apache.commons" name="commons-compress" rev="1.19"/>
+        <!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
+        <dependency org="commons-logging" name="commons-logging" rev="1.2"/>
+        <!-- https://mvnrepository.com/artifact/net.i2p.crypto/eddsa -->
+        <dependency org="net.i2p.crypto" name="eddsa" rev="0.3.0"/>
+        <!-- https://mvnrepository.com/artifact/org.kohsuke/github-api -->
+        <dependency org="org.kohsuke" name="github-api" rev="1.117"/>
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency org="com.google.code.gson" name="gson" rev="2.8.2"/>
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+        <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.10"/>
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore -->
+        <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.12"/>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
+        <dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.12.0"/>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+        <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.12.0"/>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.12.0"/>
+        <!-- https://mvnrepository.com/artifact/com.googlecode.javaewah/JavaEWAH -->
+        <dependency org="com.googlecode.javaewah" name="JavaEWAH" rev="1.1.7"/>
+        <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+        <dependency org="javax.servlet" name="javax.servlet-api" rev="3.1.0"/>
+        <!-- https://mvnrepository.com/artifact/com.jcabi/jcabi-github -->
+        <dependency org="com.jcabi" name="jcabi-github" rev="0.41"/>
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-http -->
+        <dependency org="org.eclipse.jetty" name="jetty-http" rev="9.4.25.v20191220"/>
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-io -->
+        <dependency org="org.eclipse.jetty" name="jetty-io" rev="9.4.25.v20191220"/>
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-security -->
+        <dependency org="org.eclipse.jetty" name="jetty-security" rev="9.4.25.v20191220"/>
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-server -->
+        <dependency org="org.eclipse.jetty" name="jetty-server" rev="9.4.25.v20191220"/>
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-servlet -->
+        <dependency org="org.eclipse.jetty" name="jetty-servlet" rev="9.4.25.v20191220"/>
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-util -->
+        <dependency org="org.eclipse.jetty" name="jetty-util" rev="9.4.25.v20191220"/>
+        <!-- https://mvnrepository.com/artifact/com.jcraft/jsch -->
+        <dependency org="com.jcraft" name="jsch" rev="0.1.55"/>
+        <!-- https://mvnrepository.com/artifact/com.jcraft/jzlib -->
+        <dependency org="com.jcraft" name="jzlib" rev="1.1.1"/>
+        <!-- https://mvnrepository.com/artifact/log4j/log4j -->
+        <dependency org="log4j" name="log4j" rev="1.2.15"/>
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit.archive -->
+        <dependency org="org.eclipse.jgit" name="org.eclipse.jgit.archive" rev="5.7.0.202003110725-r"/>
+        <!-- https://jarcasting.com/artifacts/org.eclipse.jgit/org.eclipse.jgit.http.apache/5.7.0.202003110725-r/ -->
+        <dependency org="org.eclipse.jgit" name="org.eclipse.jgit.http.apache" rev="5.7.0.202003110725-r">
+            <artifact name="org.eclipse.jgit.http.apache" type="jar" />
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit.lfs.server -->
+        <dependency org="org.eclipse.jgit" name="org.eclipse.jgit.lfs.server" rev="5.7.0.202003110725-r"/>
+        <!-- https://frontbackend.com/maven/artifact/org.eclipse.jgit/org.eclipse.jgit.lfs/5.7.0.202003110725-r -->
+        <dependency org="org.eclipse.jgit" name="org.eclipse.jgit.lfs" rev="5.7.0.202003110725-r"/>
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit.pgm -->
+        <dependency org="org.eclipse.jgit" name="org.eclipse.jgit.pgm" rev="5.7.0.202003110725-r"/>
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit.ssh.apache -->
+        <dependency org="org.eclipse.jgit" name="org.eclipse.jgit.ssh.apache" rev="5.7.0.202003110725-r"/>
+        <!-- https://frontbackend.com/maven/artifact/org.eclipse.jgit/org.eclipse.jgit.ui/5.7.0.202003110725-r -->
+        <dependency org="org.eclipse.jgit" name="org.eclipse.jgit.ui" rev="5.7.0.202003110725-r"/>
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit -->
+        <dependency org="org.eclipse.jgit" name="org.eclipse.jgit" rev="5.7.0.202003110725-r"/>
+        <!-- https://mvnrepository.com/artifact/org.osgi/org.osgi.core -->
+        <dependency org="org.osgi" name="org.osgi.core" rev="4.3.1"/>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency org="org.slf4j" name="slf4j-api" rev="1.7.2"/>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
+        <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.2"/>
+        <!-- https://mvnrepository.com/artifact/org.apache.sshd/sshd-common -->
+        <dependency org="org.apache.sshd" name="sshd-common" rev="2.2.0"/>
+        <!-- https://mvnrepository.com/artifact/org.apache.sshd/sshd-core -->
+        <dependency org="org.apache.sshd" name="sshd-core" rev="2.2.0"/>
+        <dependency org="org.apache.sshd" name="sshd-osgi" rev="2.2.0"/>
+        <!-- Thanks for using https://jar-download.com -->
+        <!-- https://mvnrepository.com/artifact/org.apache.sshd/sshd-sftp -->
+        <dependency org="org.apache.sshd" name="sshd-sftp" rev="2.2.0"/>
+        <!-- https://mvnrepository.com/artifact/net.lingala.zip4j/zip4j -->
+        <dependency org="net.lingala.zip4j" name="zip4j" rev="1.3.2"/>
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <dependency org="org.postgresql" name="postgresql" rev="42.2.6"/>
+    </dependencies>
+</ivy-module>
+
