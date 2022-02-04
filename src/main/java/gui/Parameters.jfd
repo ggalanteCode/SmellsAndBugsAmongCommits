@@ -1,0 +1,98 @@
+JFDML JFormDesigner: "7.0.4.0.360" Java: "11.0.12" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JDialog", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+			"$horizontalGroup": "par l {seq t {space :0:0:x, comp panel:::p::p}}"
+			"$verticalGroup": "par l {seq t {space :0:0:x, comp panel:::p::p}}"
+		} ) {
+			name: "this"
+			"defaultCloseOperation": 2
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+				"$horizontalGroup": "par l {seq {par l {seq l {space :p:25:p, par l {seq {space :p:128:p, comp jLabel3:::p:79:p}, par l {seq t {comp sbcheck:::p:26:p, space s:::p, comp sbF:::p:326:p}, seq t {comp smcheck:::p:26:p, space s:::p, comp smF:::p:326:p}}, seq l {par l {comp phScheck::l:p:26:p, comp checkBox1::l:p::p}, space s:::p, par l:::p {comp PhdSmellsF::::326:x, comp textField1::::326:x}}}}, seq l {space :p:149:p, comp sbLabel:::p:68:p}, seq l {space :p:150:p, comp jLabel2:::p:90:p}, seq l {space :p:110:p, comp goBack:::p::p, space s:::p, comp confirmB:::p::p, space :p:33:p, comp jLabel4:::p:31:p}, seq l {space :p:149:p, comp csLabel:::p::p}}, space ::111:x}}"
+				"$verticalGroup": "par l {seq l {comp sbLabel:::p::p, space :::p, par l {comp sbF:::p::p, comp sbcheck:::p::p}, space :p:5:p, comp jLabel2:::p::p, space :::p, par l {comp smF::l:p::p, par l:l::p {seq {space :p:26:p, comp jLabel3:::p::p, space :p::p, comp PhdSmellsF:::p::p}, seq {comp smcheck:::p::p, space :::x, comp phScheck:::p::p}}}, space :p:6:p, comp csLabel:::p::p, space :p:5:p, par l {comp checkBox1:::p::p, comp textField1:::p::p}, space u:::p, par l {comp goBack:::p::p, comp confirmB:::p::p, comp jLabel4:::p:33:p}, space ::49:x}}"
+			} ) {
+				name: "panel"
+				"background": new java.awt.Color( 255, 255, 255, 255 )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "sbLabel"
+					"background": new java.awt.Color( 255, 255, 255, 255 )
+					"text": "SpotBugs"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "sbLabelMouseClicked", true ) )
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "sbF"
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "jLabel2"
+					"background": new java.awt.Color( 255, 255, 255, 255 )
+					"text": "Sourcemeter"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "jLabel2MouseClicked", true ) )
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "smF"
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "jLabel3"
+					"background": new java.awt.Color( 255, 255, 255, 255 )
+					"text": "PhDSmells"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "jLabel3MouseClicked", true ) )
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "PhdSmellsF"
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "confirmB"
+					"background": sfield java.awt.Color black
+					"foreground": sfield java.awt.Color black
+					"contentAreaFilled": false
+					"text": "Confirm"
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "confirmBActionPerformed", true ) )
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "jLabel4"
+					"background": new java.awt.Color( 255, 255, 255, 255 )
+					"font": new java.awt.Font( "Dialog", 1, 18 )
+					"text": " ?"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "jLabel4MouseClicked", true ) )
+				} )
+				add( new FormComponent( "javax.swing.JCheckBox" ) {
+					name: "sbcheck"
+					"background": sfield java.awt.Color white
+					"foreground": new java.awt.Color( 255, 255, 255, 255 )
+				} )
+				add( new FormComponent( "javax.swing.JCheckBox" ) {
+					name: "smcheck"
+					"background": sfield java.awt.Color white
+				} )
+				add( new FormComponent( "javax.swing.JCheckBox" ) {
+					name: "phScheck"
+					"background": sfield java.awt.Color white
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "goBack"
+					"borderPainted": false
+					"contentAreaFilled": false
+					"text": "Go Back"
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "goBackActionPerformed", true ) )
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "csLabel"
+					"text": "CodeShovel"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "csLabelMouseClicked", true ) )
+				} )
+				add( new FormComponent( "javax.swing.JCheckBox" ) {
+					name: "checkBox1"
+					"background": new java.awt.Color( 255, 255, 255, 255 )
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "textField1"
+				} )
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"size": new java.awt.Dimension( 400, 355 )
+			"location": new java.awt.Point( 45, 0 )
+		} )
+	}
+}

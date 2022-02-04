@@ -1,0 +1,73 @@
+JFDML JFormDesigner: "7.0.4.0.360" Java: "11.0.12" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+			"$horizontalGroup": "par l {seq {space :10:10:p, par l {comp panel3:::p::p, comp panel1:::p::p}}}"
+			"$verticalGroup": "par l {seq {space :10:10:p, comp panel3:::p::p, space :5:5:p, comp panel1:::p::p}}"
+		} ) {
+			name: "contentPane"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+				"$horizontalGroup": "par l {seq {comp hSpacer1:::p:262:p, space :10:10:p, comp panel2:::p::p}}"
+				"$verticalGroup": "par l {seq {space :8:8:p, comp hSpacer1:::p:12:p}, comp panel2:::p::p}"
+			} ) {
+				name: "panel1"
+				auxiliary() {
+					"JavaCodeGenerator.variableLocal": true
+				}
+				add( new FormComponent( "com.jformdesigner.designer.wrapper.HSpacer" ) {
+					name: "hSpacer1"
+					auxiliary() {
+						"JavaCodeGenerator.variableLocal": true
+					}
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+					"$horizontalGroup": "par l {seq {comp buttonOK:::p:67:p, space :10:10:p, comp buttonCancel:::p::p}}"
+					"$verticalGroup": "par l {comp buttonOK:::p::p, comp buttonCancel:::p::p}"
+				} ) {
+					name: "panel2"
+					auxiliary() {
+						"JavaCodeGenerator.variableLocal": true
+					}
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "buttonOK"
+						"text": "OK"
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "buttonCancel"
+						"text": "Cancel"
+					} )
+				} )
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+				"$horizontalGroup": "par l {comp label1:::p::p, seq {space :336:336:p, comp hSpacer2:::p:80:p}, comp tokenField:::p:326:p}"
+				"$verticalGroup": "par l {seq {space :40:40:p, comp label1:::p::p, space :40:40:p, comp hSpacer2:::p:12:p, space :30:30:p, comp tokenField:::p::p}}"
+			} ) {
+				name: "panel3"
+				auxiliary() {
+					"JavaCodeGenerator.variableLocal": true
+				}
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "label1"
+					"text": "Insert personal token to authenticate into github: "
+					auxiliary() {
+						"JavaCodeGenerator.variableLocal": true
+					}
+				} )
+				add( new FormComponent( "com.jformdesigner.designer.wrapper.HSpacer" ) {
+					name: "hSpacer2"
+					auxiliary() {
+						"JavaCodeGenerator.variableLocal": true
+					}
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "tokenField"
+				} )
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 40 )
+			"size": new java.awt.Dimension( 436, 257 )
+		} )
+	}
+}

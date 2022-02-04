@@ -1,0 +1,61 @@
+JFDML JFormDesigner: "7.0.4.0.360" Java: "11.0.12" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+			"$horizontalGroup": "par l {seq {space :10:10:p, par l:::p {comp panel1:::::x, comp panel3:::::x}}}"
+			"$verticalGroup": "par l {seq {space :p:10:p, comp panel3:::p:124:p, space :p:5:p, comp panel1:::p::p}}"
+		} ) {
+			name: "contentPane"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+				"$horizontalGroup": "par l {seq {comp hSpacer1:::p:298:p, space :10:10:p, comp panel2:::p::p}}"
+				"$verticalGroup": "par l {seq {space :5:5:p, comp hSpacer1:::p:12:p}, comp panel2:::p::p}"
+			} ) {
+				name: "panel1"
+				auxiliary() {
+					"JavaCodeGenerator.variableLocal": true
+				}
+				add( new FormComponent( "com.jformdesigner.designer.wrapper.HSpacer" ) {
+					name: "hSpacer1"
+					auxiliary() {
+						"JavaCodeGenerator.variableLocal": true
+					}
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+					"$horizontalGroup": "par l {seq {comp buttonOK:::p::p, space :10:10:p, comp buttonCancel:::p:49:p}}"
+					"$verticalGroup": "par l {comp buttonOK:::p::p, comp buttonCancel:::p::p}"
+				} ) {
+					name: "panel2"
+					auxiliary() {
+						"JavaCodeGenerator.variableLocal": true
+					}
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "buttonOK"
+						"text": "Yes"
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "buttonCancel"
+						"text": "No"
+					} )
+				} )
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+				"$horizontalGroup": "par l {seq l {comp messageLable:::::x, space :::p}}"
+				"$verticalGroup": "par l {seq l {space :p:66:p, comp messageLable:::p:58:p, space :::x}}"
+			} ) {
+				name: "panel3"
+				auxiliary() {
+					"JavaCodeGenerator.variableLocal": true
+				}
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "messageLable"
+					"text": ""
+				} )
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 436, 297 )
+		} )
+	}
+}

@@ -1,0 +1,27 @@
+JFDML JFormDesigner: "7.0.4.0.360" Java: "11.0.12" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
+			"$columnCount": 1
+			"$rowCount": 1
+		} ) {
+			name: "panel"
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label"
+				"font": new com.jformdesigner.model.SwingDerivedFont( null, 131073, 16, true )
+				"text": "Label"
+			}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+				"anchor": 8
+				"hSizePolicy": 2
+				"vSizePolicy": 0
+				"minimumSize": new java.awt.Dimension( 150, -1 )
+				"preferredSize": new java.awt.Dimension( 150, -1 )
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 500, 400 )
+		} )
+	}
+}

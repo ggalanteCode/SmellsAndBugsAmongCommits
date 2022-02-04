@@ -1,0 +1,28 @@
+JFDML JFormDesigner: "7.0.4.0.360" Java: "11.0.12" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JDialog", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+			"$horizontalGroup": "par l {comp jPanel1::l:::x}"
+			"$verticalGroup": "par l {comp jPanel1::l:::x}"
+		} ) {
+			name: "this"
+			"defaultCloseOperation": 2
+			"resizable": false
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+				"$horizontalGroup": "par l {seq {space :p:40:p, comp spinner:::p:100:p, space ::40:x}}"
+				"$verticalGroup": "par l {seq l {space :p:40:p, comp spinner:::p:75:p, space ::40:x}}"
+			} ) {
+				name: "jPanel1"
+				"background": new java.awt.Color( 0, 0, 0, 255 )
+				"toolTipText": ""
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "spinner"
+				} )
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"size": new java.awt.Dimension( 400, 300 )
+		} )
+	}
+}

@@ -1,0 +1,52 @@
+JFDML JFormDesigner: "7.0.4.0.360" Java: "11.0.12" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+			"$horizontalGroup": "par l {comp jPanel1::l:::x}"
+			"$verticalGroup": "par l {comp jPanel1::l:::x}"
+		} ) {
+			name: "this"
+			"defaultCloseOperation": 3
+			"resizable": false
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+				"$horizontalGroup": "par l {seq l {par l {seq l {space :p:35:p, comp jScrollPane1:::p:309:p}, seq l {space :p:150:p, comp jLabel1:::p::p}}, space ::54:x}, seq t {space :0:0:x, comp goBack:::p::p, space :p:23:p}}"
+				"$verticalGroup": "par l {seq l {space :p:29:p, comp jLabel1:::p::p, space s:::p, comp jScrollPane1:::p:198:p, space :::p, comp goBack:::p::p, space ::41:x}}"
+			} ) {
+				name: "jPanel1"
+				"background": new java.awt.Color( 255, 255, 255, 255 )
+				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+					name: "jScrollPane1"
+					add( new FormComponent( "javax.swing.JList" ) {
+						name: "projectList"
+						"background": new java.awt.Color( 0, 0, 0, 255 )
+						"foreground": new java.awt.Color( 255, 255, 255, 255 )
+						"model": new javax.swing.DefaultListModel
+						"selectionBackground": new java.awt.Color( 255, 255, 0, 255 )
+						auxiliary() {
+							"JavaCodeGenerator.typeParameters": "Project"
+						}
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "projectListMouseClicked", true ) )
+					} )
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "jLabel1"
+					"font": new java.awt.Font( "Dialog", 1, 18 )
+					"foreground": new java.awt.Color( 0, 0, 0, 255 )
+					"text": "Projects "
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "goBack"
+					"borderPainted": false
+					"contentAreaFilled": false
+					"text": "Go Back"
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "goBackActionPerformed", true ) )
+				} )
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"size": new java.awt.Dimension( 400, 360 )
+			"location": new java.awt.Point( 0, 0 )
+		} )
+	}
+}
